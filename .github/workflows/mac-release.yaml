@@ -5,15 +5,6 @@ on:
     branches:
       - release
   workflow_dispatch:
-    inputs:
-      release-type:
-        description: Whether alpha, beta or final release
-        default: alpha
-        options:
-          - alpha
-          - beta
-          - final
-        type: choice
 # This is the example for publishing a Universal macOS app with a signing certificate.
 # On each push to the `release` branch it will create or update a GitHub release, build your app, and upload the artifacts to the release.
 
