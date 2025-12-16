@@ -10,73 +10,8 @@ env:
   TOOLCHAIN: stable
 
 jobs:
-  setup-dependencies:
-    name: Setup and Cache Dependencies
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: swavan/ssh-studio
-          token: ${{ secrets.PAT_TOKEN }}
-          fetch-depth: 0
-
-      - name: Configure git for PAT_TOKEN
-        run: git config --global url."https://${{ secrets.PAT_TOKEN }}@github.com/".insteadOf "https://github.com/"
-
-      - name: setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-          cache: npm
-
-      - name: install Rust toolchain
-        uses: dtolnay/rust-toolchain@master
-        with:
-          toolchain: ${{ env.TOOLCHAIN }}
-          targets: 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown'
-          components: rustfmt, clippy
-
-      - name: Cache cargo registry
-        uses: actions/cache@v3
-        with:
-          path: ~/.cargo/registry
-          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cargo-registry-
-
-      - name: Cache cargo index
-        uses: actions/cache@v3
-        with:
-          path: ~/.cargo/git
-          key: ${{ runner.os }}-cargo-git-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cargo-git-
-
-      - name: Cache cargo build
-        uses: actions/cache@v3
-        with:
-          path: target
-          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cargo-build-target-
-
-      - name: Cache cargo bin
-        uses: actions/cache@v3
-        with:
-          path: ~/.cargo/bin
-          key: ${{ runner.os }}-cargo-bin-trunk
-          restore-keys: |
-            ${{ runner.os }}-cargo-bin-
-
-      - name: install frontend dependencies
-        run: npm install
-
-      - name: install trunk
-        run: if [ ! -f ~/.cargo/bin/trunk ]; then cargo install trunk --locked; fi
-
   publish-svpassman:
     name: Build and Publish macOS Release (${{ matrix.arch }})
-    needs: setup-dependencies
     permissions:
       contents: write
     strategy:
@@ -111,7 +46,7 @@ jobs:
           targets: 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown'
           components: rustfmt, clippy
 
-      - name: Restore cargo cache
+      - name: Rust cache
         uses: actions/cache@v3
         with:
           path: |
@@ -122,6 +57,20 @@ jobs:
           key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
             ${{ runner.os }}-cargo-build-target-
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: install frontend dependencies
+        run: npm install
+
+      - name: install trunk
+        run: |
+          if [ ! -f ~/.cargo/bin/trunk ]; then
+            cargo install trunk --locked
+          fi
 
       - name: import Apple Developer Certificate
         env:
@@ -143,7 +92,7 @@ jobs:
           CERT_INFO=$(security find-identity -v -p codesigning build.keychain | grep "Developer ID Application")
           CERT_ID=$(echo "$CERT_INFO" | awk -F'"' '{print $2}')
           echo "CERT_ID=$CERT_ID" >> $GITHUB_ENV
-          echo "Certificate imported."
+          echo "Certificate imported: $CERT_ID"
 
       - name: build and publish
         uses: tauri-apps/tauri-action@v0
@@ -165,4 +114,14 @@ jobs:
           releaseBody: "See the assets to download this version and install."
           releaseDraft: true
           prerelease: false
+          includeUpdaterJson: true
           args: '--target ${{ matrix.target }}'
+      
+      - name: Remove source code archives from release
+        if: success()
+        run: |
+          VERSION=$(cat src-tauri/tauri.conf.json | grep -o '"version": "[^"]*' | grep -o '[^"]*')
+          gh release delete-asset "SwavanSshStudio-v$VERSION" "Source code (zip)" --yes || true
+          gh release delete-asset "SwavanSshStudio-v$VERSION" "Source code (tar.gz)" --yes || true
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
