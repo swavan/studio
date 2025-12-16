@@ -31,18 +31,9 @@ on:
 # On each push to the `release` branch it will create or update a GitHub release, build your app, and upload the artifacts to the release.
 
 jobs:
-  publish-svpassman:
-    permissions:
-      contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # for Universal macOS builds (arm64 and x86_64)
-          - platform: 'macos-latest'
-            args: '--target universal-apple-darwin'
-
-    runs-on: ${{ matrix.platform }}
+  setup-dependencies:
+    name: Setup and Cache Dependencies
+    runs-on: macos-latest
     steps:
 
       - uses: actions/checkout@v4
@@ -58,20 +49,99 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
+          cache: npm
 
       - name: install Rust toolchain (required input provided)
-        # keep the action pinned to the stable release tag; pass the required 'toolchain' input
         uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: ${{ inputs.toolchain }}
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown' || '' }}
+          toolchain: ${{ inputs.toolchain || 'stable' }}
+          targets: 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown'
           components: rustfmt, clippy
 
+      - name: Cache cargo registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-registry-
+
+      - name: Cache cargo index
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/git
+          key: ${{ runner.os }}-cargo-git-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-git-
+
+      - name: Cache cargo build
+        uses: actions/cache@v3
+        with:
+          path: target
+          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-build-target-
+
       - name: install frontend dependencies
-        run: npm install # change this to npm, pnpm or bun depending on which one you use.
+        run: npm install
 
       - name: install trunk
-        run: cargo install trunk
+        run: cargo install trunk --locked
+
+  publish-svpassman:
+    name: Build and Publish macOS Release
+    needs: setup-dependencies
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: 'M-series (ARM64)'
+            target: 'aarch64-apple-darwin'
+          - arch: 'Intel (x86_64)'
+            target: 'x86_64-apple-darwin'
+    runs-on: macos-latest
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+          repository: swavan/ssh-studio
+          token: ${{ secrets.PAT_TOKEN }}
+          fetch-depth: 0
+    
+      - name: Configure git for PAT_TOKEN
+        run: git config --global url."https://${{ secrets.PAT_TOKEN }}@github.com/".insteadOf "https://github.com/"
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: install Rust toolchain (required input provided)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ inputs.toolchain || 'stable' }}
+          targets: 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown'
+          components: rustfmt, clippy
+
+      - name: Restore cargo cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-build-target-
+
+      - name: install frontend dependencies
+        run: npm install
+
+      - name: install trunk
+        run: cargo install trunk --locked
 
       - name: import Apple Developer Certificate
         # Prevents keychain from locking automatically for 3600 seconds.
@@ -111,9 +181,9 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
-          releaseName: "App v__VERSION__"
+          tagName: SwavanSshStudio-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
+          releaseName: "SwavanSshStudio v__VERSION__"
           releaseBody: "See the assets to download this version and install."
           releaseDraft: true
           prerelease: false
-          args: ${{ matrix.args }}
+          args: '--target ${{ matrix.target }}'
