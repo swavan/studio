@@ -14,19 +14,6 @@ on:
           - beta
           - final
         type: choice
-      version:
-        description: version number of the release
-        default: "0.0.1"
-        type: string
-      release-info:
-        description: Add release information
-        default: "See the assets to download this version and install."
-        type: string
-      toolchain:
-        description: Rust toolchain to install (e.g. stable, nightly, 1.72.0)
-        required: true
-        default: stable
-        type: string
 # This is the example for publishing a Universal macOS app with a signing certificate.
 # On each push to the `release` branch it will create or update a GitHub release, build your app, and upload the artifacts to the release.
 
@@ -54,7 +41,7 @@ jobs:
       - name: install Rust toolchain (required input provided)
         uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: ${{ inputs.toolchain }}
+          toolchain: stable
           targets: 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown'
           components: rustfmt, clippy
 
@@ -122,7 +109,7 @@ jobs:
       - name: install Rust toolchain (required input provided)
         uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: ${{ github.event.inputs.toolchain || 'stable' }}
+          toolchain: stable
           targets: 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown'
           components: rustfmt, clippy
 
