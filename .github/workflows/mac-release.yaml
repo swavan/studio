@@ -36,6 +36,9 @@ jobs:
           node-version: lts/*
           cache: npm
 
+      - name: Ensure toolchain is set
+        run: echo "toolchain=stable" >> $GITHUB_ENV
+
       - name: install Rust toolchain (required input provided)
         uses: dtolnay/rust-toolchain@master
         with:
@@ -111,6 +114,9 @@ jobs:
         with:
           node-version: lts/*
           cache: npm
+
+      - name: Ensure toolchain is set
+        run: echo "toolchain=stable" >> $GITHUB_ENV
 
       - name: install Rust toolchain (required input provided)
         uses: dtolnay/rust-toolchain@master
