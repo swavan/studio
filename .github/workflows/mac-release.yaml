@@ -3,7 +3,7 @@ name: "mac-os-release"
 on:
   push:
     branches:
-      - release
+      - main
   workflow_dispatch:
 
 env:
@@ -45,6 +45,8 @@ jobs:
           toolchain: stable
           targets: 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown'
           components: rustfmt, clippy
+        env:
+          toolchain: stable
 
       - name: Cache cargo registry
         uses: actions/cache@v3
@@ -123,6 +125,8 @@ jobs:
           toolchain: stable
           targets: 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown'
           components: rustfmt, clippy
+        env:
+          toolchain: stable
 
       - name: Restore cargo cache
         uses: actions/cache@v3
