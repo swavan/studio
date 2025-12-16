@@ -75,7 +75,7 @@ jobs:
         run: npm install
 
       - name: install trunk
-        run: cargo install trunk --locked
+        run: if [ ! -f ~/.cargo/bin/trunk ]; then cargo install trunk --locked; fi
 
   publish-svpassman:
     name: Build and Publish macOS Release (${{ matrix.arch }})
