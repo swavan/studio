@@ -89,7 +89,7 @@ jobs:
         run: cargo install trunk --locked
 
   publish-svpassman:
-    name: Build and Publish macOS Release
+    name: Build and Publish macOS Release (${{ matrix.arch }})
     needs: setup-dependencies
     permissions:
       contents: write
@@ -122,7 +122,7 @@ jobs:
       - name: install Rust toolchain (required input provided)
         uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: ${{ inputs.toolchain }}
+          toolchain: ${{ github.event.inputs.toolchain || 'stable' }}
           targets: 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown'
           components: rustfmt, clippy
 
@@ -186,4 +186,4 @@ jobs:
           releaseBody: "See the assets to download this version and install."
           releaseDraft: true
           prerelease: false
-          args: '--target universal-apple-darwin'
+          args: '--target ${{ matrix.target }}'
