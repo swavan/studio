@@ -99,7 +99,12 @@ jobs:
             target: 'x86_64-apple-darwin'
     runs-on: macos-latest
     steps:
-
+      - name: Setup Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable  # <-- Always provide this value, or use a matrix if needed
+          override: true
+          profile: minimal
       - uses: actions/checkout@v4
         with:
           repository: swavan/ssh-studio
