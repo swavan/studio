@@ -7,25 +7,18 @@ on:
   workflow_dispatch:
 
 env:
-  toolchain: stable
-
-# This is the example for publishing a Universal macOS app with a signing certificate.
-# On each push to the `release` branch it will create or update a GitHub release, build your app, and upload the artifacts to the release.
+  TOOLCHAIN: stable
 
 jobs:
   setup-dependencies:
     name: Setup and Cache Dependencies
     runs-on: macos-latest
     steps:
-
       - uses: actions/checkout@v4
         with:
           repository: swavan/ssh-studio
           token: ${{ secrets.PAT_TOKEN }}
           fetch-depth: 0
-    
-      - name: Set toolchain env
-        run: echo "toolchain=stable" >> $GITHUB_ENV
 
       - name: Configure git for PAT_TOKEN
         run: git config --global url."https://${{ secrets.PAT_TOKEN }}@github.com/".insteadOf "https://github.com/"
@@ -36,17 +29,12 @@ jobs:
           node-version: lts/*
           cache: npm
 
-      - name: Ensure toolchain is set
-        run: echo "toolchain=stable" >> $GITHUB_ENV
-
-      - name: install Rust toolchain (required input provided)
+      - name: install Rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: stable
+          toolchain: ${{ env.TOOLCHAIN }}
           targets: 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown'
           components: rustfmt, clippy
-        env:
-          toolchain: stable
 
       - name: Cache cargo registry
         uses: actions/cache@v3
@@ -116,17 +104,12 @@ jobs:
           node-version: lts/*
           cache: npm
 
-      - name: Ensure toolchain is set
-        run: echo "toolchain=stable" >> $GITHUB_ENV
-
-      - name: install Rust toolchain (required input provided)
+      - name: install Rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: stable
+          toolchain: ${{ env.TOOLCHAIN }}
           targets: 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown'
           components: rustfmt, clippy
-        env:
-          toolchain: stable
 
       - name: Restore cargo cache
         uses: actions/cache@v3
@@ -141,7 +124,6 @@ jobs:
             ${{ runner.os }}-cargo-build-target-
 
       - name: import Apple Developer Certificate
-        # Prevents keychain from locking automatically for 3600 seconds.
         env:
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
@@ -178,7 +160,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: SwavanSshStudio-v__VERSION__ # the action automatically replaces __VERSION__ with the app version.
+          tagName: SwavanSshStudio-v__VERSION__
           releaseName: "SwavanSshStudio v__VERSION__"
           releaseBody: "See the assets to download this version and install."
           releaseDraft: true
