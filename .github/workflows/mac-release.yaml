@@ -54,7 +54,7 @@ jobs:
       - name: install Rust toolchain (required input provided)
         uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: ${{ inputs.toolchain || 'stable' }}
+          toolchain: ${{ inputs.toolchain }}
           targets: 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown'
           components: rustfmt, clippy
 
@@ -122,7 +122,7 @@ jobs:
       - name: install Rust toolchain (required input provided)
         uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: ${{ inputs.toolchain || 'stable' }}
+          toolchain: ${{ inputs.toolchain }}
           targets: 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown'
           components: rustfmt, clippy
 
@@ -181,9 +181,9 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: SwavanSshStudio-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
+          tagName: SwavanSshStudio-v__VERSION__ # the action automatically replaces __VERSION__ with the app version.
           releaseName: "SwavanSshStudio v__VERSION__"
           releaseBody: "See the assets to download this version and install."
           releaseDraft: true
           prerelease: false
-          args: '--target ${{ matrix.target }}'
+          args: '--target universal-apple-darwin'
