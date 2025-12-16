@@ -20,9 +20,11 @@ jobs:
         include:
           - arch: 'M-series (ARM64)'
             target: 'aarch64-apple-darwin'
+            runner: 'macos-latest'
           - arch: 'Intel (x86_64)'
             target: 'x86_64-apple-darwin'
-    runs-on: macos-latest
+            runner: 'macos-13'
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,7 +45,7 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ env.TOOLCHAIN }}
-          targets: 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown'
+          targets: ${{ matrix.target }}
           components: rustfmt, clippy
 
       - name: Rust cache
@@ -54,9 +56,9 @@ jobs:
             ~/.cargo/git
             ~/.cargo/bin
             target
-          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ matrix.runner }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
-            ${{ runner.os }}-cargo-build-target-
+            ${{ matrix.runner }}-cargo-build-target-
 
       - name: Install Bun
         uses: oven-sh/setup-bun@v2
@@ -118,10 +120,11 @@ jobs:
           args: '--target ${{ matrix.target }}'
       
       - name: Remove source code archives from release
-        if: success()
-        run: |
-          VERSION=$(cat src-tauri/tauri.conf.json | grep -o '"version": "[^"]*' | grep -o '[^"]*')
-          gh release delete-asset "SwavanSshStudio-v$VERSION" "Source code (zip)" --yes || true
-          gh release delete-asset "SwavanSshStudio-v$VERSION" "Source code (tar.gz)" --yes || true
+        if: success() && matrix.arch == 'Intel (x86_64)'
         env:
           GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          VERSION=$(cat src-tauri/tauri.conf.json | grep -o '"version": "[^"]*' | grep -o '[^"]*$')
+          TAG="SwavanSshStudio-v${VERSION}"
+          gh release delete-asset "${TAG}" "Source code (zip)" --yes || true
+          gh release delete-asset "${TAG}" "Source code (tar.gz)" --yes || true
