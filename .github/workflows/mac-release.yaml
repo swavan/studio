@@ -11,20 +11,10 @@ env:
 
 jobs:
   publish-svpassman:
-    name: Build and Publish macOS Release (${{ matrix.arch }})
+    name: Build and Publish macOS Universal Release
     permissions:
       contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # - arch: 'M-series (ARM64)'
-          #   target: 'aarch64-apple-darwin'
-          #   runner: 'macos-latest'
-          - arch: 'Intel (x86_64)'
-            target: 'x86_64-apple-darwin'
-            runner: 'macos-12'
-    runs-on: ${{ matrix.runner }}
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -45,20 +35,13 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ env.TOOLCHAIN }}
-          targets: ${{ matrix.target }}
+          targets: 'aarch64-apple-darwin, x86_64-apple-darwin'
           components: rustfmt, clippy
 
       - name: Rust cache
-        uses: actions/cache@v3
+        uses: swatinem/rust-cache@v2
         with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            ~/.cargo/bin
-            target
-          key: ${{ matrix.runner }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ matrix.runner }}-cargo-build-target-
+          workspaces: './src-tauri -> target'
 
       - name: Install Bun
         uses: oven-sh/setup-bun@v2
@@ -117,10 +100,10 @@ jobs:
           releaseDraft: true
           prerelease: false
           includeUpdaterJson: true
-          args: '--target ${{ matrix.target }}'
+          args: '--target universal-apple-darwin'
       
       - name: Remove source code archives from release
-        if: success() && matrix.arch == 'Intel (x86_64)'
+        if: success()
         env:
           GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
@@ -128,4 +111,3 @@ jobs:
           TAG="SwavanSshStudio-v${VERSION}"
           gh release delete-asset "${TAG}" "Source code (zip)" --yes || true
           gh release delete-asset "${TAG}" "Source code (tar.gz)" --yes || true
- 
