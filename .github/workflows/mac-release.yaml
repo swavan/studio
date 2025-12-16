@@ -30,7 +30,7 @@ jobs:
           cache: npm
 
       - name: install Rust toolchain (required input provided)
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@master
         with:
           toolchain: stable
           targets: 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown'
@@ -59,6 +59,14 @@ jobs:
           key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
             ${{ runner.os }}-cargo-build-target-
+
+      - name: Cache cargo bin
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/bin
+          key: ${{ runner.os }}-cargo-bin-trunk
+          restore-keys: |
+            ${{ runner.os }}-cargo-bin-
 
       - name: install frontend dependencies
         run: npm install
@@ -98,7 +106,7 @@ jobs:
           cache: npm
 
       - name: install Rust toolchain (required input provided)
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@master
         with:
           toolchain: stable
           targets: 'aarch64-apple-darwin, x86_64-apple-darwin, wasm32-unknown-unknown'
@@ -110,16 +118,11 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
+            ~/.cargo/bin
             target
           key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
             ${{ runner.os }}-cargo-build-target-
-
-      - name: install frontend dependencies
-        run: npm install
-
-      - name: install trunk
-        run: cargo install trunk --locked
 
       - name: import Apple Developer Certificate
         # Prevents keychain from locking automatically for 3600 seconds.
