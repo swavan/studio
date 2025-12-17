@@ -5,6 +5,15 @@ on:
     branches:
       - release/mac-os
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., 1.0.0)'
+        required: true
+        type: string
+      releaseBody:
+        description: 'Release body/notes'
+        required: true
+        type: string
 
 env:
   TOOLCHAIN: stable
@@ -103,9 +112,9 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: SwavanSshStudio-v__VERSION__
-          releaseName: "SwavanSshStudio v__VERSION__"
-          releaseBody: "See the assets to download this version and install."
+          tagName: SwavanSshStudio-v${{ github.event.inputs.version }}
+          releaseName: "SwavanSshStudio v${{ github.event.inputs.version }}"
+          releaseBody: ${{ github.event.inputs.releaseBody }}
           releaseDraft: false
           prerelease: false
           uploadUpdaterJson: true
@@ -117,7 +126,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-          VERSION=$(cat src-tauri/tauri.conf.json | grep -o '"version": "[^"]*' | grep -o '[^"]*$')
+          VERSION="${{ github.event.inputs.version }}"
           TAG="SwavanSshStudio-v${VERSION}"
           gh release delete-asset "${TAG}" "Source code (zip)" --yes || true
           gh release delete-asset "${TAG}" "Source code (tar.gz)" --yes || true
