@@ -1,0 +1,129 @@
+<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @media (prefers-color-scheme: light) {
+        #bg-light { display: block; }
+        #bg-dark { display: none; }
+      }
+      @media (prefers-color-scheme: dark) {
+        #bg-light { display: none; }
+        #bg-dark { display: block; }
+      }
+    </style>
+    <linearGradient id="modernGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+
+    <linearGradient id="modernGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+    </linearGradient>
+
+    <linearGradient id="tealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1dd1a1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:1" />
+    </linearGradient>
+
+    <filter id="dropShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="2" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+
+    <filter id="strokeGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="deepTealStroke" x="-50%" y="-50%" width="200%" height="200%">
+      <feFlood flood-color="#0a4f51" result="coloredBlur"/>
+      <feComposite in="coloredBlur" in2="SourceAlpha" operator="in" result="coloredBlur"/>
+      <feGaussianBlur in="coloredBlur" stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Full light golden background circle for light mode -->
+  <!-- <circle id="bg-light" cx="150" cy="150" r="150" fill="#FDE047"/> -->
+
+  <!-- Light golden background circle for dark mode -->
+  <!-- <circle id="bg-dark" cx="150" cy="150" r="150" fill="#FDE047"/> -->
+
+  <!-- Connection lines (drawn first so they appear behind) -->
+  <!-- White stroke outlines -->
+  <line x1="150" y1="59" x2="50" y2="190" stroke="white" stroke-width="24" opacity="0.6" stroke-linecap="round"/>
+  <line x1="250" y1="190" x2="150" y2="59" stroke="white" stroke-width="24" opacity="0.6" stroke-linecap="round"/>
+  <line x1="50" y1="190" x2="150" y2="255" stroke="white" stroke-width="24" opacity="0.6" stroke-linecap="round"/>
+  <line x1="250" y1="190" x2="150" y2="255" stroke="white" stroke-width="24" opacity="0.6" stroke-linecap="round"/>
+  <!-- Teal main lines -->
+  <line x1="150" y1="59" x2="50" y2="190" stroke="#FFD700" stroke-width="20" opacity="0.8" stroke-linecap="round"/>
+  <line x1="250" y1="190" x2="150" y2="59" stroke="#FFD700" stroke-width="20" opacity="0.8" stroke-linecap="round"/>
+  <line x1="50" y1="190" x2="150" y2="255" stroke="#FFD700" stroke-width="20" opacity="0.8" stroke-linecap="round"/>
+  <line x1="250" y1="190" x2="150" y2="255" stroke="#FFD700" stroke-width="20" opacity="0.8" stroke-linecap="round"/>
+
+  <!-- Horizontal connecting line (drawn last to appear on top) -->
+  <!-- White stroke outline -->
+  <line x1="250" y1="185" x2="60" y2="200" stroke="white" stroke-width="24" opacity="1" stroke-linecap="round"/>
+  <!-- Teal main line -->
+  <line x1="250" y1="185" x2="60" y2="200" stroke="#FFD700" stroke-width="20" opacity="1" stroke-linecap="round"/>
+  
+  <!-- SwaVan text on the middle line (tilted to match line angle) -->
+  <g transform="translate(155, 197) rotate(-5)">
+    <text x="-22" y="0" font-family="Arial, sans-serif" font-size="8" font-weight="normal" text-anchor="middle" fill="#0d7377" opacity="0.95" filter="url(#strokeGlow)">from</text>
+    <text x="15" y="0" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0d7377" stroke="#0d7377" stroke-width="0.5" opacity="0.95" filter="url(#strokeGlow)">SwaVan</text>
+  </g>
+
+  <!-- Three overlapping circles forming geometric S shapes -->
+
+  <!-- Top S - geometric/minimal style -->
+  <g transform="translate(150, 59)" filter="url(#dropShadow)">
+    <!-- S shaped path using circles -->
+    <circle cx="-10" cy="-32" r="22" fill="#FFD700" stroke="black" stroke-width="2" opacity="0.9" filter="url(#strokeGlow)"/>
+    <circle cx="10" cy="-15" r="22" fill="#FFD700" stroke="black" stroke-width="2" opacity="0.9" filter="url(#strokeGlow)"/>
+    <circle cx="-10" cy="3" r="22" fill="#FFD700" stroke="black" stroke-width="2" opacity="0.9" filter="url(#strokeGlow)"/>
+    <!-- Connecting bar -->
+    <rect x="-24" y="-25" width="48" height="20" fill="#FFD700" rx="10" stroke="black" stroke-width="2" opacity="0.9" filter="url(#strokeGlow)"/>
+  </g>
+
+  <!-- Left S - rotated -->
+  <g transform="translate(50, 190) rotate(-120)" filter="url(#dropShadow)">
+    <circle cx="-10" cy="-18" r="21" fill="#FFD700" stroke="black" stroke-width="2" opacity="0.85" filter="url(#strokeGlow)"/>
+    <circle cx="10" cy="0" r="21" fill="#FFD700" stroke="black" stroke-width="2" opacity="0.85" filter="url(#strokeGlow)"/>
+    <circle cx="-10" cy="18" r="21" fill="#FFD700" stroke="black" stroke-width="2" opacity="0.85" filter="url(#strokeGlow)"/>
+    <rect x="-24" y="-10" width="48" height="20" fill="#FFD700" rx="10" stroke="black" stroke-width="2" opacity="0.85" filter="url(#strokeGlow)"/>
+  </g>
+
+  <!-- Right S - rotated -->
+  <g transform="translate(250, 190) rotate(120)" filter="url(#dropShadow)">
+    <circle cx="-10" cy="-16" r="21" fill="#FFD700" stroke="black" stroke-width="2" opacity="0.8" filter="url(#strokeGlow)"/>
+    <circle cx="10" cy="0" r="21" fill="#FFD700" stroke="black" stroke-width="2" opacity="0.8" filter="url(#strokeGlow)"/>
+    <circle cx="-10" cy="18" r="21" fill="#FFD700" stroke="black" stroke-width="2" opacity="0.8" filter="url(#strokeGlow)"/>
+    <rect x="-24" y="-10" width="48" height="20" fill="#FFD700" rx="10" stroke="black" stroke-width="2" opacity="0.8" filter="url(#strokeGlow)"/>
+  </g>
+
+  <!-- Center SSH text icon -->
+  <g transform="translate(150, 150)">
+    <!-- Background circle -->
+    <circle cx="0" cy="0" r="18" fill="white" stroke="black" stroke-width="1.5" opacity="0.9" filter="url(#strokeGlow)"/>
+    <!-- SSH text -->
+    <text x="0" y="2" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="black" opacity="0.9">SSH</text>
+    <!-- Studio text -->
+    <text x="0" y="12" font-family="Arial, sans-serif" font-size="7" font-weight="normal" text-anchor="middle" fill="black" opacity="0.9">studio</text>
+  </g>
+
+  <!-- Bottom Center S - geometric/minimal style -->
+  <g transform="translate(150, 255)" filter="url(#dropShadow)">
+    <!-- S shaped path using circles -->
+    <circle cx="-10" cy="-18" r="22" fill="#FFD700" stroke="black" stroke-width="2" opacity="0.9" filter="url(#strokeGlow)"/>
+    <circle cx="10" cy="0" r="22" fill="#FFD700" stroke="black" stroke-width="2" opacity="0.9" filter="url(#strokeGlow)"/>
+    <circle cx="-10" cy="18" r="22" fill="#FFD700" stroke="black" stroke-width="2" opacity="0.9" filter="url(#strokeGlow)"/>
+    <!-- Connecting bar -->
+    <rect x="-24" y="-10" width="48" height="20" fill="#FFD700" rx="10" stroke="black" stroke-width="2" opacity="0.9" filter="url(#strokeGlow)"/>
+  </g>
+
+</svg>
