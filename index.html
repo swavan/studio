@@ -11,9 +11,9 @@
             --bg-secondary: #f8f9fa;
             --bg-gradient-1: #e0fffe;
             --bg-gradient-2: #d9fcfb;
-            --text-primary: #1a1a1a;
-            --text-secondary: #404040;
-            --text-light: #555555;
+            --text-primary: #0d5555;
+            --text-secondary: #1a7777;
+            --text-light: #2a9a99;
             --text-inverse: #ffffff;
             --card-shadow: rgba(0, 0, 0, 0.2);
             --card-shadow-hover: rgba(0, 0, 0, 0.3);
@@ -28,13 +28,13 @@
 
         body.dark-mode {
             /* Dark Mode Colors */
-            --bg-primary: #1e1e2e;
-            --bg-secondary: #2a2a3e;
-            --bg-gradient-1: #0d5f5a;
-            --bg-gradient-2: #0a4f4a;
-            --text-primary: #f0f0f0;
-            --text-secondary: #d0d0d0;
-            --text-light: #aaaaaa;
+            --bg-primary: #051515;
+            --bg-secondary: #082020;
+            --bg-gradient-1: #082020;
+            --bg-gradient-2: #051515;
+            --text-primary: #d4f4f2;
+            --text-secondary: #c8f0ed;
+            --text-light: #b0e8e5;
             --text-inverse: #ffffff;
             --card-shadow: rgba(0, 0, 0, 0.5);
             --card-shadow-hover: rgba(0, 0, 0, 0.7);
@@ -70,14 +70,14 @@
 
         header {
             text-align: center;
-            color: #1a1a1a;
+            color: var(--text-primary);
             margin-bottom: 60px;
             padding-top: 40px;
             position: relative;
         }
 
         body.dark-mode header {
-            color: var(--text-inverse);
+            color: var(--text-primary);
         }
 
         /* Floating Theme Toggle Button */
@@ -272,13 +272,13 @@
 
         .cta-section {
             text-align: center;
-            color: #1a1a1a;
+            color: var(--text-primary);
             padding: 40px;
             margin-top: 60px;
         }
 
         body.dark-mode .cta-section {
-            color: var(--text-inverse);
+            color: var(--text-primary);
         }
 
         .cta-section h2 {
@@ -312,7 +312,7 @@
 
         footer {
             text-align: center;
-            color: #1a1a1a;
+            color: var(--text-primary);
             padding: 30px;
             opacity: 0.9;
             margin-top: 40px;
@@ -607,7 +607,7 @@
         <!-- Detailed Platforms Section -->
         <div class="full-width-section">
             <h2>🖥️ Supported Platforms</h2>
-            <p style="text-align: center; color: #666; margin-bottom: 30px; font-size: 1.05em;">
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 30px; font-size: 1.05em;">
                 SwavanSSH Studio is built with modern technologies and currently optimized for macOS.
             </p>
             
@@ -622,7 +622,7 @@
         <!-- Security Features Deep Dive -->
         <div class="full-width-section">
             <h2>🔐 Security Architecture</h2>
-            <p style="text-align: center; color: #666; margin-bottom: 30px; font-size: 1.05em;">
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 30px; font-size: 1.05em;">
                 Security isn't an afterthought—it's built into every layer of SwavanSSH Studio.
             </p>
             
@@ -649,7 +649,7 @@
         <!-- Future Roadmap Section -->
         <div class="full-width-section">
             <h2>🚀 Coming Soon</h2>
-            <p style="text-align: center; color: #666; margin-bottom: 30px; font-size: 1.05em;">
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 30px; font-size: 1.05em;">
                 We're constantly improving SwavanSSH Studio with exciting new features and platform support.
             </p>
             
