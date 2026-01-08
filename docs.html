@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swavan SSH Studio Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --radius: 0.625rem;
+            --background: #e8e8ec;
+            --foreground: #1a1a1a;
+            --card: #f5f5f7;
+            --card-foreground: #1a1a1a;
+            --primary: #0d9488;
+            --primary-light: #14b8a6;
+            --primary-dark: #0f766e;
+            --secondary: #e2e8f0;
+            --secondary-foreground: #334155;
+            --muted: #eff1f5;
+            --muted-foreground: #64748b;
+            --border: rgba(0, 0, 0, 0.12);
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-pink: #ec4899;
+            --accent-orange: #f97316;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+            --gradient-3: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        }
+
+        /* Dark theme class - applied via JavaScript */
+        html.dark {
+            --background: #1d1d1f;
+            --foreground: #f5f5f7;
+            --card: #2a2a2c;
+            --card-foreground: #f5f5f7;
+            --secondary: #374151;
+            --secondary-foreground: #e5e7eb;
+            --muted: #374151;
+            --muted-foreground: #9ca3af;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: none;
+            background: var(--card);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .theme-toggle-icon {
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .sun-icon, .moon-icon {
+            position: absolute;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .sun-icon {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+
+        .moon-icon {
+            opacity: 0;
+            transform: rotate(-90deg) scale(0);
+        }
+
+        html.dark .sun-icon {
+            opacity: 0;
+            transform: rotate(90deg) scale(0);
+        }
+
+        html.dark .moon-icon {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+
+        html.dark .theme-toggle {
+            background: var(--card);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background);
+            color: var(--foreground);
+            line-height: 1.6;
+            padding: 20px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: var(--gradient-2);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+        
+        .app-logo {
+            font-weight: bold;
+            color: var(--primary-light);
+        }
+        
+        .app-tagline {
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .container {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            align-items: stretch;
+            min-height: calc(100vh - 200px);
+        }
+        
+        .sidebar {
+            flex: 0 0 280px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 20px;
+            align-self: stretch;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        
+        .sidebar h3 {
+            color: var(--foreground);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .sidebar ul {
+            list-style-type: none;
+        }
+        
+        .sidebar li {
+            margin-bottom: 12px;
+        }
+        
+        .sidebar a {
+            text-decoration: none;
+            color: var(--muted-foreground);
+            display: block;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar a:hover {
+            background: var(--muted);
+            color: var(--foreground);
+            border-left: 3px solid var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .sidebar a.active {
+            background: rgba(13, 148, 136, 0.1);
+            color: var(--foreground);
+            border-left: 4px solid var(--primary);
+            font-weight: 600;
+        }
+        
+        .content {
+            flex: 1;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 35px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            width: 100%;
+        }
+        
+        h2 {
+            color: var(--foreground);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+            font-size: 1.8rem;
+        }
+        
+        h3 {
+            color: var(--foreground);
+            margin: 30px 0 20px;
+            font-size: 1.4rem;
+        }
+        
+        .step {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .step:last-child {
+            border-bottom: none;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: var(--gradient-2);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            margin-right: 12px;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        
+        .image-container {
+            margin: 25px 0;
+            text-align: center;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            background: var(--muted);
+            overflow: hidden;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+        
+        .image-caption {
+            font-size: 0.9rem;
+            color: var(--muted-foreground);
+            font-style: italic;
+            margin-top: 10px;
+        }
+        
+        .note {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 18px;
+            margin: 25px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .warning {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid var(--accent-red);
+            padding: 18px;
+            margin: 25px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .feature-list {
+            margin: 25px 0;
+            padding-left: 25px;
+        }
+        
+        .feature-list li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        
+        .connection-details {
+            background: var(--muted);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .connection-field {
+            display: flex;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+        
+        .connection-field:last-child {
+            border-bottom: none;
+        }
+        
+        .connection-label {
+            font-weight: 600;
+            min-width: 140px;
+            color: var(--primary);
+        }
+        
+        .connection-value {
+            color: var(--foreground);
+            flex: 1;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            background: var(--muted);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .stat-item {
+            flex: 1;
+            padding: 0 15px;
+        }
+        
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--muted-foreground);
+            margin-top: 5px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 25px;
+            color: var(--muted-foreground);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            background: var(--card);
+            border-radius: 10px;
+        }
+
+        /* Mobile Menu Toggle Button */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: var(--card);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            transition: all 0.3s ease;
+            color: var(--foreground);
+        }
+
+        .sidebar-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .sidebar-toggle-icon {
+            font-size: 1.5rem;
+            color: inherit;
+        }
+
+        html.dark .sidebar-toggle {
+            background: var(--foreground);
+            color: var(--background);
+            border: 1px solid var(--border);
+        }
+
+        /* Sidebar Overlay for mobile */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar-toggle {
+                display: flex;
+            }
+
+            .sidebar-overlay {
+                display: block;
+                pointer-events: none;
+            }
+
+            .sidebar-overlay.active {
+                pointer-events: all;
+            }
+
+            .container {
+                flex-direction: row;
+            }
+            
+            .sidebar {
+                position: fixed;
+                left: -320px;
+                top: 0;
+                bottom: 0;
+                z-index: 1000;
+                max-height: 100vh;
+                width: 280px;
+                border-radius: 0;
+                margin: 0;
+                transition: left 0.3s ease;
+                order: initial;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+            .sidebar-toggle.hidden {
+                display: none !important;
+            }
+            
+            .content {
+                order: initial;
+                width: 100%;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            body {
+                padding: 10px;
+            }
+
+            header {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Toggle Button for Mobile -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+        <span class="sidebar-toggle-icon">☰</span>
+    </button>
+
+    <!-- Overlay for mobile sidebar -->
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h3>Documentation Sections</h3>
+            <ul>
+                <li><a href="#Master-Key" onclick="closeSidebarOnMobile()">Create Master Key</a></li>
+                <li><a href="#Shell" onclick="closeSidebarOnMobile()">Shell</a></li>
+                <li><a href="#Connection" onclick="closeSidebarOnMobile()">Connection</a></li>
+                <li><a href="#Explorer" onclick="closeSidebarOnMobile()">Explorer</a></li>
+                <li><a href="#Tunnels" onclick="closeSidebarOnMobile()">Tunnels</a></li>
+                <li><a href="#settings" onclick="closeSidebarOnMobile()">Settings</a></li>
+            </ul>
+        </aside>
+        
+        <main class="content">
+            <section id="Master-Key">
+                <h2>Creating Master Key</h2>
+                <p>Before using any features of Swavan SSH Studio, you need to create a secure vault with a master password. This vault will protect all your SSH connections and credentials with enterprise-grade encryption.</p>
+                
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <span class="stat-number">🔐</span>
+                        <span class="stat-label">Encrypted Vault</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">🔑</span>
+                        <span class="stat-label">Master Password</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">🗄️</span>
+                        <span class="stat-label">Local Storage</span>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">1</span> Initial Setup Screen</h3>
+                    <p>After downloading and launching the app, you'll see the initial setup screen where you can choose how to set up your vault:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/1.png" 
+                             alt="Initial Setup Screen" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 1: Initial setup screen - Choose vault setup method</p>
+                    </div>
+                    
+                    <p>You have three options:</p>
+                    <ul class="feature-list">
+                        <li><strong>Create New Vault:</strong> Start fresh with a new vault and add your SSH connections manually</li>
+                        <li><strong>Receive from another device:</strong> Get connections sent from another device using encrypted P2P transfer</li>
+                        <li><strong>Restore from backup:</strong> Restore SSH connections and tunnels from a previously created encrypted backup file</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">2</span> Creating Master Password</h3>
+                    <p>If you choose "Create New Vault," you'll be prompted to create a master password to secure your connection credentials:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/2.png" 
+                             alt="Create Master Password Screen" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 2: Master password creation screen</p>
+                    </div>
+                    
+                    <p>You need to:</p>
+                    <ul class="feature-list">
+                        <li>Enter a strong master password</li>
+                        <li>Confirm the password</li>
+                        <li>Click "Initialize Vault" to proceed</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">3</span> Unlocking the Vault</h3>
+                    <p>After creating your master password and vault, every time you open the app you'll need to unlock it:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/3.png" 
+                             alt="Unlock Vault Screen" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 3: Unlock screen - Enter master password</p>
+                    </div>
+                    
+                    <p>Simply enter your master password to access your vault and SSH connections. This ensures that your credentials remain secure even if someone else gains access to your device.</p>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">4</span> Main Application Screen</h3>
+                    <p>After successfully unlocking your vault, you'll see the main application screen where you can access all features:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/shellfrontpage.png" 
+                             alt="Main Application Screen" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 4: Main application screen after unlocking vault</p>
+                    </div>
+                    
+                    <p>From this screen, you can access:</p>
+                    <ul class="feature-list">
+                        <li><strong>Shell:</strong> Terminal interface for SSH connections with xterm.js-based terminal emulation</li>
+                        <li><strong>Connection:</strong> Manage your SSH connections with search, organization, and quick access</li>
+                        <li><strong>Explorer:</strong> File explorer for managing files with support for 50+ file types</li>
+                        <li><strong>Tunnels:</strong> Create and manage SSH tunnels with local and remote port forwarding</li>
+                        <li><strong>Settings:</strong> Configure app preferences, security, and terminal customization</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section id="Shell">
+                <h2>Shell</h2>
+                <p>The Shell feature in Swavan SSH Studio provides full-featured terminal emulation with multi-session support. Experience a modern terminal with ANSI color support, tab management, and dynamic resizing.</p>
+                
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <span class="stat-number">💻</span>
+                        <span class="stat-label">Terminal & Sessions</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">🎨</span>
+                        <span class="stat-label">Terminal Customization</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">🔤</span>
+                        <span class="stat-label">8 Fonts Available</span>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">1</span> Accessing the Shell</h3>
+                    <p>From the main application screen, click on the terminal icon located at the top-right corner of the screen. This will open the terminal interface within the app.</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/terminal.png" 
+                             alt="Terminal Interface Screenshot" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 5: Terminal interface after clicking the terminal icon</p>
+                    </div>
+                    
+                    <p>The terminal interface provides a command-line environment where you can execute SSH commands and manage your remote connections with xterm.js-based terminal emulation.</p>
+                </div>
+            </section>
+            
+            <section id="Connection">
+                <h2>Connection Management</h2>
+                <p>Store, organize, and manage all your SSH connections in one secure place. Create unlimited connection profiles with search, edit, and quick access features.</p>
+                
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <span class="stat-number">🔗</span>
+                        <span class="stat-label">SSH Connection Management</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">🔍</span>
+                        <span class="stat-label">Search Connections</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">📋</span>
+                        <span class="stat-label">Unlimited Profiles</span>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">1</span> Connection Interface</h3>
+                    <p>The Connections screen provides an overview of all your SSH connections. Here's what the interface looks like:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/8.png" 
+                             alt="Connections Screen" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 6: Connections screen showing active and saved connections</p>
+                    </div>
+                    
+                    <p>The Connections screen is divided into:</p>
+                    <ul class="feature-list">
+                        <li><strong>Active Connections:</strong> Currently running SSH sessions with real-time status</li>
+                        <li><strong>Saved Connections:</strong> Pre-configured SSH connections for quick access</li>
+                        <li><strong>Navigation:</strong> Access to all app features (Shell, Connection, Explorer, Tunnels, Settings)</li>
+                    </ul>
+                    
+                    <p>At the bottom, you'll find two important buttons:</p>
+                    <ul class="feature-list">
+                        <li><strong>+ New Connection:</strong> Create a new SSH connection with detailed configuration</li>
+                        <li><strong>Lock Vault:</strong> Immediately lock the app for security when stepping away</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">2</span> Creating a New Connection</h3>
+                    <p>To add a new SSH connection, click the "+ New Connection" button at the bottom of the Connections screen:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/9.png" 
+                             alt="New Connection Form" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 7: New connection configuration form</p>
+                    </div>
+                    
+                    <div class="note">
+                        <strong>Pro Tip:</strong> Fields marked with * are required. The landing path is optional but useful if you always want to start in a specific directory when connecting. Use descriptive names for easy search and organization.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">3</span> After Adding a Connection</h3>
+                    <p>After successfully creating a new connection, it will appear in your Connections screen:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/10.png" 
+                             alt="Connections with New Entry" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 8: Connections screen showing newly added connection</p>
+                    </div>
+                    
+                    <p>From this screen, you can:</p>
+                    <ul class="feature-list">
+                        <li>Click on any saved connection to establish an SSH session instantly</li>
+                        <li>Use the search box to filter connections by any criteria</li>
+                        <li>Edit or delete existing connections as needed</li>
+                        <li>View which connections are currently active</li>
+                        <li>Add more connections for all your servers</li>
+                        <li>Share connections securely with other devices</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section id="Explorer">
+                <h2>File Explorer</h2>
+                <p>The File Explorer feature allows you to browse, manage, and edit files on remote servers with ease. With support for 50+ file types, you can work with code, config files, and documents directly in the app.</p>
+                
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <span class="stat-number">📁</span>
+                        <span class="stat-label">Remote File Browser</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">✏️</span>
+                        <span class="stat-label">File Editor</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">⬆️</span>
+                        <span class="stat-label">File Transfers</span>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">1</span> Accessing File Explorer</h3>
+                    <p>To access the File Explorer, navigate to the Explorer section in the sidebar or click on the folder icon in a connection card while connected to a server:</p>
+                    <p>You can see that there is an Open Secret button in the File Explorer because we created a file named secret while adding a new connection, and you can access the file from here.</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/openfile.png" 
+                             alt="File Explorer Access Screen" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 9: File Explorer access screen - Select a session</p>
+                    </div>
+                    
+                    <p>From this screen, you can:</p>
+                    <ul class="feature-list">
+                        <li>Select an active SSH session to browse files</li>
+                        <li>Open previously accessed secrets or directories</li>
+                        <li>Access all file management features from one interface</li>
+                        <li>Navigate between different server sessions</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">2</span> File Explorer Interface</h3>
+                    <p>After selecting a session, you'll see the File Explorer interface where you can browse and manage files:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/files.png" 
+                             alt="File Explorer Interface" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 10: File Explorer interface showing files and folders</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">3</span> Opening Files</h3>
+                    <p>To view or edit a file, simply navigate to the file in the explorer. Here's how files appear when you access them:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/file.png" 
+                             alt="File View Screen" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 11: File view screen showing file contents</p>
+                    </div>
+                    
+                    <p>When viewing files, you can:</p>
+                    <ul class="feature-list">
+                        <li>Browse file contents with syntax highlighting for 50+ file types</li>
+                        <li>See file metadata including size and modification date</li>
+                        <li>Navigate through different files in the same directory</li>
+                        <li>Use search functionality to find specific files</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">4</span> Uploading Files</h3>
+                    <p>To upload files to the remote server, click the Upload button in the File Explorer:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/uploadfile.png" 
+                             alt="Upload File Dialog" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 12: Upload file dialog - Select files from local system</p>
+                    </div>
+                    
+                    <p>The upload dialog allows you to:</p>
+                    <ul class="feature-list">
+                        <li>Browse local files and folders from your computer</li>
+                        <li>Select multiple files for batch upload</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">5</span> After File Upload</h3>
+                    <p>After successfully uploading files, they appear in the File Explorer with all other files:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/fileuploaded.png" 
+                             alt="Files After Upload" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 13: File Explorer showing newly uploaded files</p>
+                    </div>
+                    
+                    <p>Uploaded files are fully integrated with the file system and you can:</p>
+                    <ul class="feature-list">
+                        <li>Edit uploaded files directly in the app</li>
+                        <li>Rename, move, or delete uploaded files</li>
+                        <li>Download files back to your local system</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">6</span> Editing Files</h3>
+                    <p>Swavan SSH Studio includes a powerful built-in editor for remote files. To edit a file, simply open it:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/editfile.png" 
+                             alt="File Editor Interface" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 14: File editor with syntax highlighting</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">7</span> Renaming Files</h3>
+                    <p>To rename a file, use the rename option in the file context menu:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/renamefile.png" 
+                             alt="Rename File Dialog" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 15: Rename file dialog - Enter new filename</p>
+                    </div>
+                    
+                    <p>The rename feature allows you to:</p>
+                    <ul class="feature-list">
+                        <li>Change file names while preserving extensions</li>
+                        <li>Rename multiple files sequentially</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">8</span> Deleting Files</h3>
+                    <p>To delete files, use the delete option in the file context menu. The app provides a confirmation dialog for safety:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/deletefile.png" 
+                             alt="Delete File Confirmation" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 16: Delete file confirmation dialog</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="Tunnels">
+                <h2>Tunnels</h2>
+                
+                <div class="step">
+                    <h3><span class="step-number">1</span> Tunnels Interface</h3>
+                    <p>The Tunnels screen provides an overview of all your SSH tunnels. Here's what the interface looks like:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/tunnels.png" 
+                             alt="Tunnels Interface" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 17: Tunnels screen showing empty tunnel list</p>
+                    </div>
+                    
+                    <p>The Tunnels interface includes:</p>
+                    <ul class="feature-list">
+                        <li><strong>Search Functionality:</strong> Search for existing tunnels by name or type</li>
+                        <li><strong>Tunnel List:</strong> View all configured tunnels with status indicators</li>
+                        <li><strong>Empty State:</strong> Guidance when no tunnels are configured</li>
+                        <li><strong>Navigation:</strong> Access to all app features from the sidebar</li>
+                        <li><strong>Create Tunnel:</strong> Add button to create new tunnels</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">2</span> Creating a Tunnel</h3>
+                    <p>To create a new SSH tunnel, click the add button. You'll see three tunnel types available:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/createtunnel.png" 
+                             alt="Create Tunnel Dialog" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 18: Create tunnel dialog showing three tunnel types</p>
+                    </div>
+                    
+                    <p>Three tunnel types are available:</p>
+                    
+                    <div class="connection-details">
+                        <div class="connection-field">
+                            <div class="connection-label">Local Tunnel (ssh -L):</div>
+                            <div class="connection-value">Forward a port from your local machine to a service on the remote server</div>
+                        </div>
+                        <div class="connection-field">
+                            <div class="connection-label">Remote Tunnel (ssh -R):</div>
+                            <div class="connection-value">Forward a port from the remote server back to a service on your local machine</div>
+                        </div>
+                        <div class="connection-field">
+                            <div class="connection-label">Dynamic SOCKS (ssh -D):</div>
+                            <div class="connection-value">Create a SOCKS proxy for dynamic port forwarding</div>
+                        </div>
+                    </div>
+                    
+                    <p>To create a tunnel, configure these settings:</p>
+                    <ul class="feature-list">
+                        <li><strong>Tunnel Name:</strong> Descriptive name for your tunnel (e.g., "My Database Tunnel")</li>
+                        <li><strong>SSH Session:</strong> Select the SSH connection to use for the tunnel</li>
+                        <li><strong>Tunnel Type:</strong> Choose between Local, Remote, or Dynamic SOCKS</li>
+                        <li><strong>Port Configuration:</strong> Set local and remote ports based on tunnel type</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">3</span> Tunnel Created</h3>
+                    <p>After creating a local tunnel, it appears in your tunnel list. Here's how it looks when active:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/createdlocaltunnel.png" 
+                             alt="Local Tunnel Created" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 19: Tunnels screen showing active local tunnel</p>
+                    </div>
+                    
+                    <p>Your created tunnels will appear with:</p>
+                    <ul class="feature-list">
+                        <li><strong>Tunnel Name:</strong> The name you assigned during creation</li>
+                        <li><strong>Tunnel Type:</strong> Clear indication (Local, Remote, or Dynamic)</li>
+                        <li><strong>Status Indicator:</strong> Visual indication showing if tunnel is active/running</li>
+                        <li><strong>Port Information:</strong> Display of configured local and remote ports</li>
+                        <li><strong>Action Controls:</strong> Start/stop buttons and configuration options</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">4</span> Testing with Database (Tunnel Active)</h3>
+                    <p>With an active local tunnel, you can access remote services. Here's a database running through the tunnel:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/runningdatabase.png" 
+                             alt="Database Running Through Tunnel" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 20: Database successfully running through active local tunnel</p>
+                    </div>
+                    
+                    <p>When the tunnel is active:</p>
+                    <ul class="feature-list">
+                        <li><strong>Service Access:</strong> Remote services become accessible on local ports</li>
+                        <li><strong>Encrypted Connection:</strong> All traffic is encrypted through the SSH tunnel</li>
+                        <li><strong>Transparent Operation:</strong> Applications connect as if service is running locally</li>
+                        <li><strong>Performance Monitoring:</strong> Real-time status and connection monitoring</li>
+                        <li><strong>Multiple Services:</strong> Run multiple services through different tunnel ports</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">5</span> Stopping the Tunnel</h3>
+                    <p>When you stop a tunnel, it becomes inactive in the tunnel list:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/stoppedlocaltunnel.png" 
+                             alt="Tunnel Stopped" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 21: Tunnels screen showing stopped local tunnel</p>
+                    </div>
+                    
+                    <p>Stopping a tunnel:</p>
+                    <ul class="feature-list">
+                        <li><strong>Immediate Effect:</strong> Tunnel connection terminates immediately</li>
+                        <li><strong>Status Change:</strong> Visual indicator shows tunnel as stopped/inactive</li>
+                        <li><strong>Service Interruption:</strong> Services using the tunnel become inaccessible</li>
+                        <li><strong>Resource Release:</strong> Ports are freed up for other uses</li>
+                        <li><strong>Easy Restart:</strong> Can be restarted with a single click</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">6</span> Testing with Database (Tunnel Stopped)</h3>
+                    <p>When the tunnel is stopped, attempting to access services through it results in errors:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/errordatabase.png" 
+                             alt="Database Error When Tunnel Stopped" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 22: Database connection error when tunnel is stopped</p>
+                    </div>
+                    
+                    <p>Without an active tunnel:</p>
+                    <ul class="feature-list">
+                        <li><strong>Connection Refused:</strong> Applications cannot connect to the local port</li>
+                        <li><strong>Service Unavailable:</strong> Remote services are inaccessible from local machine</li>
+                        <li><strong>Clear Error Messages:</strong> Applications show specific connection errors</li>
+                        <li><strong>Security:</strong> Services remain protected behind the SSH barrier</li>
+                        <li><strong>Troubleshooting:</strong> Error messages help identify tunnel issues</li>
+                    </ul>
+                    
+                    <section id="Remote-Tunnel-Testing">
+                        <h2>Remote Tunnel Testing</h2>
+                        <p>Remote tunnels (SSH -R) allow you to expose local services to remote servers. This section demonstrates how to create, test, and verify remote tunnel functionality.</p>
+                        <div class="step">
+                            <h3><span class="step-number">1</span> Creating Remote Tunnel</h3>
+                            <p>First, create a remote tunnel in Swavan SSH Studio with the following configuration:</p>
+                            
+                            <div class="image-container">
+                                <img src="img/docs/remotetunnel.png" 
+                                     alt="Remote Tunnel Configuration" 
+                                     
+                                     
+                                     >
+                                <p class="image-caption">Figure 39: Remote tunnel configuration in Swavan SSH Studio</p>
+                            </div>
+                            
+                            <p>Tunnel configuration details:</p>
+                            
+                            <div class="connection-details">
+                                <div class="connection-field">
+                                    <div class="connection-label">Tunnel Name:</div>
+                                    <div class="connection-value">Remote Test</div>
+                                </div>
+                                <div class="connection-field">
+                                    <div class="connection-label">Tunnel Type:</div>
+                                    <div class="connection-value">Remote (ssh -R)</div>
+                                </div>
+                                <div class="connection-field">
+                                    <div class="connection-label">Local Port:</div>
+                                    <div class="connection-value">8082 (on local machine)</div>
+                                </div>
+                                <div class="connection-field">
+                                    <div class="connection-label">Remote Port:</div>
+                                    <div class="connection-value">6080 (on remote server)</div>
+                                </div>
+                                <div class="connection-field">
+                                    <div class="connection-label">Status:</div>
+                                    <div class="connection-value">Active (when started)</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <h3><span class="step-number">2</span> Setting Up Local Web Server</h3>
+                            <p>On your local machine (MacBook), set up a simple web server to test the tunnel:</p>
+                            
+                            <div class="image-container">
+                                <img src="img/docs/terminall.png" 
+                                     alt="Local Terminal Setup" 
+                                     
+                                     
+                                     >
+                                <p class="image-caption">Figure 40: Setting up local web server on port 8082</p>
+                            </div>
+                            
+                            <p>Local server setup commands:</p>
+                            
+                            <div class="terminal-preview">
+                                <div class="terminal-header">
+                                    <span>MacBook Terminal</span>
+                                    <span>Local Web Server Setup</span>
+                                </div>
+                                <div class="terminal-content">
+                                    <div><span class="terminal-prompt">$</span> <span class="terminal-command">cd ~/Desktop</span></div>
+                                    <div><span class="terminal-prompt">$</span> <span class="terminal-command">echo "REMOTE TUNNEL TEST - FINAL" > tunnel-test.txt</span></div>
+                                    <div><span class="terminal-prompt">$</span> <span class="terminal-command">python3 -m http.server 8082</span></div>
+                                    <div>Serving HTTP on :: port 8082 (http://[::]:8082/) ...</div>
+                                    <div>::ffff:127.0.0.1 - - [07/Jan/2026 16:51:07] "GET /tunnel-test.txt HTTP/1.1" 200 -</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <h3><span class="step-number">3</span> Verifying Local Server</h3>
+                            <p>Before testing the remote tunnel, verify the local server is working correctly:</p>
+                            
+                            <div class="image-container">
+                                <img src="img/docs/browser.png" 
+                                     alt="Browser Verification" 
+                                     
+                                     
+                                     >
+                                <p class="image-caption">Figure 41: Browser showing local server content</p>
+                            </div>
+                            
+                            <p>Access the local server in your browser:</p>
+                            <ul class="feature-list">
+                                <li><strong>URL:</strong> <code>http://localhost:8082/tunnel-test.txt</code></li>
+                                <li><strong>Expected Content:</strong> "REMOTE TUNNEL TEST - FINAL"</li>
+                                <li><strong>Verification:</strong> Confirm the server responds correctly before testing the tunnel</li>
+                                <li><strong>Server Status:</strong> Terminal should show "200 OK" responses for successful requests</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="step">
+                            <h3><span class="step-number">4</span> Testing Remote Tunnel (Active)</h3>
+                            <p>With the tunnel active and local server running, test from the remote server:</p>
+                            
+                            <div class="image-container">
+                                <img src="img/docs/swavanterminalworking.png" 
+                                     alt="Remote Tunnel Working" 
+                                     
+                                     
+                                     >
+                                <p class="image-caption">Figure 42: Remote tunnel working - Successful connection</p>
+                            </div>
+                            
+                            <p>Successful tunnel operation indicators:</p>
+                            <ul class="feature-list">
+                                <li><strong>Command:</strong> <code>curl http://localhost:6080/tunnel-test.txt</code></li>
+                                <li><strong>Successful Output:</strong> Shows content from local server</li>
+                                <li><strong>Tunnel Path:</strong> Remote 6080 → SSH Tunnel → Local 8082</li>
+                                <li><strong>Data Flow:</strong> Request travels through encrypted SSH connection</li>
+                                <li><strong>Verification:</strong> Content matches what's served locally</li>
+                            </ul>
+                            
+                            <div class="note">
+                                <strong>How It Works:</strong> When you access <code>localhost:6080</code> on the remote server, the SSH tunnel forwards the request to <code>localhost:8082</code> on your local machine, then returns the response through the encrypted tunnel.
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <h3><span class="step-number">5</span> Stopping the Remote Tunnel</h3>
+                            <p>To demonstrate tunnel dependency, stop the remote tunnel in Swavan SSH Studio:</p>
+                            
+                            <div class="image-container">
+                                <img src="img/docs/remotetunnelstopped.png" 
+                                     alt="Remote Tunnel Stopped" 
+                                     
+                                     
+                                     >
+                                <p class="image-caption">Figure 43: Remote tunnel stopped in Swavan SSH Studio</p>
+                            </div>
+                            
+                            <p>Tunnel stopped state:</p>
+                            <ul class="feature-list">
+                                <li><strong>Status Change:</strong> "Active" → "Stopped"</li>
+                                <li><strong>Connection Termination:</strong> SSH tunnel connection closed</li>
+                                <li><strong>Port Release:</strong> Remote port 6080 no longer forwarded</li>
+                                <li><strong>Configuration Preserved:</strong> Tunnel settings remain for restart</li>
+                                <li><strong>Quick Restart:</strong> Can be restarted with single click</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="step">
+                            <h3><span class="step-number">6</span> Testing with Tunnel Stopped</h3>
+                            <p>With the tunnel stopped, attempt to access the service from the remote server:</p>
+                            
+                            <div class="image-container">
+                                <img src="img/docs/swavanterminalnotworking.png" 
+                                     alt="Tunnel Not Working When Stopped" 
+                                     
+                                     
+                                     >
+                                <p class="image-caption">Figure 44: Connection error when tunnel is stopped</p>
+                            </div>
+                            <ul class="feature-list">
+                                <li><strong>Error Type:</strong> Connection refused</li>
+                                <li><strong>Cause:</strong> No SSH tunnel forwarding port 6080</li>
+                                <li><strong>Port Status:</strong> Port 6080 not listening on remote server</li>
+                                <li><strong>Expected Behavior:</strong> Services dependent on tunnel become inaccessible</li>
+                                <li><strong>Troubleshooting:</strong> Restart tunnel to restore connectivity</li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+            </section>
+            
+            <div class="step">
+                <h3><span class="step-number">4</span> Dynamic SOCKS Tunnel</h3>
+                <p>Dynamic SOCKS tunnels create a proxy server for routing all types of traffic through SSH:</p>
+                
+                <div class="image-container">
+                    <img src="img/docs/dynamic.png" 
+                         alt="Dynamic SOCKS Tunnel Configuration" 
+                         
+                         
+                         >
+                    <p class="image-caption">Figure 26: Dynamic SOCKS tunnel configuration</p>
+                </div>
+                
+                <p>Dynamic SOCKS tunnel features:</p>
+                <ul class="feature-list">
+                    <li><strong>Proxy Type:</strong> SOCKS5 proxy server</li>
+                    <li><strong>Target:</strong> Dynamic - routes all traffic through SSH connection</li>
+                    <li><strong>Application Level:</strong> Works at application level, not just port forwarding</li>
+                </ul>
+            </div>
+            
+            <div class="step">
+                <h3><span class="step-number">5</span> Configuring Browser Proxy</h3>
+                <p>To use the dynamic SOCKS tunnel, configure your browser to use the proxy:</p>
+                
+                <div class="image-container">
+                    <img src="img/docs/manualproxy.png" 
+                         alt="Browser Proxy Configuration" 
+                         
+                         
+                         >
+                    <p class="image-caption">Figure 27: Browser proxy configuration settings</p>
+                </div>
+                
+                <p>Proxy configuration settings:</p>
+                <ul class="feature-list">
+                    <li><strong>Manual Proxy:</strong> Enable manual proxy configuration</li>
+                    <li><strong>SOCKS Host:</strong> localhost (or 127.0.0.1)</li>
+                    <li><strong>Port:</strong> 5080 (matches tunnel configuration)</li>
+                </ul>
+            </div>
+            
+            <div class="step">
+                <h3><span class="step-number">6</span> Testing Dynamic SOCKS Tunnel</h3>
+                <p>With the proxy configured and tunnel active, web traffic routes through the SSH connection:</p>
+                
+                <div class="image-container">
+                    <img src="img/docs/siteworking.png" 
+                         alt="Website Loading Through SOCKS Proxy" 
+                         
+                         
+                         >
+                    <p class="image-caption">Figure 28: Website loading successfully through SOCKS proxy</p>
+                </div>
+                
+                <p>Successful SOCKS proxy operation:</p>
+                <ul class="feature-list">
+                    <li><strong>Internet Access:</strong> Websites load normally through the proxy</li>
+                    <li><strong>Encrypted Traffic:</strong> All web traffic encrypted through SSH tunnel</li>
+                </ul>
+            </div>
+            
+            <div class="step">
+                <h3><span class="step-number">7</span> Stopping Dynamic SOCKS Tunnel</h3>
+                <p>When you stop the dynamic SOCKS tunnel, it becomes inactive:</p>
+                
+                <div class="image-container">
+                    <img src="img/docs/stoppeddynamic.png" 
+                         alt="Stopped Dynamic SOCKS Tunnel" 
+                         
+                         
+                         >
+                    <p class="image-caption">Figure 29: Dynamic SOCKS tunnel stopped/inactive</p>
+                </div>
+                
+                <p>Stopped tunnel state:</p>
+                <ul class="feature-list">
+                    <li><strong>Inactive Status:</strong> Tunnel shows as stopped in the interface</li>
+                    <li><strong>Port Closed:</strong> SOCKS proxy port no longer listening</li>
+                </ul>
+            </div>
+            
+            <div class="step">
+                <h3><span class="step-number">8</span> Browser Error When Tunnel Stopped</h3>
+                <p>With the tunnel stopped but browser still configured to use the proxy, websites fail to load:</p>
+                
+                <div class="image-container">
+                    <img src="img/docs/sitenotworking.png" 
+                         alt="Browser Error When Proxy Unavailable" 
+                         
+                         
+                         >
+                    <p class="image-caption">Figure 30: Browser error when SOCKS proxy is unavailable</p>
+                </div>
+                
+                <p>Proxy connection errors:</p>
+                <ul class="feature-list">
+                    <li><strong>Connection Refused:</strong> Browser cannot connect to proxy server</li>
+                    <li><strong>Clear Error Message:</strong> Firefox indicates "proxy server is refusing connections"</li>
+                    <li><strong>Troubleshooting Guidance:</strong> Suggestions to check proxy settings</li>
+                    <li><strong>Network Impact:</strong> All web traffic affected when proxy is unavailable</li>
+                    <li><strong>User Action Required:</strong> Either restart tunnel or disable proxy settings</li>
+                </ul>
+            </div>
+            
+            <section id="settings">
+                <h2>Settings</h2>
+                
+                <div class="step">
+                    <h3><span class="step-number">1</span> Settings Interface</h3>
+                    <p>The Settings screen provides access to all configuration options. Here's the main settings interface:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/setting.png" 
+                             alt="Settings Interface" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 31: Main settings interface with all configuration categories</p>
+                    </div>
+                    
+                    <p>Settings categories include:</p>
+                    <ul class="feature-list">
+                        <li><strong>General:</strong> Basic application settings and information</li>
+                        <li><strong>Theme:</strong> Appearance and color scheme customization</li>
+                        <li><strong>Terminal:</strong> Terminal emulator configuration</li>
+                        <li><strong>Storage:</strong> Data storage and management settings</li>
+                        <li><strong>Security:</strong> Security preferences and password management</li>
+                        <li><strong>P2P:</strong> Peer-to-peer sharing configuration</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">2</span> Theme Customization</h3>
+                    <p>Customize the application appearance with theme settings. Choose between light, dark, or system default:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/theme.png" 
+                             alt="Theme Settings" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 32: Theme selection interface</p>
+                    </div>
+                    
+                    <p>Available theme options:</p>
+                    
+                    <div class="connection-details">
+                        <div class="connection-field">
+                            <div class="connection-label">Light Theme:</div>
+                            <div class="connection-value">Bright interface with light backgrounds, ideal for well-lit environments</div>
+                        </div>
+                        <div class="connection-field">
+                            <div class="connection-label">Dark Theme:</div>
+                            <div class="connection-value">Dark interface with reduced eye strain, perfect for low-light conditions</div>
+                        </div>
+                        <div class="connection-field">
+                            <div class="connection-label">System Default:</div>
+                            <div class="connection-value">Automatically follows your operating system's theme preference</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">3</span> Light Theme Example</h3>
+                    <p>Here's how the Light theme appears in the application:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/lighttheme.png" 
+                             alt="Light Theme Interface" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 33: Application interface with Light theme applied</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">4</span> Terminal Customization</h3>
+                    <p>Personalize your terminal experience with extensive customization options:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/terminalfont.png" 
+                             alt="Terminal Customization Settings" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 34: Terminal customization with font and color options</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">5</span> Storage Settings</h3>
+                    <p>Manage application data storage and access storage locations:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/storage.png" 
+                             alt="Storage Settings" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 35: Storage configuration and data location</p>
+                    </div>
+                    
+                    <p>Storage management features:</p>
+                    <ul class="feature-list">
+                        <li><strong>Local Storage:</strong> All data stored locally on your device for maximum privacy</li>
+                        <li><strong>Application Data Directory:</strong> Standard system location for app data</li>
+                        <li><strong>Data Included:</strong> SSH connections, settings, preferences, and configurations</li>
+                        <li><strong>Path Display:</strong> Shows exact storage location on your system</li>
+                        <li><strong>Quick Access:</strong> Copy path or open folder directly from the app</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">6</span> Security Settings</h3>
+                    <p>Configure security preferences and manage your vault protection:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/security.png" 
+                             alt="Security Settings" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 36: Security settings and vault management</p>
+                    </div>
+                    
+                    <p>Security configuration options:</p>
+                    
+                    <div class="connection-details">
+                        <div class="connection-field">
+                            <div class="connection-label">Change Password:</div>
+                            <div class="connection-value">Update your master password. This re-encrypts all stored data with the new password.</div>
+                        </div>
+                        <div class="connection-field">
+                            <div class="connection-label">Lock Vault:</div>
+                            <div class="connection-value">Immediately clear the master key from memory and lock the application.</div>
+                        </div>
+                        <div class="connection-field">
+                            <div class="connection-label">Security Tips:</div>
+                            <div class="connection-value">View security recommendations and best practices.</div>
+                        </div>
+                        <div class="connection-field">
+                            <div class="connection-label">P2P Settings:</div>
+                            <div class="connection-value">Configure peer-to-peer sharing options.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">7</span> Security Tips</h3>
+                    <p>Access security recommendations and best practices within the app:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/securitytips.png" 
+                             alt="Security Tips and Recommendations" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 37: Security tips and encryption information</p>
+                    </div>
+                    
+                    <p>Key security information provided:</p>
+                    <ul class="feature-list">
+                        <li><strong>Encryption Standard:</strong> AES-256 encryption with Argon2 key derivation</li>
+                        <li><strong>Master Password Storage:</strong> Guidance on secure password management</li>
+                        <li><strong>Vault Locking:</strong> Recommendation to lock vault when away from machine</li>
+                        <li><strong>Password Change Process:</strong> Explanation of data re-encryption during password changes</li>
+                        <li><strong>Best Practices:</strong> Security recommendations for optimal protection</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">8</span> P2P Sharing Settings</h3>
+                    <p>Configure peer-to-peer sharing for secure connection transfer:</p>
+                    
+                    <div class="image-container">
+                        <img src="img/docs/P2P.png" 
+                             alt="P2P Sharing Settings" 
+                             
+                             
+                             >
+                        <p class="image-caption">Figure 38: Peer-to-peer sharing configuration</p>
+                    </div>
+                    
+                    <p>P2P sharing features:</p>
+                    <ul class="feature-list">
+                        <li><strong>Enable/Disable P2P:</strong> Toggle peer-to-peer sharing functionality</li>
+                        <li><strong>Network Requirements:</strong> Devices must be on the same network</li>
+                        <li><strong>Secure Transfer:</strong> Encrypted P2P transfers between devices</li>
+                        <li><strong>Vault Requirement:</strong> Vault must be unlocked before enabling P2P</li>
+                        <li><strong>Connection Sharing:</strong> Share SSH connections with other users securely</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <footer>
+        <p>Swavan SSH Studio Documentation &copy; 2026</p>
+    </footer>
+
+    <script>
+        // Sidebar Toggle for Mobile
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            const toggleBtn = document.querySelector('.sidebar-toggle');
+            const isOpen = sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            if (isOpen) {
+                toggleBtn.classList.add('hidden');
+            } else {
+                toggleBtn.classList.remove('hidden');
+            }
+        }
+
+        function closeSidebarOnMobile() {
+            if (window.innerWidth <= 768) {
+                const toggleBtn = document.querySelector('.sidebar-toggle');
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+                toggleBtn.classList.remove('hidden');
+            }
+        }
+
+        // Theme Toggle Functionality
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Initialize theme immediately to prevent flash
+        initTheme();
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                if (e.matches) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+        });
+    </script>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="sun-icon theme-toggle-icon">☀️</span>
+        <span class="moon-icon theme-toggle-icon">🌙</span>
+    </button>
+
+</body>
+</html>
