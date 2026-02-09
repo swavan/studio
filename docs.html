@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swavan SSH Studio Documentation</title>
 
-        <link rel="icon" type="image/svg+xml" href="/public/icon.svg">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -533,6 +533,9 @@
                 <li><a href="#Explorer" onclick="closeSidebarOnMobile()">Explorer</a></li>
                 <li><a href="#Tunnels" onclick="closeSidebarOnMobile()">Tunnels</a></li>
                 <li><a href="#settings" onclick="closeSidebarOnMobile()">Settings</a></li>
+                <li><a href="#log-viewer" onclick="closeSidebarOnMobile()">Log Viewer</a></li>
+                <li><a href="#installation" onclick="closeSidebarOnMobile()">Installation (Linux)</a></li>
+                <li><a href="#windows-firewall" onclick="closeSidebarOnMobile()">Windows Firewall (P2P)</a></li>
             </ul>
         </aside>
         
@@ -1378,12 +1381,10 @@
                     
                     <p>Settings categories include:</p>
                     <ul class="feature-list">
-                        <li><strong>General:</strong> Basic application settings and information</li>
-                        <li><strong>Theme:</strong> Appearance and color scheme customization</li>
-                        <li><strong>Terminal:</strong> Terminal emulator configuration</li>
-                        <li><strong>Storage:</strong> Data storage and management settings</li>
-                        <li><strong>Security:</strong> Security preferences and password management</li>
-                        <li><strong>P2P:</strong> Peer-to-peer sharing configuration</li>
+                        <li><strong>General:</strong> Theme, terminal, file executors, keyboard shortcuts, storage, security, and P2P configuration</li>
+                        <li><strong>System:</strong> System information and diagnostics</li>
+                        <li><strong>Logs:</strong> Built-in application log viewer with search, level filtering, and clear functionality</li>
+                        <li><strong>About:</strong> Application version and information</li>
                     </ul>
                 </div>
                 
@@ -1550,9 +1551,232 @@
                     </ul>
                 </div>
             </section>
+
+            <section id="log-viewer">
+                <h2>Log Viewer</h2>
+                <p>Swavan SSH Studio includes a built-in log viewer that lets you inspect application logs directly from the Settings panel. This is useful for troubleshooting connection issues, P2P sharing problems, and other application behavior.</p>
+
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <span class="stat-number">📋</span>
+                        <span class="stat-label">View Logs</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">🔍</span>
+                        <span class="stat-label">Search & Filter</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">🗑️</span>
+                        <span class="stat-label">Clear Logs</span>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3><span class="step-number">1</span> Accessing the Log Viewer</h3>
+                    <p>Navigate to <strong>Settings</strong> and click the <strong>Logs</strong> button (scroll icon) in the settings navigation bar, between the System and About buttons. The log viewer opens as a dedicated panel.</p>
+
+                    <ul class="feature-list">
+                        <li><strong>Dedicated Panel:</strong> Logs have their own section in Settings, separate from General settings</li>
+                        <li><strong>Auto-load:</strong> Logs are loaded automatically when you open the panel</li>
+                        <li><strong>Refresh:</strong> Click the refresh button to reload the latest logs from the log file</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h3><span class="step-number">2</span> Searching and Filtering Logs</h3>
+                    <p>Use the search input and log level filter to find relevant log entries quickly:</p>
+
+                    <ul class="feature-list">
+                        <li><strong>Search:</strong> Type any text in the search box to filter log lines by keyword (case-insensitive)</li>
+                        <li><strong>Log Level Filter:</strong> Use the dropdown to filter by level &mdash; ALL, ERROR, WARN, INFO, or DEBUG</li>
+                        <li><strong>Color-coded Entries:</strong> ERROR lines appear in red, WARN in amber, DEBUG in gray, and INFO in the default color</li>
+                    </ul>
+
+                    <div class="note">
+                        <strong>Tip:</strong> Combine the search text with a log level filter to quickly isolate specific issues. For example, filter by "ERROR" level and search for "P2P" to find P2P-related errors.
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3><span class="step-number">3</span> Clearing Logs</h3>
+                    <p>Click the red trash icon button to clear all logs from both the log file on disk and the viewer. This is useful to start fresh when troubleshooting a new issue.</p>
+
+                    <div class="warning">
+                        <strong>Warning:</strong> Clearing logs is permanent. The log file contents will be erased and cannot be recovered. Make sure to note any important log entries before clearing.
+                    </div>
+                </div>
+            </section>
+
+            <section id="installation">
+                <h2>Installation (Linux)</h2>
+                <p>Swavan SSH Studio is distributed as an AppImage for Linux, which works on most distributions without installation. Follow these steps to get started.</p>
+
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <span class="stat-number">🐧</span>
+                        <span class="stat-label">Linux Support</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">📦</span>
+                        <span class="stat-label">AppImage Format</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">🚀</span>
+                        <span class="stat-label">No Install Required</span>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3><span class="step-number">1</span> Download the AppImage</h3>
+                    <p>Download the latest <code>.AppImage</code> file from the <a href="https://github.com/swavan/studio/releases/latest" target="_blank">GitHub Releases page</a>. Choose the appropriate architecture (x86_64 or aarch64) for your system.</p>
+                </div>
+
+                <div class="step">
+                    <h3><span class="step-number">2</span> Make it Executable</h3>
+                    <p>After downloading, make the AppImage executable:</p>
+
+                    <div class="connection-details">
+                        <div class="connection-field">
+                            <div class="connection-label">Command:</div>
+                            <div class="connection-value"><code>chmod +x swavan-ssh-studio_*.AppImage</code></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3><span class="step-number">3</span> Install FUSE (if needed)</h3>
+                    <p>AppImages require FUSE to run. Most distributions include it by default, but if you encounter errors, install it:</p>
+
+                    <div class="connection-details">
+                        <div class="connection-field">
+                            <div class="connection-label">Ubuntu/Debian:</div>
+                            <div class="connection-value"><code>sudo apt install libfuse2t64</code> (Ubuntu 24.04+) or <code>sudo apt install libfuse2</code> (older versions)</div>
+                        </div>
+                        <div class="connection-field">
+                            <div class="connection-label">Fedora:</div>
+                            <div class="connection-value"><code>sudo dnf install fuse-libs</code></div>
+                        </div>
+                        <div class="connection-field">
+                            <div class="connection-label">Arch Linux:</div>
+                            <div class="connection-value"><code>sudo pacman -S fuse2</code></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3><span class="step-number">4</span> Run the AppImage</h3>
+                    <p>Double-click the AppImage file, or run it from the terminal:</p>
+
+                    <div class="connection-details">
+                        <div class="connection-field">
+                            <div class="connection-label">Command:</div>
+                            <div class="connection-value"><code>./swavan-ssh-studio_*.AppImage</code></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3><span class="step-number">5</span> NixOS Users</h3>
+                    <p>NixOS does not support running AppImages directly due to its unique filesystem layout. Use one of these approaches:</p>
+
+                    <div class="connection-details">
+                        <div class="connection-field">
+                            <div class="connection-label">Option 1:</div>
+                            <div class="connection-value">Enable AppImage support in your NixOS configuration:<br><code>programs.appimage.enable = true;</code><br><code>programs.appimage.binfmt = true;</code></div>
+                        </div>
+                        <div class="connection-field">
+                            <div class="connection-label">Option 2:</div>
+                            <div class="connection-value">Use <code>appimage-run</code> from nixpkgs:<br><code>nix-shell -p appimage-run --run "appimage-run ./swavan-ssh-studio_*.AppImage"</code></div>
+                        </div>
+                    </div>
+
+                    <div class="note">
+                        <strong>Note:</strong> After changing NixOS configuration, run <code>sudo nixos-rebuild switch</code> to apply the changes.
+                    </div>
+                </div>
+            </section>
+
+            <section id="windows-firewall">
+                <h2>Windows Firewall Configuration for P2P Sharing</h2>
+                <p>On Windows, the built-in firewall may block P2P sharing features (peer discovery and connection transfer). If you experience issues with P2P sharing on Windows, you may need to add firewall exceptions.</p>
+
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <span class="stat-number">🪟</span>
+                        <span class="stat-label">Windows Firewall</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">🔥</span>
+                        <span class="stat-label">Firewall Rules</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">📡</span>
+                        <span class="stat-label">P2P Discovery</span>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3><span class="step-number">1</span> Understanding the Issue</h3>
+                    <p>P2P sharing in Swavan SSH Studio uses <strong>mDNS</strong> (multicast DNS on UDP port 5353) for automatic peer discovery. Windows Firewall blocks mDNS multicast by default for applications that haven't been granted an explicit exception.</p>
+
+                    <ul class="feature-list">
+                        <li><strong>Symptom:</strong> P2P sharing is enabled but no peers are discovered, or connection sharing times out</li>
+                        <li><strong>Cause:</strong> Windows Firewall blocks UDP port 5353 (mDNS) and QUIC protocol traffic</li>
+                        <li><strong>Solution:</strong> Add firewall exceptions for the application</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h3><span class="step-number">2</span> Adding Firewall Exceptions</h3>
+                    <p>Open <strong>PowerShell as Administrator</strong> and run the following commands to allow P2P traffic:</p>
+
+                    <div class="connection-details">
+                        <div class="connection-field">
+                            <div class="connection-label">Allow mDNS (peer discovery):</div>
+                            <div class="connection-value"><code>New-NetFirewallRule -DisplayName "Swavan SSH Studio mDNS" -Direction Inbound -Protocol UDP -LocalPort 5353 -Action Allow</code></div>
+                        </div>
+                        <div class="connection-field">
+                            <div class="connection-label">Allow QUIC (data transfer):</div>
+                            <div class="connection-value"><code>New-NetFirewallRule -DisplayName "Swavan SSH Studio QUIC" -Direction Inbound -Protocol UDP -LocalPort 1024-65535 -Action Allow -Program "C:\Program Files\Swavan SSH Studio\swavan-ssh-studio.exe"</code></div>
+                        </div>
+                    </div>
+
+                    <div class="note">
+                        <strong>Note:</strong> Adjust the program path in the second command if you installed Swavan SSH Studio in a different location. You can find the correct path by right-clicking the application shortcut and selecting "Open file location".
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3><span class="step-number">3</span> Verifying the Configuration</h3>
+                    <p>After adding the firewall rules:</p>
+
+                    <ul class="feature-list">
+                        <li>Restart Swavan SSH Studio on both devices</li>
+                        <li>Go to <strong>Settings &rarr; General &rarr; P2P Settings</strong> and enable P2P sharing</li>
+                        <li>Ensure both devices are on the <strong>same local network</strong> (same Wi-Fi or LAN)</li>
+                        <li>Try discovering peers and sharing a connection</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h3><span class="step-number">4</span> Removing Firewall Rules</h3>
+                    <p>If you no longer need P2P sharing and want to remove the firewall exceptions:</p>
+
+                    <div class="connection-details">
+                        <div class="connection-field">
+                            <div class="connection-label">Remove mDNS rule:</div>
+                            <div class="connection-value"><code>Remove-NetFirewallRule -DisplayName "Swavan SSH Studio mDNS"</code></div>
+                        </div>
+                        <div class="connection-field">
+                            <div class="connection-label">Remove QUIC rule:</div>
+                            <div class="connection-value"><code>Remove-NetFirewallRule -DisplayName "Swavan SSH Studio QUIC"</code></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
-    
+
     <footer>
         <p>Swavan SSH Studio Documentation &copy; 2026</p>
     </footer>

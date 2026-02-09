@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Swavan SSH Studio - Features</title>
 
-  <link rel="icon" type="image/svg+xml" href="/public/icon.svg">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -316,18 +316,6 @@
     .platform-link:hover {
       background: var(--primary);
       color: white;
-    }
-
-    .coming-soon {
-      color: var(--muted-foreground);
-      cursor: default;
-      pointer-events: none;
-      font-style: italic;
-    }
-
-    .coming-soon:hover {
-      background: transparent;
-      color: var(--muted-foreground);
     }
 
     /* Platform Icons */
@@ -1413,6 +1401,7 @@
         <a href="#guide-getting-started">Getting Started</a>
         <a href="#guide-tunneling">Tunneling</a>
         <a href="#guide-sharing">Sharing</a>
+        <a href="#guide-linux-install">Linux Install</a>
         <a href="#tips">Tips</a>
         <a href="#security">Security</a>
       </nav>
@@ -1441,8 +1430,8 @@
       <div class="other-platforms" id="other-platforms-hero">
         <span>Also available for:</span>
         <a href="#" class="platform-link" data-os="macos">macOS</a>
-        <span class="platform-link coming-soon">Windows (Coming Soon)</span>
-        <span class="platform-link coming-soon">Linux (Coming Soon)</span>
+        <a href="#" class="platform-link" data-os="windows">Windows</a>
+        <a href="#" class="platform-link" data-os="linux">Linux</a>
       </div>
 
       <div class="platforms" id="platforms">
@@ -1574,12 +1563,12 @@
       <div class="feature-card">
         <div class="feature-icon green">🌐</div>
         <h3>SSH Tunneling</h3>
-        <p>Create and manage local and remote port forwarding with ease.</p>
+        <p>Create and manage local, remote, and dynamic port forwarding with ease.</p>
         <ul class="feature-list">
-          <li>Local port forwarding</li>
-          <li>Remote port forwarding</li>
+          <li>Local port forwarding (ssh -L)</li>
+          <li>Remote port forwarding (ssh -R)</li>
+          <li>Dynamic SOCKS proxy (ssh -D)</li>
           <li>Real-time tunnel status monitoring</li>
-          <li>Auto-start tunnels on connection</li>
           <li>Multiple tunnels per connection</li>
           <li>Start/stop tunnels on demand</li>
         </ul>
@@ -1629,6 +1618,21 @@
           <li>Reset to defaults option</li>
         </ul>
       </div>
+
+      <!-- Application Logs -->
+      <div class="feature-card">
+        <div class="feature-icon orange">📋</div>
+        <h3>Application Log Viewer</h3>
+        <p>Built-in log viewer for troubleshooting and monitoring application activity.</p>
+        <ul class="feature-list">
+          <li>View application logs on demand</li>
+          <li>Search logs by keyword</li>
+          <li>Filter by log level (ERROR, WARN, INFO, DEBUG)</li>
+          <li>Color-coded log entries</li>
+          <li>Clear logs from file and UI</li>
+          <li>Refresh logs on demand</li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -1652,7 +1656,7 @@
         <p>Your vault is protected by a master password that only you know.</p>
       </div>
       <div class="security-item">
-        <div class="security-icon"></div>
+        <div class="security-icon">🔗</div>
         <h4>Encrypted P2P</h4>
         <p>All peer-to-peer transfers are encrypted end-to-end for secure sharing.</p>
       </div>
@@ -2301,6 +2305,202 @@
     </div>
   </section>
 
+  <!-- Guide: Linux Installation -->
+  <section class="guide-section" id="guide-linux-install">
+    <div class="section-header">
+      <span class="section-tag">Guide</span>
+      <h2>Linux Installation</h2>
+      <p>Install and run Swavan SSH Studio on Linux using AppImage.</p>
+    </div>
+
+    <div class="guide-content">
+      <div class="guide-steps">
+        <div class="guide-step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Download the AppImage</h4>
+            <p>Download the latest <code>.AppImage</code> file from the GitHub Releases page. Choose x86_64 or aarch64 based on your CPU architecture.</p>
+            <div class="step-tip">
+              <span class="tip-icon">💡</span>
+              <span>Not sure about your architecture? Run <code>uname -m</code> in a terminal to check.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Make it Executable</h4>
+            <p>Open a terminal and run:</p>
+            <div class="code-block terminal">
+              <code>chmod +x swavan-ssh-studio_*.AppImage</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Install FUSE (if needed)</h4>
+            <p>AppImages require FUSE. Install it if you get errors when running the AppImage:</p>
+            <div class="code-block terminal">
+              <code># Ubuntu 24.04+ / Debian (newer)</code>
+              <code>sudo apt install libfuse2t64</code>
+              <code></code>
+              <code># Ubuntu 22.04 / Debian (older)</code>
+              <code>sudo apt install libfuse2</code>
+              <code></code>
+              <code># Fedora</code>
+              <code>sudo dnf install fuse-libs</code>
+              <code></code>
+              <code># Arch Linux</code>
+              <code>sudo pacman -S fuse2</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Run the Application</h4>
+            <p>Double-click the AppImage file or run it from the terminal:</p>
+            <div class="code-block terminal">
+              <code>./swavan-ssh-studio_*.AppImage</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h4>NixOS Users</h4>
+            <p>NixOS requires special configuration to run AppImages. Add this to your NixOS configuration:</p>
+            <div class="code-block terminal">
+              <code># In your configuration.nix</code>
+              <code>programs.appimage.enable = true;</code>
+              <code>programs.appimage.binfmt = true;</code>
+            </div>
+            <p style="margin-top: 0.75rem;">Then rebuild:</p>
+            <div class="code-block terminal">
+              <code>sudo nixos-rebuild switch</code>
+            </div>
+            <div class="step-tip">
+              <span class="tip-icon">💡</span>
+              <span>Alternatively, use <code>nix-shell -p appimage-run --run "appimage-run ./swavan-ssh-studio_*.AppImage"</code> without modifying your configuration.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guide: Windows Firewall for P2P -->
+  <section class="guide-section" id="guide-windows-firewall">
+    <div class="section-header">
+      <span class="section-tag">Guide</span>
+      <h2>Windows Firewall for P2P Sharing</h2>
+      <p>Configure Windows Firewall to enable peer-to-peer connection sharing.</p>
+    </div>
+
+    <div class="guide-content">
+      <div class="guide-intro">
+        <h3>Why is this needed?</h3>
+        <p>P2P sharing uses mDNS (UDP port 5353) for peer discovery and QUIC protocol for encrypted data transfer. Windows Firewall blocks these by default for apps without explicit exceptions. If P2P sharing is enabled but no peers are discovered, firewall rules are likely the cause.</p>
+      </div>
+
+      <div class="guide-steps">
+        <div class="guide-step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Open PowerShell as Administrator</h4>
+            <p>Right-click the Start menu and select <strong>"Windows Terminal (Admin)"</strong> or <strong>"PowerShell (Admin)"</strong>.</p>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Add mDNS Firewall Rule</h4>
+            <p>Allow mDNS traffic for peer discovery:</p>
+            <div class="code-block terminal">
+              <code>New-NetFirewallRule -DisplayName "Swavan SSH Studio mDNS" `</code>
+              <code>  -Direction Inbound -Protocol UDP `</code>
+              <code>  -LocalPort 5353 -Action Allow</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Add QUIC Firewall Rule</h4>
+            <p>Allow QUIC protocol traffic for encrypted data transfer:</p>
+            <div class="code-block terminal">
+              <code>New-NetFirewallRule -DisplayName "Swavan SSH Studio QUIC" `</code>
+              <code>  -Direction Inbound -Protocol UDP `</code>
+              <code>  -LocalPort 1024-65535 -Action Allow `</code>
+              <code>  -Program "C:\Program Files\Swavan SSH Studio\swavan-ssh-studio.exe"</code>
+            </div>
+            <div class="step-tip">
+              <span class="tip-icon">⚠️</span>
+              <span>Adjust the program path if you installed the app in a different location.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Verify P2P Works</h4>
+            <p>After adding the firewall rules:</p>
+            <div class="customization-grid">
+              <div class="customization-item">
+                <span class="customization-icon">🔄</span>
+                <div>
+                  <strong>Restart the App</strong>
+                  <span>Close and reopen Swavan SSH Studio on both devices</span>
+                </div>
+              </div>
+              <div class="customization-item">
+                <span class="customization-icon">📡</span>
+                <div>
+                  <strong>Enable P2P</strong>
+                  <span>Go to Settings &rarr; General &rarr; P2P and enable sharing</span>
+                </div>
+              </div>
+              <div class="customization-item">
+                <span class="customization-icon">🌐</span>
+                <div>
+                  <strong>Same Network</strong>
+                  <span>Ensure both devices are on the same Wi-Fi or LAN</span>
+                </div>
+              </div>
+              <div class="customization-item">
+                <span class="customization-icon">🔍</span>
+                <div>
+                  <strong>Discover Peers</strong>
+                  <span>Try sharing a connection to verify it works</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h4>Removing Rules (Optional)</h4>
+            <p>If you no longer need P2P sharing, remove the firewall rules:</p>
+            <div class="code-block terminal">
+              <code>Remove-NetFirewallRule -DisplayName "Swavan SSH Studio mDNS"</code>
+              <code>Remove-NetFirewallRule -DisplayName "Swavan SSH Studio QUIC"</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Tips & Tricks -->
   <section class="guide-section" id="tips">
     <div class="section-header">
@@ -2341,8 +2541,8 @@
           <li><strong>Connection timeout?</strong> Check firewall and SSH service</li>
           <li><strong>Authentication failed?</strong> Verify credentials and key permissions</li>
           <li><strong>Tunnel not working?</strong> Ensure the target service is running</li>
-          <li><strong>Slow transfers?</strong> Check network bandwidth</li>
-          <li><strong>File editor issues?</strong> Check file permissions on server</li>
+          <li><strong>P2P not discovering peers on Windows?</strong> <a href="#guide-windows-firewall">Add firewall exceptions</a></li>
+          <li><strong>AppImage not running?</strong> Install libfuse2 and check permissions</li>
         </ul>
       </div>
 
@@ -2435,8 +2635,8 @@
       <div class="other-platforms" id="other-platforms-cta">
         <span>Also available for:</span>
         <a href="#" class="platform-link" data-os="macos">macOS</a>
-        <span class="platform-link coming-soon">Windows (Coming Soon)</span>
-        <span class="platform-link coming-soon">Linux (Coming Soon)</span>
+        <a href="#" class="platform-link" data-os="windows">Windows</a>
+        <a href="#" class="platform-link" data-os="linux">Linux</a>
       </div>
     </div>
   </section>
@@ -2487,9 +2687,13 @@
             const name = asset.name.toLowerCase();
             if (name.endsWith('.dmg')) {
               downloadLinks.macos = asset.browser_download_url;
-            } else if (name.endsWith('.exe') || name.endsWith('.msi')) {
+            } else if (name.endsWith('.msi')) {
               downloadLinks.windows = asset.browser_download_url;
-            } else if (name.endsWith('.appimage') || name.endsWith('.deb')) {
+            } else if (name.endsWith('.exe') && !downloadLinks.windows) {
+              downloadLinks.windows = asset.browser_download_url;
+            } else if (name.endsWith('.appimage') && (name.includes('amd64') || name.includes('x86_64'))) {
+              downloadLinks.linux = asset.browser_download_url;
+            } else if (name.endsWith('.appimage') && !downloadLinks.linux) {
               downloadLinks.linux = asset.browser_download_url;
             }
           });
@@ -2520,26 +2724,7 @@
       const heroPlatforms = document.getElementById('other-platforms-hero');
       const ctaPlatforms = document.getElementById('other-platforms-cta');
 
-      // Windows and Linux are coming soon
-      const comingSoonOS = ['windows', 'linux'];
-      
-      if (detectedOS && comingSoonOS.includes(detectedOS)) {
-        // Show "Coming Soon" message for Windows/Linux users
-        if (heroBtn) {
-          heroBtn.removeAttribute('href');
-          heroBtn.style.cursor = 'default';
-          heroBtn.style.opacity = '0.7';
-          heroBtn.querySelector('.download-icon').textContent = osIcons[detectedOS];
-          heroBtn.querySelector('.download-text').textContent = `${osNames[detectedOS]} Coming Soon`;
-        }
-        if (ctaBtn) {
-          ctaBtn.removeAttribute('href');
-          ctaBtn.style.cursor = 'default';
-          ctaBtn.style.opacity = '0.7';
-          ctaBtn.querySelector('.download-icon').textContent = osIcons[detectedOS];
-          ctaBtn.querySelector('.download-text').textContent = `${osNames[detectedOS]} Coming Soon`;
-        }
-      } else if (detectedOS && downloadLinks[detectedOS]) {
+      if (detectedOS && downloadLinks[detectedOS]) {
         // Update hero button
         if (heroBtn) {
           heroBtn.href = downloadLinks[detectedOS];
