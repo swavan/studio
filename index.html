@@ -340,6 +340,48 @@
       background: var(--secondary);
     }
 
+    .btn-appstore {
+      background: #000000;
+      color: #ffffff;
+      border: 1px solid #333333;
+      gap: 0.625rem;
+      padding: 0.75rem 1.5rem;
+    }
+
+    .btn-appstore:hover {
+      background: #1a1a1a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    html.dark .btn-appstore {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .appstore-icon {
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .appstore-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1.2;
+    }
+
+    .appstore-sub {
+      font-size: 0.6875rem;
+      font-weight: 400;
+      opacity: 0.85;
+      letter-spacing: 0.01em;
+    }
+
+    .appstore-main {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
     /* Other Platforms Links */
     .other-platforms {
       display: flex;
@@ -1476,12 +1518,21 @@
         <a href="#features" class="btn btn-secondary">
           <span>📖</span> Learn More
         </a>
+        <a href="https://apps.apple.com/us/app/swavan-ssh-studio/id6756827241"
+           class="btn btn-appstore" target="_blank" rel="noopener">
+          <span class="appstore-icon">🍎</span>
+          <span class="appstore-text">
+            <span class="appstore-sub">Download on the</span>
+            <span class="appstore-main">App Store</span>
+          </span>
+        </a>
       </div>
       <div class="other-platforms" id="other-platforms-hero">
         <span>Also available for:</span>
         <a href="#" class="platform-link" data-os="macos">macOS</a>
         <a href="#" class="platform-link" data-os="windows">Windows</a>
         <a href="#" class="platform-link" data-os="linux">Linux</a>
+        <a href="https://apps.apple.com/us/app/swavan-ssh-studio/id6756827241" class="platform-link" target="_blank" rel="noopener">iOS</a>
       </div>
 
       <div class="platforms" id="platforms">
@@ -1519,7 +1570,7 @@
         <div class="highlight-label">Terminal Fonts</div>
       </div>
       <div class="highlight-item">
-        <div class="highlight-number">3</div>
+        <div class="highlight-number">4</div>
         <div class="highlight-label">Platforms Supported</div>
       </div>
     </div>
@@ -1681,6 +1732,32 @@
           <li>Color-coded log entries</li>
           <li>Clear logs from file and UI</li>
           <li>Refresh logs on demand</li>
+        </ul>
+      </div>
+
+      <!-- Multi-Profile Management -->
+      <div class="feature-card">
+        <div class="feature-icon purple">👤</div>
+        <h3>Multi-Profile Management</h3>
+        <p>Manage multiple user profiles with full isolation of connections, scripts, and vault data.</p>
+        <ul class="feature-list">
+          <li>Create and switch between profiles</li>
+          <li>Per-profile encrypted vault</li>
+          <li>Edit avatar, display name, and username</li>
+          <li>Safely delete profiles and all associated data</li>
+        </ul>
+      </div>
+
+      <!-- P2P Profile Setup -->
+      <div class="feature-card">
+        <div class="feature-icon teal">📲</div>
+        <h3>P2P Profile Setup</h3>
+        <p>Bootstrap a new device instantly by receiving your full profile setup over an encrypted peer-to-peer connection.</p>
+        <ul class="feature-list">
+          <li>QR code peer discovery</li>
+          <li>Encrypted vault transfer between devices</li>
+          <li>No cloud account required</li>
+          <li>Works on iOS, Android, and desktop</li>
         </ul>
       </div>
     </div>
@@ -2681,12 +2758,21 @@
           <span class="download-icon">⬇</span>
           <span class="download-text">Download for Free</span>
         </a>
+        <a href="https://apps.apple.com/us/app/swavan-ssh-studio/id6756827241"
+           class="btn btn-appstore" target="_blank" rel="noopener">
+          <span class="appstore-icon">🍎</span>
+          <span class="appstore-text">
+            <span class="appstore-sub">Download on the</span>
+            <span class="appstore-main">App Store</span>
+          </span>
+        </a>
       </div>
       <div class="other-platforms" id="other-platforms-cta">
         <span>Also available for:</span>
         <a href="#" class="platform-link" data-os="macos">macOS</a>
         <a href="#" class="platform-link" data-os="windows">Windows</a>
         <a href="#" class="platform-link" data-os="linux">Linux</a>
+        <a href="https://apps.apple.com/us/app/swavan-ssh-studio/id6756827241" class="platform-link" target="_blank" rel="noopener">iOS</a>
       </div>
     </div>
   </section>
