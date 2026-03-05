@@ -655,6 +655,9 @@
                     </div>
                     
                     <p>Simply enter your master password to access your vault and SSH connections. This ensures that your credentials remain secure even if someone else gains access to your device.</p>
+                    <div class="note">
+                        <strong>Biometric Unlock:</strong> After unlocking with your master password, you can enable biometric unlock to skip typing it next time. The app will prompt you to save your vault key to the device's secure enclave (Touch ID on macOS, Face ID on iOS, or Windows Hello on Windows). On subsequent launches, a single biometric scan unlocks the vault instantly.
+                    </div>
                 </div>
                 
                 <div class="step">
@@ -776,6 +779,13 @@
                         <p class="image-caption">Figure 7: New connection configuration form</p>
                     </div>
                     
+                    <p>Swavan SSH Studio supports four authentication methods:</p>
+                    <ul class="feature-list">
+                        <li><strong>Password:</strong> Authenticate using your SSH account password</li>
+                        <li><strong>Private Key:</strong> Authenticate using a private key file path or pasted key content</li>
+                        <li><strong>SSH Agent:</strong> Authenticate via the system SSH agent socket — no password or key file needed in the app</li>
+                        <li><strong>Password + Key (multi-factor):</strong> The private key authenticates first, then the password is used as a second factor</li>
+                    </ul>
                     <div class="note">
                         <strong>Pro Tip:</strong> Fields marked with * are required. The landing path is optional but useful if you always want to start in a specific directory when connecting. Use descriptive names for easy search and organization.
                     </div>
