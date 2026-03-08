@@ -53,7 +53,7 @@ Work with multiple SSH sessions at the same time.
 Passwords and SSH keys are stored on your local machine. They don't get sent to cloud servers or third-party services.
 
 ### Vault Encryption
-The Stronghold encryption engine protects your vault with industry-standard cryptography. Your credentials are encrypted at rest and require authentication to access.
+The encryption engine protects your vault with industry-standard cryptography. Your credentials are encrypted at rest and require authentication to access.
 
 ### No Internet Required
 SwavanSSH Studio works entirely offline. You don't need cloud connectivity to manage your servers, making it suitable for air-gapped and restricted environments.
