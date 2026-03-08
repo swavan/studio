@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark light">
   <title>Swavan SSH Studio - Free SSH Client & GUI Terminal for macOS, Windows, Linux, iOS & Android</title>
-  <meta name="description" content="Swavan SSH Studio is a free, modern SSH client with GUI terminal, secure vault, SSH tunneling, SFTP file browser, and P2P connection sharing. Available for macOS, Windows, Linux, iOS, and Android.">
-  <meta name="keywords" content="SSH client, SSH GUI, SSH terminal, SSH studio, SSH connection manager, SSH tunnel, SFTP client, remote terminal, secure shell, SSH key manager, port forwarding, free SSH client, macOS SSH, Windows SSH, Linux SSH, iOS SSH, Android SSH, SSH app, GUI SSH client, SSH desktop app, SSH agent authentication, biometric unlock, SSH key management, directory transfer">
+  <meta name="description" content="Swavan SSH Studio is a free, modern SSH client with GUI terminal, VNC remote desktop, secure vault, SSH tunneling, SFTP file browser, command snippets, and P2P connection sharing. Available for macOS, Windows, Linux, iOS, and Android.">
+  <meta name="keywords" content="SSH client, SSH GUI, SSH terminal, SSH studio, SSH connection manager, SSH tunnel, SFTP client, remote terminal, secure shell, SSH key manager, port forwarding, free SSH client, macOS SSH, Windows SSH, Linux SSH, iOS SSH, Android SSH, SSH app, GUI SSH client, SSH desktop app, SSH agent authentication, biometric unlock, SSH key management, directory transfer, VNC client, VNC viewer, remote desktop, command snippets, split terminal, broadcast commands, connection tags">
   <meta name="author" content="Swavan">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://swavan.github.io/studio/">
@@ -14,14 +15,14 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://swavan.github.io/studio/">
   <meta property="og:title" content="Swavan SSH Studio - Free SSH Client & GUI Terminal">
-  <meta property="og:description" content="Modern SSH client with GUI terminal, secure vault, SSH tunneling, SFTP file browser, and P2P sharing. Free for macOS, Windows, Linux, iOS, and Android.">
+  <meta property="og:description" content="Modern SSH client with GUI terminal, VNC remote desktop, secure vault, SSH tunneling, SFTP file browser, command snippets, and P2P sharing. Free for macOS, Windows, Linux, iOS, and Android.">
   <meta property="og:image" content="https://swavan.github.io/studio/public/icon.svg">
   <meta property="og:site_name" content="Swavan SSH Studio">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Swavan SSH Studio - Free SSH Client & GUI Terminal">
-  <meta name="twitter:description" content="Modern SSH client with GUI terminal, secure vault, SSH tunneling, SFTP file browser, and P2P sharing. Free for macOS, Windows, Linux, iOS, and Android.">
+  <meta name="twitter:description" content="Modern SSH client with GUI terminal, VNC remote desktop, secure vault, SSH tunneling, SFTP file browser, command snippets, and P2P sharing. Free for macOS, Windows, Linux, iOS, and Android.">
   <meta name="twitter:image" content="https://swavan.github.io/studio/public/icon.svg">
 
   <!-- Structured Data -->
@@ -32,7 +33,7 @@
     "name": "Swavan SSH Studio",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "macOS, Windows, Linux, iOS, Android",
-    "description": "Free, modern SSH client with GUI terminal emulator, encrypted vault, SSH tunneling, SFTP file browser, remote file editor, and peer-to-peer connection sharing.",
+    "description": "Free, modern SSH client with GUI terminal emulator, VNC remote desktop, encrypted vault, SSH tunneling, SFTP file browser, command snippets, remote file editor, and peer-to-peer connection sharing.",
     "url": "https://swavan.github.io/studio/",
     "downloadUrl": "https://github.com/swavan/studio/releases/latest",
     "softwareVersion": "0.1.9",
@@ -49,6 +50,12 @@
       "Encrypted credential vault",
       "P2P connection sharing",
       "Multi-session terminal tabs",
+      "Split terminal panes",
+      "Broadcast commands to multiple sessions",
+      "VNC remote desktop viewer",
+      "Command snippets library",
+      "Connection tagging and filtering",
+      "SSH host key verification (TOFU)",
       "50+ file type support",
       "SSH agent authentication",
       "Biometric vault unlock",
@@ -65,18 +72,19 @@
   <style>
     :root {
       --radius: 0.625rem;
-      --background: #e8e8ec;
-      --foreground: #1a1a1a;
-      --card: #f5f5f7;
-      --card-foreground: #1a1a1a;
+      /* default to dark; JS toggle can switch to light via data-theme */
+      --background: #020617;
+      --foreground: #e5e7eb;
+      --card: #020617;
+      --card-foreground: #e5e7eb;
       --primary: #0d9488;
       --primary-light: #14b8a6;
       --primary-dark: #0f766e;
-      --secondary: #e2e8f0;
-      --secondary-foreground: #334155;
-      --muted: #eff1f5;
-      --muted-foreground: #64748b;
-      --border: rgba(0, 0, 0, 0.12);
+      --secondary: #020617;
+      --secondary-foreground: #e5e7eb;
+      --muted: #020617;
+      --muted-foreground: #9ca3af;
+      --border: #111827;
       --accent-blue: #3b82f6;
       --accent-purple: #8b5cf6;
       --accent-pink: #ec4899;
@@ -86,88 +94,16 @@
       --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       --gradient-2: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
       --gradient-3: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      /* code block theming */
+      --code-bg: #020617;
+      --code-fg: #e5e7eb;
+      --code-border: #4b5563;
+      --code-terminal-bg: #020617;
+      --code-terminal-fg: #bbf7d0;
+      --code-terminal-border: #22c55e;
     }
 
-    /* Dark theme class - applied via JavaScript */
-    html.dark {
-      --background: #1d1d1f;
-      --foreground: #f5f5f7;
-      --card: #2a2a2c;
-      --card-foreground: #f5f5f7;
-      --secondary: #374151;
-      --secondary-foreground: #e5e7eb;
-      --muted: #374151;
-      --muted-foreground: #9ca3af;
-      --border: rgba(255, 255, 255, 0.1);
-    }
-
-    /* Theme Toggle Button */
-    .theme-toggle {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      border: none;
-      background: var(--card);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
-      z-index: 1000;
-      overflow: hidden;
-    }
-
-    .theme-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
-    }
-
-    .theme-toggle:active {
-      transform: scale(0.95);
-    }
-
-    .theme-toggle-icon {
-      font-size: 1.5rem;
-      transition: all 0.3s ease;
-    }
-
-    .sun-icon, .moon-icon {
-      position: absolute;
-      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    }
-
-    .sun-icon {
-      opacity: 1;
-      transform: rotate(0deg) scale(1);
-    }
-
-    .moon-icon {
-      opacity: 0;
-      transform: rotate(-90deg) scale(0);
-    }
-
-    html.dark .sun-icon {
-      opacity: 0;
-      transform: rotate(90deg) scale(0);
-    }
-
-    html.dark .moon-icon {
-      opacity: 1;
-      transform: rotate(0deg) scale(1);
-    }
-
-    html.dark .theme-toggle {
-      background: var(--card);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    html.dark .header {
-      background: rgba(29, 29, 31, 0.8);
-    }
+    /* Dark terminal-first theme (single theme, no JS toggle) */
 
     * {
       margin: 0;
@@ -180,7 +116,7 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'JetBrains Mono', 'Fira Code', SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       background: var(--background);
       color: var(--foreground);
       line-height: 1.6;
@@ -193,12 +129,12 @@
       top: 0;
       left: 0;
       right: 0;
-      background: rgba(245, 245, 247, 0.8);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
+      background: rgba(2, 6, 23, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid #111827;
       z-index: 100;
-      padding: 1rem 2rem;
+      padding: 0.75rem 2rem;
     }
 
 
@@ -225,140 +161,302 @@
     }
 
     .logo-text {
-      font-size: 1.25rem;
-      font-weight: 700;
-      background: var(--gradient-2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #9ca3af;
     }
 
     .nav {
-      display: flex;
+      display: none;
       gap: 2rem;
     }
 
     .nav a {
-      color: var(--muted-foreground);
+      color: #6b7280;
       text-decoration: none;
-      font-size: 0.875rem;
+      font-size: 0.8rem;
       font-weight: 500;
-      transition: color 0.2s;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.15s;
     }
 
     .nav a:hover {
-      color: var(--primary);
+      color: #a7f3d0;
     }
 
-    /* Hero Section */
+    /* Hero Section - Terminal Style */
     .hero {
-      padding: 8rem 2rem 4rem;
-      text-align: center;
-      background: linear-gradient(180deg, var(--background) 0%, var(--muted) 100%);
+      padding: 6rem 1.5rem 3rem;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top left, #1f2937 0, #020617 55%, #000000 100%);
     }
 
     .hero-content {
-      max-width: 900px;
-      margin: 0 auto;
+      width: 100%;
+      max-width: 1100px;
     }
 
-    .hero-badge {
+    .terminal-shell {
+      background: #020617;
+      border-radius: 0.25rem;
+      border: 1px solid #4b5563;
+      box-shadow: none;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      color: #e5e7eb;
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.65rem 1rem;
+      background: #020617;
+      border-bottom: 1px solid #4b5563;
+    }
+
+    .terminal-app-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .terminal-app-icon img {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+
+    .terminal-title {
+      margin-left: 0.5rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #9ca3af;
+    }
+
+    .terminal-body {
+      padding: 1.25rem 1.5rem 1.5rem;
+      background: #020617;
+    }
+
+    .terminal-line {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    .terminal-prompt {
+      color: #22c55e;
+    }
+
+    .terminal-path {
+      color: #38bdf8;
+    }
+
+    .terminal-symbol {
+      color: #e5e7eb;
+    }
+
+    .terminal-text {
+      color: #e5e7eb;
+      white-space: pre;
+    }
+
+    .terminal-logo {
+      margin-top: 1.25rem;
+      font-size: 0.78rem;
+      line-height: 1.35;
+      color: #facc15;
+      white-space: pre;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.35s ease-out, transform 0.35s ease-out;
+    }
+
+    .terminal-logo.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .terminal-logo-icon img {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      margin-right: 0.4rem;
+      border-radius: 4px;
+    }
+
+    .terminal-hint {
+      margin-top: 1.25rem;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .terminal-theme-toggle {
+      margin-top: 0.5rem;
+      text-align: right;
+      font-size: 0.8rem;
+    }
+
+    .theme-toggle-btn {
+      background: transparent;
+      border: 1px solid #4b5563;
+      color: #9ca3af;
+      font: inherit;
+      padding: 0.15rem 0.6rem;
+      border-radius: 0;
+      cursor: pointer;
+    }
+
+    .theme-toggle-btn:hover {
+      color: #e5e7eb;
+      border-color: #a7f3d0;
+    }
+
+    .terminal-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 1.1em;
+      margin-left: 2px;
+      background: #e5e7eb;
+      animation: terminalCursor 1s step-end infinite;
+    }
+
+    @keyframes terminalCursor {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    .terminal-playground {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #1f2937;
+    }
+
+    .terminal-output {
+      max-height: 160px;
+      overflow-y: auto;
+      font-size: 0.85rem;
+      padding-bottom: 0.35rem;
+    }
+
+    .terminal-output-line {
+      white-space: pre-wrap;
+    }
+
+    .terminal-input-line {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+
+    .terminal-input-field {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #e5e7eb;
+      font: inherit;
+    }
+
+    .terminal-input-field::placeholder {
+      color: #4b5563;
+    }
+
+    .tui-menu {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #1f2937;
+      font-size: 0.85rem;
+      color: #9ca3af;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.5rem;
+      align-items: center;
+    }
+
+    .tui-menu-label {
+      margin-right: 1rem;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.75rem;
+    }
+
+    .tui-menu-item {
+      background: none;
+      border: none;
+      color: #e5e7eb;
+      font: inherit;
+      cursor: pointer;
+      padding: 0;
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--primary);
-      margin-bottom: 1.5rem;
+      gap: 0.3rem;
     }
 
-    .hero h1 {
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
-      background: linear-gradient(135deg, var(--foreground) 0%, var(--muted-foreground) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .tui-menu-item-key {
+      color: #a7f3d0;
     }
 
-    .hero h1 span {
-      background: var(--gradient-2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero p {
-      font-size: 1.25rem;
-      color: var(--muted-foreground);
-      max-width: 600px;
-      margin: 0 auto 2rem;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
+    .tui-menu-item.active {
+      color: #a7f3d0;
+      text-decoration: underline;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.875rem 1.75rem;
-      border-radius: var(--radius);
-      font-size: 1rem;
-      font-weight: 600;
+      padding: 0.4rem 0.9rem;
+      border-radius: 0;
+      font-size: 0.85rem;
+      font-weight: 500;
       text-decoration: none;
-      transition: all 0.2s;
       cursor: pointer;
-      border: none;
+      border: 1px solid #4b5563;
+      background: #020617;
+      color: #e5e7eb;
     }
 
     .btn-primary {
-      background: var(--gradient-2);
-      color: white;
-      box-shadow: 0 4px 14px rgba(13, 148, 136, 0.4);
+      border-color: #22c55e;
+      color: #bbf7d0;
     }
 
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(13, 148, 136, 0.5);
+    .btn-primary::before {
+      content: "[";
+      color: #4b5563;
+    }
+
+    .btn-primary::after {
+      content: "]";
+      color: #4b5563;
     }
 
     .btn-secondary {
-      background: var(--card);
-      color: var(--foreground);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-      background: var(--secondary);
+      border-color: #4b5563;
+      color: #e5e7eb;
     }
 
     .btn-appstore {
-      background: #000000;
-      color: #ffffff;
-      border: 1px solid #333333;
-      gap: 0.625rem;
-      padding: 0.75rem 1.5rem;
-    }
-
-    .btn-appstore:hover {
-      background: #1a1a1a;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-    }
-
-    html.dark .btn-appstore {
-      border-color: rgba(255, 255, 255, 0.15);
+      border-color: #4b5563;
+      background: #020617;
+      color: #e5e7eb;
+      gap: 0.5rem;
+      padding: 0.4rem 0.9rem;
     }
 
     .appstore-icon {
@@ -401,16 +499,15 @@
     }
 
     .platform-link {
-      color: var(--primary);
+      color: #a7f3d0;
       text-decoration: none;
-      padding: 0.25rem 0.5rem;
-      border-radius: var(--radius);
-      transition: all 0.2s;
+      padding: 0 0.25rem;
+      border-radius: 0;
+      border-bottom: 1px dotted #4b5563;
     }
 
     .platform-link:hover {
-      background: var(--primary);
-      color: white;
+      border-bottom-style: solid;
     }
 
     /* Platform Icons */
@@ -440,7 +537,14 @@
 
     /* Features Grid */
     .features-section {
-      padding: 6rem 2rem;
+      padding: 4rem 2rem;
+      background: transparent;
+      border-top: 1px solid #111827;
+    }
+
+    /* Hide the main features grid; docs are shown via terminal help instead */
+    #features {
+      display: none;
     }
 
     .section-header {
@@ -451,24 +555,39 @@
 
     .section-tag {
       display: inline-block;
-      padding: 0.375rem 0.875rem;
-      background: rgba(13, 148, 136, 0.1);
-      color: var(--primary);
-      border-radius: 100px;
-      font-size: 0.875rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
+      padding: 0.1rem 0.6rem;
+      background: transparent;
+      color: #6b7280;
+      border-radius: 0;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border: 1px solid #1f2937;
     }
 
     .section-header h2 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #e5e7eb;
+    }
+
+    .section-header h2::before,
+    .section-header h2::after {
+      content: "";
+      display: inline-block;
+      width: 3ch;
+      border-bottom: 1px solid #374151;
+      margin: 0 0.75ch;
+      transform: translateY(-0.2em);
     }
 
     .section-header p {
-      color: var(--muted-foreground);
-      font-size: 1.125rem;
+      color: #9ca3af;
+      font-size: 0.9rem;
     }
 
     .features-grid {
@@ -480,17 +599,18 @@
     }
 
     .feature-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 1rem;
-      padding: 2rem;
-      transition: all 0.3s;
+      background: #020617;
+      border: 1px solid #111827;
+      border-radius: 0.5rem;
+      padding: 1.5rem 1.75rem;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
     }
 
     .feature-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 1px rgba(45, 212, 191, 0.8), 0 15px 35px rgba(0, 0, 0, 0.6);
+      border-color: rgba(45, 212, 191, 0.8);
     }
 
     .feature-icon {
@@ -546,8 +666,9 @@
 
     /* Highlight Section */
     .highlight-section {
-      padding: 6rem 2rem;
-      background: linear-gradient(135deg, rgba(13, 148, 136, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+      padding: 4rem 2rem;
+      background: transparent;
+      border-top: 1px solid #111827;
     }
 
     .highlight-grid {
@@ -594,7 +715,9 @@
 
     /* Detailed Features */
     .detailed-section {
-      padding: 6rem 2rem;
+      padding: 4rem 2rem;
+      background: transparent;
+      border-top: 1px solid #111827;
     }
 
     .detailed-grid {
@@ -670,9 +793,9 @@
     }
 
     .detailed-visual {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 1rem;
+      background: #020617;
+      border: 1px solid #111827;
+      border-radius: 0.5rem;
       padding: 2rem;
       aspect-ratio: 4/3;
       display: flex;
@@ -680,13 +803,14 @@
       justify-content: center;
       position: relative;
       overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
     }
 
     .detailed-visual::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(13, 148, 136, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+      background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.08), transparent 60%);
     }
 
     .visual-icon {
@@ -698,8 +822,9 @@
 
     /* Security Section */
     .security-section {
-      padding: 6rem 2rem;
-      background: var(--card);
+      padding: 4rem 2rem;
+      background: transparent;
+      border-top: 1px solid #111827;
     }
 
     .security-grid {
@@ -746,9 +871,10 @@
 
     /* CTA Section */
     .cta-section {
-      padding: 8rem 2rem;
+      padding: 5rem 2rem;
       text-align: center;
-      background: linear-gradient(180deg, var(--background) 0%, var(--muted) 100%);
+      background: transparent;
+      border-top: 1px solid #111827;
     }
 
     .cta-content {
@@ -770,9 +896,10 @@
 
     /* Footer */
     .footer {
-      padding: 4rem 2rem;
-      border-top: 1px solid var(--border);
+      padding: 3rem 2rem 4rem;
+      border-top: 1px solid #111827;
       text-align: center;
+      background: #020617;
     }
 
     .footer-content {
@@ -851,12 +978,10 @@
     /* ============================================ */
 
     .guide-section {
-      padding: 6rem 2rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .guide-section:nth-child(even) {
-      background: var(--muted);
+      padding: 4rem 2rem;
+      border-top: 1px solid #111827;
+      border-bottom: 1px solid #111827;
+      background: transparent;
     }
 
     .guide-content {
@@ -940,19 +1065,20 @@
 
     /* Code Blocks */
     .code-block {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1rem 1.25rem;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 0;
+      padding: 0.75rem 0.9rem;
       margin-top: 1rem;
       font-family: 'JetBrains Mono', 'Fira Code', monospace;
-      font-size: 0.875rem;
+      font-size: 0.85rem;
+      color: var(--code-fg);
     }
 
     .code-block.terminal {
-      background: #1a1a2e;
-      border-color: #2a2a4e;
-      color: #a8b2d1;
+      background: var(--code-terminal-bg);
+      border-color: var(--code-terminal-border);
+      color: var(--code-terminal-fg);
     }
 
     .code-block.terminal code {
@@ -1480,83 +1606,341 @@
       font-size: 0.9375rem;
       margin-bottom: 1rem;
     }
+
+    /* Feature docs modal (shown when using help <feature>) */
+    .feature-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+
+    .feature-modal-overlay.visible {
+      display: flex;
+    }
+
+    .feature-modal-panel {
+      background: #020617;
+      border: 1px solid #4b5563;
+      max-width: 720px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 1.5rem 1.75rem;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      color: #e5e7eb;
+    }
+
+    .feature-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-modal-title {
+      font-size: 0.95rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #a7f3d0;
+    }
+
+    .feature-modal-close {
+      background: transparent;
+      border: 1px solid #4b5563;
+      color: #9ca3af;
+      font: inherit;
+      padding: 0.1rem 0.6rem;
+      cursor: pointer;
+    }
+
+    .feature-modal-close:hover {
+      border-color: #a7f3d0;
+      color: #e5e7eb;
+    }
+
+    .feature-modal-body p {
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+      color: #e5e7eb;
+    }
+
+    .feature-modal-body ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0 0 0.5rem 0;
+      font-size: 0.86rem;
+    }
+
+    .feature-modal-body li::before {
+      content: "- ";
+      color: #4ade80;
+    }
+
+    .feature-modal-body pre.man-page {
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin: 0;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.78rem;
+      white-space: pre;
+      line-height: 1.6;
+      color: #e5e7eb;
+    }
+
+    /* ============================================ */
+    /* LIGHT THEME OVERRIDES (via data-theme)      */
+    /* ============================================ */
+    html[data-theme='light'] {
+      --background: #ffffff;
+      --foreground: #111827;
+      --card: #ffffff;
+      --card-foreground: #111827;
+      --muted: #e5e7eb;
+      --muted-foreground: #6b7280;
+      --secondary: #e5e7eb;
+      --secondary-foreground: #111827;
+      --border: #e5e7eb;
+      --code-bg: #f9fafb;
+      --code-fg: #111827;
+      --code-border: #e5e7eb;
+      /* make terminal-style blocks light-themed as well */
+      --code-terminal-bg: #d1d1d1;
+      --code-terminal-fg: #1f2937;
+      --code-terminal-border: #eab308;
+    }
+
+    html[data-theme='light'] .hero {
+      background: radial-gradient(circle at top left, #e5e7eb 0, #f3f4f6 55%, #e5e7eb 100%);
+    }
+
+    html[data-theme='light'] .section-header h2 {
+      color: #111827;
+    }
+
+    html[data-theme='light'] .section-tag {
+      border-color: #e5e7eb;
+      color: #6b7280;
+    }
+
+    html[data-theme='light'] .feature-card {
+      background: #ffffff;
+      border-color: rgba(15, 23, 42, 0.08);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    }
+
+    html[data-theme='light'] .detailed-visual {
+      background: #ffffff;
+      border-color: rgba(15, 23, 42, 0.08);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    }
+
+    html[data-theme='light'] .tip-card,
+    html[data-theme='light'] .use-case-card,
+    html[data-theme='light'] .sharing-method,
+    html[data-theme='light'] .customization-item,
+    html[data-theme='light'] .nav-tip,
+    html[data-theme='light'] .transfer-action,
+    html[data-theme='light'] .file-op {
+      background: #ffffff;
+      border-color: #e5e7eb;
+    }
+
+    html[data-theme='light'] .guide-section,
+    html[data-theme='light'] .features-section,
+    html[data-theme='light'] .highlight-section,
+    html[data-theme='light'] .security-section,
+    html[data-theme='light'] .detailed-section,
+    html[data-theme='light'] .cta-section {
+      background: transparent;
+      border-top-color: #e5e7eb;
+    }
+
+    html[data-theme='light'] .footer {
+      background: #f9fafb;
+      border-top-color: #e5e7eb;
+    }
+
+    html[data-theme='light'] .footer-links a,
+    html[data-theme='light'] .footer p {
+      color: #6b7280;
+    }
+
+    html[data-theme='light'] .terminal-shell {
+      background: #f9fafb;
+      color: #0f172a;
+      border-color: #e5e7eb;
+    }
+
+    html[data-theme='light'] .terminal-header {
+      background: #e5e7eb;
+      border-bottom-color: #e5e7eb;
+    }
+
+    html[data-theme='light'] .terminal-body {
+      background: #f9fafb;
+    }
+
+    html[data-theme='light'] .terminal-prompt {
+      color: #16a34a;
+    }
+
+    html[data-theme='light'] .terminal-path {
+      color: #0369a1;
+    }
+
+    html[data-theme='light'] .terminal-symbol,
+    html[data-theme='light'] .terminal-text {
+      color: #0f172a;
+    }
+
+    html[data-theme='light'] .terminal-input-field {
+      color: #0f172a;
+    }
+
+    html[data-theme='light'] .terminal-input-field::placeholder {
+      color: #9ca3af;
+    }
+
+    html[data-theme='light'] .terminal-cursor {
+      background: #0f172a;
+    }
+
+    html[data-theme='light'] .terminal-playground,
+    html[data-theme='light'] .tui-menu {
+      border-top-color: #e5e7eb;
+    }
+
+    html[data-theme='light'] .tui-menu {
+      color: #4b5563;
+    }
+
+    html[data-theme='light'] .tui-menu-label {
+      color: #9ca3af;
+    }
+
+    html[data-theme='light'] .tui-menu-item {
+      color: #0f172a;
+    }
+
+    html[data-theme='light'] .tui-menu-item-key {
+      color: #16a34a;
+    }
+
+    html[data-theme='light'] .terminal-hint {
+      color: #9ca3af;
+    }
+
+    html[data-theme='light'] .theme-toggle-btn {
+      border-color: #d1d5db;
+      color: #4b5563;
+    }
+
+    html[data-theme='light'] .feature-modal-overlay {
+      background: rgba(15, 23, 42, 0.4);
+    }
+
+    html[data-theme='light'] .feature-modal-panel {
+      background: #ffffff;
+      border-color: #e5e7eb;
+      color: #111827;
+    }
+
+    html[data-theme='light'] .feature-modal-body p {
+      color: #111827;
+    }
+
+    html[data-theme='light'] .feature-modal-body pre.man-page {
+      color: #111827;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="header">
-    <div class="header-content">
-      <a href="#" class="logo">
-        <img src="public/icon.svg" alt="Swavan SSH Studio Logo" class="logo-icon" style="width: 40px; height: 40px;">
-        <span class="logo-text">Swavan SSH Studio</span>
-      </a>
-      <nav class="nav">
-        <a href="#features">Features</a>
-        <a href="#guide-getting-started">Getting Started</a>
-        <a href="#guide-tunneling">Tunneling</a>
-        <a href="#guide-sharing">Sharing</a>
-        <a href="#guide-linux-install">Linux Install</a>
-        <a href="#tips">Tips</a>
-        <a href="#security">Security</a>
-      </nav>
-    </div>
-  </header>
-
   <!-- Hero Section -->
   <section class="hero">
     <div class="hero-content animate-in">
-      <h1>
-        The Modern <span>SSH Client</span> &amp; GUI Terminal
-      </h1>
-      <p>
-        A free SSH client and GUI terminal for macOS, Windows, Linux, iOS, and Android. Manage SSH connections,
-        create tunnels, browse remote files, and share configurations — all in one secure app.
-      </p>
-      <div class="hero-buttons">
-        <a href="#" id="hero-download-btn" class="btn btn-primary">
-          <span class="download-icon">⬇</span>
-          <span class="download-text">Download Now</span>
-        </a>
-        <a href="#features" class="btn btn-secondary">
-          <span>📖</span> Learn More
-        </a>
-        <a href="https://apps.apple.com/us/app/swavan-ssh-studio/id6756827241"
-           class="btn btn-appstore" target="_blank" rel="noopener">
-          <span class="appstore-icon">🍎</span>
-          <span class="appstore-text">
-            <span class="appstore-sub">Download on the</span>
-            <span class="appstore-main">App Store</span>
-          </span>
-        </a>
-      </div>
-      <div class="other-platforms" id="other-platforms-hero">
-        <span>Also available for:</span>
-        <a href="#" class="platform-link" data-os="macos">macOS</a>
-        <a href="#" class="platform-link" data-os="windows">Windows</a>
-        <a href="#" class="platform-link" data-os="linux">Linux</a>
-        <a href="https://apps.apple.com/us/app/swavan-ssh-studio/id6756827241" class="platform-link" target="_blank" rel="noopener">iOS</a>
-        <a href="https://play.google.com/store/apps/details?id=ssh.studio.swavan" class="platform-link" target="_blank" rel="noopener">Android</a>
-      </div>
+      <div class="terminal-shell">
+        <div class="terminal-header">
+          <div class="terminal-app-icon">
+            <img src="public/icon.svg" alt="Swavan SSH Studio icon">
+          </div>
+          <span class="terminal-title">swavan@studio — ssh</span>
+        </div>
+        <div class="terminal-body">
+          <div class="terminal-line">
+            <span class="terminal-prompt">swavan@studio</span>
+            <span class="terminal-path">~</span>
+            <span class="terminal-symbol">$</span>
+            <span id="terminal-typing" class="terminal-text" data-text="Test SwaVan SSH Studio">Test SwaVan SSH Studio</span>
+            <span id="terminal-cursor" class="terminal-cursor"></span>
+          </div>
+            <pre id="terminal-logo" class="terminal-logo">
+            o────────────o
+           /              \
+        o─┘    [ SSH ]     └─o
+           \              /
+            o────────────o
 
-      <div class="platforms" id="platforms">
-        <div class="platform">
-          <svg class="platform-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-          </svg>
-          <span>macOS</span>
-        </div>
-        <div class="platform">
-          <svg class="platform-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M3 12V6.75l9-5.25 9 5.25V12l-9 5.25L3 12zm9 8.25L3 15v3l9 5.25 9-5.25v-3l-9 5.25z"/>
-          </svg>
-          <span>Windows</span>
-        </div>
-        <div class="platform">
-          <svg class="platform-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-          </svg>
-          <span>Linux</span>
+          SWAVAN · SSH Studio
+            </pre>
+            <div class="terminal-playground" aria-label="Interactive command playground">
+              <div id="terminal-output" class="terminal-output" aria-live="polite"></div>
+              <div class="terminal-input-line">
+                <span class="terminal-prompt">swavan@studio</span>
+                <span class="terminal-path">~</span>
+                <span class="terminal-symbol">$</span>
+                <input
+                  id="terminal-command-input"
+                  class="terminal-input-field"
+                  type="text"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="type 'help' and press Enter"
+                  aria-label="Terminal command input"
+                />
+              </div>
+            </div>
+            <div class="tui-menu" aria-label="Main navigation">
+              <span class="tui-menu-label">[ MENU ]</span>
+              <button type="button" class="tui-menu-item" data-key="1" data-target="hero">
+                <span class="tui-menu-item-key">[1]</span>
+                <span>Overview</span>
+              </button>
+              <button type="button" class="tui-menu-item" data-key="2" data-target="#features">
+                <span class="tui-menu-item-key">[2]</span>
+                <span>Features</span>
+              </button>
+              <button type="button" class="tui-menu-item" data-key="3" data-target="#guide-getting-started">
+                <span class="tui-menu-item-key">[3]</span>
+                <span>Getting Started</span>
+              </button>
+              <button type="button" class="tui-menu-item" data-key="4" data-target="#security">
+                <span class="tui-menu-item-key">[4]</span>
+                <span>Security</span>
+              </button>
+              <button type="button" class="tui-menu-item" data-key="5" data-target="#tips">
+                <span class="tui-menu-item-key">[5]</span>
+                <span>Tips</span>
+              </button>
+              <button type="button" class="tui-menu-item" data-key="6" data-target="cta">
+                <span class="tui-menu-item-key">[6]</span>
+                <span>Download</span>
+              </button>
+            </div>
+          <div class="terminal-hint">
+              Press 1–6 to jump · Enter/Space/PageDown to scroll ↓
+          </div>
+          <div class="terminal-theme-toggle">
+            <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle light and dark theme">
+              [ theme: dark ]
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1607,6 +1991,9 @@
           <li>View detailed connection information</li>
           <li>Multiple auth methods: password, private key, SSH agent</li>
           <li>Multi-factor: private key + password</li>
+          <li>Connection tagging and tag-based filtering</li>
+          <li>SSH host key verification (TOFU)</li>
+          <li>Import connections from SSH config files</li>
         </ul>
       </div>
 
@@ -1624,6 +2011,9 @@
           <li>Safe session disconnection</li>
           <li>Save session log to file (desktop)</li>
           <li>Built-in script runner with scripts sidebar</li>
+          <li>Split terminal panes (horizontal/vertical)</li>
+          <li>Broadcast commands to multiple sessions simultaneously</li>
+          <li>Drag-to-reorder tabs</li>
         </ul>
       </div>
 
@@ -1701,6 +2091,40 @@
           <li>Accept/reject incoming shares</li>
           <li>Real-time share notifications</li>
           <li>QR code scanning on desktop via webcam</li>
+        </ul>
+      </div>
+
+      <!-- VNC Remote Desktop -->
+      <div class="feature-card">
+        <div class="feature-icon purple">🖥️</div>
+        <h3>VNC Remote Desktop</h3>
+        <p>Connect to remote desktops via VNC with full keyboard, mouse, and clipboard support.</p>
+        <ul class="feature-list">
+          <li>Direct VNC connections or SSH-tunneled VNC</li>
+          <li>JPEG-encoded frame streaming for performance</li>
+          <li>Configurable color depth (8-bit, 16-bit, 32-bit)</li>
+          <li>Adjustable JPEG quality for bandwidth control</li>
+          <li>Full keyboard and mouse input forwarding</li>
+          <li>Clipboard sync between local and remote</li>
+          <li>View-only mode for monitoring</li>
+          <li>macOS Screen Sharing (ARD) authentication</li>
+          <li>Auto-reconnect on mobile resume</li>
+          <li>Auto landscape orientation on small screens</li>
+        </ul>
+      </div>
+
+      <!-- Command Snippets -->
+      <div class="feature-card">
+        <div class="feature-icon orange">📝</div>
+        <h3>Command Snippets</h3>
+        <p>Save, organize, and quickly execute frequently used commands across sessions.</p>
+        <ul class="feature-list">
+          <li>Create and save reusable command snippets</li>
+          <li>Organize with tags and categories</li>
+          <li>Search snippets by title or content</li>
+          <li>One-click insert into active terminal</li>
+          <li>Per-profile snippet isolation</li>
+          <li>Global snippets shared across profiles</li>
         </ul>
       </div>
 
@@ -2766,6 +3190,17 @@
     </div>
   </section>
 
+  <!-- Feature docs modal (driven from terminal help <feature>) -->
+  <div id="feature-modal" class="feature-modal-overlay" aria-hidden="true">
+    <div class="feature-modal-panel" role="dialog" aria-modal="true" aria-labelledby="feature-modal-title">
+      <div class="feature-modal-header">
+        <span id="feature-modal-title" class="feature-modal-title">Feature docs</span>
+        <button type="button" class="feature-modal-close" aria-label="Close feature docs" tabindex="0">X</button>
+      </div>
+      <div id="feature-modal-body" class="feature-modal-body"></div>
+    </div>
+  </div>
+
   <!-- CTA Section -->
   <section class="cta-section">
     <div class="cta-content">
@@ -2794,7 +3229,7 @@
         <a href="#" class="platform-link" data-os="windows">Windows</a>
         <a href="#" class="platform-link" data-os="linux">Linux</a>
         <a href="https://apps.apple.com/us/app/swavan-ssh-studio/id6756827241" class="platform-link" target="_blank" rel="noopener">iOS</a>
-        <a href="https://play.google.com/store/apps/details?id=ssh.studio.swavan" class="platform-link" target="_blank" rel="noopener">Android</a>
+        <span class="platform-link" style="opacity:0.5;cursor:default;border-bottom-style:none;">Android (coming soon)</span>
       </div>
     </div>
   </section>
@@ -2922,49 +3357,638 @@
       }
     }
 
+    function startTerminalTyping() {
+      const typingEl = document.getElementById('terminal-typing');
+      if (!typingEl) return;
+
+      const fullText = typingEl.dataset.text || typingEl.textContent || '';
+      typingEl.textContent = '';
+
+      let index = 0;
+      const cursor = document.getElementById('terminal-cursor');
+
+      const interval = setInterval(() => {
+        if (index < fullText.length) {
+          typingEl.textContent += fullText.charAt(index);
+          index++;
+        } else {
+          clearInterval(interval);
+          if (cursor) {
+            cursor.style.opacity = '1';
+          }
+          const logo = document.getElementById('terminal-logo');
+          if (logo) {
+            // small delay so it feels like command output
+            setTimeout(() => logo.classList.add('visible'), 220);
+          }
+        }
+      }, 75);
+    }
+
+    function appendOutputLine(text) {
+      const output = document.getElementById('terminal-output');
+      if (!output) return;
+      const line = document.createElement('div');
+      line.className = 'terminal-output-line';
+      line.textContent = text;
+      output.appendChild(line);
+      output.scrollTop = output.scrollHeight;
+    }
+
+    const featureDocs = {
+      ssh: {
+        title: 'SSH Connection Management',
+        description: 'Store, organize and secure all of your SSH connection profiles in one place.',
+        bullets: [
+          'Unlimited saved connections with search by name, host or user',
+          'Edit, duplicate and quickly open recent connections',
+          'Multiple auth methods: password, private key, SSH agent',
+          'Optional multi-factor: private key + password',
+          'Connection tagging and tag-based filtering',
+          'SSH host key verification (TOFU) with known hosts database',
+          'Import connections from SSH config files'
+        ]
+      },
+      terminal: {
+        title: 'Terminal & Sessions',
+        description: 'Full xterm.js-based terminal with multi-session support and tabs.',
+        bullets: [
+          'Multiple simultaneous SSH sessions in tabs',
+          'Dynamic terminal resize with ANSI color support',
+          'Session history and status indicators',
+          'Built-in script runner with scripts sidebar',
+          'Split terminal panes (horizontal and vertical)',
+          'Broadcast commands to multiple sessions simultaneously',
+          'Drag-to-reorder tabs'
+        ]
+      },
+      files: {
+        title: 'Remote Files & Transfers',
+        description: 'Browse, edit and move files on remote servers like they were local.',
+        bullets: [
+          'Remote file browser with multi-tab support',
+          'Upload, download and recursive folder transfers',
+          'Built-in editor with support for 50+ file types',
+          'Rename, delete and create files and folders'
+        ]
+      },
+      tunnels: {
+        title: 'SSH Tunneling',
+        description: 'Create secure tunnels for databases, dashboards and internal services.',
+        bullets: [
+          'Local, remote and dynamic (SOCKS) port forwarding',
+          'Real-time tunnel status and multiple tunnels per connection',
+          'Auto-start for your most-used tunnels'
+        ]
+      },
+      vault: {
+        title: 'Secure Vault',
+        description: 'Encrypted credential vault protected by a master password.',
+        bullets: [
+          'Encrypted storage for passwords, keys and settings',
+          'Master password and optional biometric unlock',
+          'Automatic lock & backup / restore options'
+        ]
+      },
+      p2p: {
+        title: 'P2P Connection Sharing',
+        description: 'Share SSH profiles between devices over an encrypted peer-to-peer link.',
+        bullets: [
+          'Send profiles with or without credentials',
+          'Encrypted transfers with one-time transfer keys',
+          'Works across desktop and mobile on the same network'
+        ]
+      },
+      profiles: {
+        title: 'Multi-Profile Management',
+        description: 'Keep separate profiles for workspaces, teams or environments.',
+        bullets: [
+          'Per-profile encrypted vault and settings',
+          'Switch profiles without restarting the app',
+          'Safely delete profiles and associated data'
+        ]
+      },
+      logs: {
+        title: 'Application Logs',
+        description: 'Inspect application logs directly inside Swavan SSH Studio.',
+        bullets: [
+          'View, search and filter logs by level',
+          'Color-coded entries and manual refresh',
+          'Clear logs from file and UI when needed'
+        ]
+      },
+      vnc: {
+        title: 'VNC Remote Desktop',
+        description: 'Connect to remote desktops via VNC with full input and clipboard support.',
+        bullets: [
+          'Direct or SSH-tunneled VNC connections',
+          'JPEG-encoded streaming with configurable quality and color depth',
+          'Full keyboard, mouse and clipboard forwarding',
+          'macOS Screen Sharing (ARD) authentication support',
+          'View-only mode, auto-reconnect on mobile, landscape lock on small screens'
+        ]
+      },
+      snippets: {
+        title: 'Command Snippets',
+        description: 'Save and organize reusable commands for quick execution.',
+        bullets: [
+          'Create, edit and search snippets by title or content',
+          'Organize with tags and categories',
+          'One-click insert into active terminal session',
+          'Per-profile isolation with global snippet support'
+        ]
+      }
+    };
+
+    const manPages = {
+      ssh: {
+        title: 'SSH(1)',
+        content: [
+          'SSH(1)                        User Commands                           SSH(1)',
+          '',
+          'NAME',
+          '     ssh - connect to a remote host and run a shell or command',
+          '',
+          'SYNOPSIS',
+          '     SSH client used by Swavan SSH Studio to establish secure sessions.',
+          '',
+          'DESCRIPTION',
+          '     SSH (Secure Shell) provides encrypted terminal access to a remote',
+          '     system. Swavan SSH Studio wraps the OpenSSH client with a modern UI',
+          '     for managing connections, keys, tunnels and files.',
+          '',
+          '     Typical uses:',
+          '       - Interactive shell on a remote server',
+          '       - Running one-off commands remotely',
+          '       - Port forwarding and secure file transfer',
+          '',
+          'NOTES',
+          '     Use connection profiles in Swavan SSH Studio to store host, user,',
+          '     port and authentication method instead of typing full commands.',
+          ''
+        ].join('\n')
+      },
+      vault: {
+        title: 'SSH-VAULT(5)',
+        content: [
+          'SSH-VAULT(5)                 File Formats Manual                    SSH-VAULT(5)',
+          '',
+          'NAME',
+          '     ssh-vault - encrypted storage for secrets used by Swavan SSH Studio',
+          '',
+          'DESCRIPTION',
+          '     The vault stores connection passwords, private keys and related',
+          '     metadata in an encrypted container protected by a master password.',
+          '',
+          '     Properties:',
+          '       - Encrypted at rest using a key derived from your master password',
+          '       - Optionally unlocked with platform biometrics',
+          '       - Automatically locks after inactivity or when the app is closed',
+          '',
+          'BEST PRACTICES',
+          '       - Choose a strong, unique master password',
+          '       - Lock the vault when stepping away from your device',
+          '       - Use backup/restore to migrate between machines safely',
+          ''
+        ].join('\n')
+      },
+      tunneling: {
+        title: 'SSH-TUNNELING(7)',
+        content: [
+          'SSH-TUNNELING(7)         Miscellaneous Information Manual        SSH-TUNNELING(7)',
+          '',
+          'NAME',
+          '     ssh-tunneling - encrypted port forwarding over SSH',
+          '',
+          'SYNOPSIS',
+          '     Securely forward a local or remote TCP port through an SSH connection',
+          '',
+          'DESCRIPTION',
+          '     SSH tunneling (port forwarding) creates an encrypted connection between',
+          '     your local machine and a remote server, allowing you to access services',
+          '     that are not directly exposed to the internet.',
+          '',
+          '     Examples:',
+          '       - Access a remote database from localhost only',
+          '       - Publish a local service to a remote machine',
+          '       - Route traffic through a dynamic SOCKS proxy',
+          '',
+          'TYPES',
+          '     Local port forwarding:',
+          '         Forward a port on your local machine to a host:port that is',
+          '         reachable from the SSH server (e.g. database, web UI).',
+          '',
+          '     Remote port forwarding:',
+          '         Forward a port on the SSH server back to a host:port reachable',
+          '         from your local machine.',
+          '',
+          '     Dynamic (SOCKS) forwarding:',
+          '         Create a SOCKS proxy that can route many TCP connections through',
+          '         a single tunnel.',
+          '',
+          'NOTES',
+          '     Swavan SSH Studio lets you create, name and manage multiple tunnels',
+          '     per connection, with status, auto-start and per-tunnel configuration.',
+          ''
+        ].join('\n')
+      }
+    };
+
+    function openFeatureDocs(rawKey) {
+      const key = (rawKey || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+      if (!key) return false;
+
+      const alias = {
+        ssh: 'ssh',
+        connection: 'ssh',
+        connections: 'ssh',
+        terminal: 'terminal',
+        sessions: 'terminal',
+        session: 'terminal',
+        files: 'files',
+        file: 'files',
+        browser: 'files',
+        editor: 'files',
+        tunneling: 'tunnels',
+        tunnel: 'tunnels',
+        tunnels: 'tunnels',
+        vault: 'vault',
+        security: 'vault',
+        p2p: 'p2p',
+        sharing: 'p2p',
+        share: 'p2p',
+        profile: 'profiles',
+        profiles: 'profiles',
+        logs: 'logs',
+        log: 'logs',
+        vnc: 'vnc',
+        remote: 'vnc',
+        desktop: 'vnc',
+        remotedesktop: 'vnc',
+        rdp: 'vnc',
+        snippet: 'snippets',
+        snippets: 'snippets',
+        commands: 'snippets'
+      };
+
+      const id = alias[key] || key;
+      const doc = featureDocs[id];
+      if (!doc) return false;
+
+      const overlay = document.getElementById('feature-modal');
+      const titleEl = document.getElementById('feature-modal-title');
+      const bodyEl = document.getElementById('feature-modal-body');
+      if (!overlay || !titleEl || !bodyEl) return false;
+
+      titleEl.textContent = doc.title;
+      bodyEl.innerHTML = '';
+
+      if (doc.description) {
+        const p = document.createElement('p');
+        p.textContent = doc.description;
+        bodyEl.appendChild(p);
+      }
+
+      if (Array.isArray(doc.bullets) && doc.bullets.length) {
+        const ul = document.createElement('ul');
+        doc.bullets.forEach(text => {
+          const li = document.createElement('li');
+          li.textContent = text;
+          ul.appendChild(li);
+        });
+        bodyEl.appendChild(ul);
+      }
+
+      overlay.classList.add('visible');
+      overlay.setAttribute('aria-hidden', 'false');
+
+      const closeBtn = overlay.querySelector('.feature-modal-close');
+      if (closeBtn) {
+        closeBtn.focus();
+      }
+
+      return true;
+    }
+
+    function openManPage(rawTopic) {
+      const topic = (rawTopic || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+      if (!topic) return false;
+
+      const alias = {
+        ssh: 'ssh',
+        shell: 'ssh',
+        connect: 'ssh',
+        vault: 'vault',
+        secrets: 'vault',
+        storage: 'vault',
+        tunneling: 'tunneling',
+        tunnel: 'tunneling',
+        tunnels: 'tunneling',
+        'ssh-tunneling': 'tunneling',
+        'ssh-tunnel': 'tunneling'
+      };
+
+      const id = alias[topic] || topic;
+      const page = manPages[id];
+      if (!page) return false;
+
+      const overlay = document.getElementById('feature-modal');
+      const titleEl = document.getElementById('feature-modal-title');
+      const bodyEl = document.getElementById('feature-modal-body');
+      if (!overlay || !titleEl || !bodyEl) return false;
+
+      titleEl.textContent = page.title;
+      bodyEl.innerHTML = '';
+
+      const pre = document.createElement('pre');
+      pre.className = 'man-page';
+      pre.textContent = page.content;
+      bodyEl.appendChild(pre);
+
+      overlay.classList.add('visible');
+      overlay.setAttribute('aria-hidden', 'false');
+
+      const closeBtn = overlay.querySelector('.feature-modal-close');
+      if (closeBtn) {
+        closeBtn.focus();
+      }
+
+      return true;
+    }
+
+    function handleCommand(cmdRaw) {
+      const cmd = (cmdRaw || '').trim();
+      if (!cmd) return;
+
+      appendOutputLine(`$ ${cmd}`);
+
+      const lower = cmd.toLowerCase();
+      if (lower === 'help') {
+        appendOutputLine('Available commands:');
+        appendOutputLine('  help      - show this help');
+        appendOutputLine('  clear     - clear output');
+        appendOutputLine('  features  - jump to Features section');
+        appendOutputLine('  docs      - jump to Getting Started guide');
+        appendOutputLine('  security  - jump to Security section');
+        appendOutputLine('  tips      - show Tips & Tricks');
+        appendOutputLine('  download  - jump to Download section');
+        appendOutputLine('  man <topic> - open a manual page');
+        appendOutputLine('     topics: ssh, vault, tunneling');
+        appendOutputLine('  theme     - show current theme');
+        appendOutputLine('  theme dark|light - switch theme');
+        appendOutputLine('Feature docs: help ssh | help terminal | help files | help tunnels | help vault | help p2p | help vnc | help snippets | help profiles | help logs');
+      } else if (lower.startsWith('help ')) {
+        const arg = cmd.slice(5).trim();
+        if (!arg) {
+          appendOutputLine('usage: help <feature>');
+        } else if (!openFeatureDocs(arg)) {
+          appendOutputLine(`no docs found for feature: ${arg}`);
+        }
+      } else if (lower === 'man' || lower.startsWith('man ')) {
+        const parts = cmd.split(/\s+/);
+        if (parts.length < 2 || !parts[1]) {
+          appendOutputLine('usage: man <topic>');
+        } else if (!openManPage(parts.slice(1).join(' '))) {
+          appendOutputLine(`No manual entry for ${parts.slice(1).join(' ')}`);
+        }
+      } else if (lower === 'clear') {
+        const output = document.getElementById('terminal-output');
+        if (output) {
+          output.textContent = '';
+        }
+      } else if (lower === 'features') {
+        appendOutputLine('→ Opening Features…');
+        scrollToSection('#features');
+      } else if (lower === 'docs') {
+        appendOutputLine('→ Opening Getting Started…');
+        scrollToSection('#guide-getting-started');
+      } else if (lower === 'security') {
+        appendOutputLine('→ Opening Security…');
+        scrollToSection('#security');
+      } else if (lower === 'tips') {
+        appendOutputLine('Tips & Tricks:');
+        appendOutputLine('  [ Security ]');
+        appendOutputLine('    - Use SSH keys instead of passwords');
+        appendOutputLine('    - Lock your vault when stepping away');
+        appendOutputLine('    - Use a strong, unique master password');
+        appendOutputLine('    - Backup your vault regularly');
+        appendOutputLine('  [ Productivity ]');
+        appendOutputLine('    - Set a landing path for each connection');
+        appendOutputLine('    - Use descriptive connection names for search');
+        appendOutputLine('    - Enable auto-start for key tunnels');
+        appendOutputLine('    - Open multiple file browsers in tabs');
+        appendOutputLine('  [ Troubleshooting ]');
+        appendOutputLine('    - Connection timeout? Check firewall & SSH service');
+        appendOutputLine('    - Auth failed? Verify credentials and key perms');
+        appendOutputLine('    - Tunnel not working? Ensure target service is up');
+        appendOutputLine('  [ Hidden Features ]');
+        appendOutputLine('    - Double-click a connection name to quick connect');
+        appendOutputLine('    - Drag tabs to reorder');
+        appendOutputLine('    - Split terminal panes for side-by-side work');
+        appendOutputLine('    - Broadcast a command to multiple sessions at once');
+        appendOutputLine('    - Use tags to organize and filter connections');
+        appendOutputLine('    - Save frequently used commands as snippets');
+        appendOutputLine('    - Connect to remote desktops via VNC');
+        appendOutputLine('  [ Cross-Platform ]');
+        appendOutputLine('    - Backups and private keys work across platforms');
+        appendOutputLine('    - P2P sharing works on the same network');
+        appendOutputLine('    - Tunnels behave the same on all OSes');
+      } else if (lower === 'download') {
+        appendOutputLine('→ Opening Download…');
+        scrollToSection('cta');
+      } else if (lower === 'theme' || lower.startsWith('theme ')) {
+        const parts = lower.split(/\s+/);
+        const root = document.documentElement;
+        const current = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+
+        if (parts.length === 1) {
+          appendOutputLine(`→ Current theme: ${current}`);
+        } else {
+          const target = parts[1] === 'light' ? 'light' : parts[1] === 'dark' ? 'dark' : null;
+          if (!target) {
+            appendOutputLine("usage: theme [dark|light]");
+          } else if (target === current) {
+            appendOutputLine(`→ Theme already ${target}`);
+          } else {
+            appendOutputLine(`→ Switching theme to ${target}…`);
+            if (typeof applyTheme === 'function') {
+              applyTheme(target);
+            } else {
+              root.setAttribute('data-theme', target);
+            }
+          }
+        }
+      } else {
+        appendOutputLine(`command not found: ${cmd}`);
+        appendOutputLine("type 'help' to see available commands");
+      }
+    }
+
+    function scrollToSection(target) {
+      if (!target) return;
+
+      if (target === 'hero') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      if (target === 'cta') {
+        const cta = document.querySelector('.cta-section');
+        if (cta) {
+          const offsetTop = cta.getBoundingClientRect().top + window.pageYOffset - 72;
+          window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+        }
+        return;
+      }
+
+      const el = document.querySelector(target);
+      if (!el) return;
+      const offsetTop = el.getBoundingClientRect().top + window.pageYOffset - 72;
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+    }
+
+    function setActiveMenuItem(key) {
+      document.querySelectorAll('.tui-menu-item').forEach(item => {
+        item.classList.toggle('active', item.dataset.key === key);
+      });
+    }
+
+    function initKeyboardNavigation() {
+      const menuItems = document.querySelectorAll('.tui-menu-item');
+      menuItems.forEach(item => {
+        item.addEventListener('click', () => {
+          const target = item.dataset.target;
+          const key = item.dataset.key;
+          setActiveMenuItem(key);
+          scrollToSection(target);
+        });
+      });
+
+      document.addEventListener('keydown', (event) => {
+        const key = event.key;
+        const cmdInput = document.getElementById('terminal-command-input');
+        const isTypingCommand = document.activeElement === cmdInput;
+
+        // When typing into the command input, let normal keys go through
+        if (isTypingCommand && !(key === 'Enter')) {
+          return;
+        }
+        if (key >= '1' && key <= '6') {
+          const item = document.querySelector(`.tui-menu-item[data-key="${key}"]`);
+          if (item) {
+            event.preventDefault();
+            const target = item.dataset.target;
+            setActiveMenuItem(key);
+            scrollToSection(target);
+          }
+        } else if (key === 'Enter' || key === ' ' || key === 'PageDown') {
+          if (isTypingCommand && key === 'Enter') {
+            // Execute command from input
+            event.preventDefault();
+            const value = cmdInput.value;
+            cmdInput.value = '';
+            handleCommand(value);
+            return;
+          }
+          // friendly scroll shortcut from hero into content
+          const features = document.querySelector('#features');
+          if (features) {
+            event.preventDefault();
+            scrollToSection('#features');
+          }
+        }
+      });
+    }
+
+    function applyTheme(theme) {
+      const root = document.documentElement;
+      const next = theme === 'light' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try {
+        localStorage.setItem('swavan-theme', next);
+      } catch (_) {}
+
+      const toggleBtn = document.getElementById('theme-toggle-btn');
+      if (toggleBtn) {
+        toggleBtn.textContent = next === 'light' ? '[ theme: light ]' : '[ theme: dark ]';
+      }
+    }
+
+    function initThemeToggle() {
+      let initial = 'dark';
+      try {
+        const stored = localStorage.getItem('swavan-theme');
+        if (stored === 'light' || stored === 'dark') {
+          initial = stored;
+        }
+      } catch (_) {}
+
+      applyTheme(initial);
+
+      const toggleBtn = document.getElementById('theme-toggle-btn');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+          const next = current === 'light' ? 'dark' : 'light';
+          applyTheme(next);
+        });
+      }
+    }
+
     // Run on page load
     document.addEventListener('DOMContentLoaded', async () => {
       await fetchLatestRelease();
       updateDownloadButtons();
-    });
+      startTerminalTyping();
+      initKeyboardNavigation();
+      initThemeToggle();
 
-    // Theme Toggle Functionality
-    function initTheme() {
-      const savedTheme = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      
-      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
+      // Focus the command input when clicking anywhere in the terminal body
+      const terminalBody = document.querySelector('.terminal-body');
+      const cmdInput = document.getElementById('terminal-command-input');
+      if (terminalBody && cmdInput) {
+        terminalBody.addEventListener('click', () => {
+          cmdInput.focus();
+        });
       }
-    }
 
-    function toggleTheme() {
-      const isDark = document.documentElement.classList.toggle('dark');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    }
+      // Feature docs modal close handlers
+      const featureModal = document.getElementById('feature-modal');
+      if (featureModal) {
+        const closeBtn = featureModal.querySelector('.feature-modal-close');
+        if (closeBtn) {
+          const closeOverlay = () => {
+            featureModal.classList.remove('visible');
+            featureModal.setAttribute('aria-hidden', 'true');
+          };
 
-    // Initialize theme immediately to prevent flash
-    initTheme();
+          closeBtn.addEventListener('click', closeOverlay);
 
-    // Listen for system theme changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      if (!localStorage.getItem('theme')) {
-        if (e.matches) {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
+          closeBtn.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              closeOverlay();
+            }
+          });
         }
+
+        featureModal.addEventListener('click', (event) => {
+          if (event.target === featureModal) {
+            featureModal.classList.remove('visible');
+            featureModal.setAttribute('aria-hidden', 'true');
+          }
+        });
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && featureModal.classList.contains('visible')) {
+            featureModal.classList.remove('visible');
+            featureModal.setAttribute('aria-hidden', 'true');
+          }
+        });
       }
     });
-  </script>
 
-  <!-- Theme Toggle Button -->
-  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-    <span class="sun-icon theme-toggle-icon">☀️</span>
-    <span class="moon-icon theme-toggle-icon">🌙</span>
-  </button>
+  </script>
 
 </body>
 </html>
