@@ -46,7 +46,7 @@
   }
   </script>
 
-  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="icon" type="image/svg+xml" href="public/icon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -804,7 +804,7 @@
   <header class="header" role="banner">
     <div class="header-inner">
       <a href="index.html" class="logo" aria-label="Swavan SSH Studio home">
-        <img src="icon.svg" alt="" class="logo-icon">
+        <img src="public/icon.svg" alt="" class="logo-icon">
         <span class="logo-text">Swavan SSH Studio</span>
         <span class="logo-badge">docs</span>
       </a>
@@ -903,6 +903,30 @@
           <span class="sidebar-item-prefix">17</span>
           Windows Firewall (P2P)
         </div>
+        <div class="sidebar-item" data-panel="guide-getting-started" role="button" tabindex="0">
+          <span class="sidebar-item-prefix">18</span>
+          Quick Start Guide
+        </div>
+        <div class="sidebar-item" data-panel="guide-tunneling" role="button" tabindex="0">
+          <span class="sidebar-item-prefix">19</span>
+          SSH Tunneling Guide
+        </div>
+        <div class="sidebar-item" data-panel="guide-sharing" role="button" tabindex="0">
+          <span class="sidebar-item-prefix">20</span>
+          Connection Sharing Guide
+        </div>
+        <div class="sidebar-item" data-panel="guide-terminal" role="button" tabindex="0">
+          <span class="sidebar-item-prefix">21</span>
+          Terminal Usage Guide
+        </div>
+        <div class="sidebar-item" data-panel="guide-files" role="button" tabindex="0">
+          <span class="sidebar-item-prefix">22</span>
+          File Management Guide
+        </div>
+        <div class="sidebar-item" data-panel="guide-tips" role="button" tabindex="0">
+          <span class="sidebar-item-prefix">23</span>
+          Tips &amp; Tricks
+        </div>
       </div>
     </nav>
 
@@ -926,7 +950,7 @@
         <div class="feature-grid">
           <div class="feature-cell">
             <div class="feature-cell-title">Platforms</div>
-            <div class="feature-cell-desc">macOS · Windows · Linux · iOS · Android</div>
+            <div class="feature-cell-desc">macOS · Windows · Linux · iOS · Android (coming soon)</div>
           </div>
           <div class="feature-cell">
             <div class="feature-cell-title">Encryption</div>
@@ -938,7 +962,7 @@
           </div>
           <div class="feature-cell">
             <div class="feature-cell-title">Price</div>
-            <div class="feature-cell-desc">Free and open source</div>
+            <div class="feature-cell-desc">Free to use</div>
           </div>
         </div>
 
@@ -2461,6 +2485,566 @@
         </div>
       </article>
 
+      <!-- ==========================================
+           18. QUICK START GUIDE
+           ========================================== -->
+      <article class="content-panel" id="panel-guide-getting-started" aria-label="Quick Start Guide">
+        <div class="section-title">
+          <div class="section-man-cmd">
+            <span class="prompt">$</span>
+            <span class="cmd">man quick-start</span>
+          </div>
+          <p class="section-desc">Learn how to set up your first SSH connection and start using Swavan SSH Studio.</p>
+        </div>
+        <div class="steps">
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">1</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Create Your Vault</div>
+              <p>When you first launch the app, you'll be prompted to create a master password. This password encrypts all your credentials.</p>
+              <div class="callout info">
+                <span class="callout-prefix">[info]</span>
+                <div class="callout-body">Choose a strong master password &mdash; it's the only password you need to remember!</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">2</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Add Your First Connection</div>
+              <p>Click "New Connection" in the sidebar and fill in your server details:</p>
+              <div class="code-block terminal">
+                Name: My Server<br>
+                Host: 192.168.1.100 or myserver.com<br>
+                Port: 22 (default SSH port)<br>
+                Username: your_username<br>
+                Auth: Password or Private Key
+              </div>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">3</div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Connect to Your Server</div>
+              <p>Click on your saved connection to open a terminal session. You can open multiple sessions by clicking the connection again.</p>
+              <div class="callout info">
+                <span class="callout-prefix">[info]</span>
+                <div class="callout-body">Right-click on a connection for quick actions like Edit, Delete, or Share.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ==========================================
+           19. SSH TUNNELING GUIDE
+           ========================================== -->
+      <article class="content-panel" id="panel-guide-tunneling" aria-label="SSH Tunneling Guide">
+        <div class="section-title">
+          <div class="section-man-cmd">
+            <span class="prompt">$</span>
+            <span class="cmd">man ssh-tunneling-guide</span>
+          </div>
+          <p class="section-desc">Learn how to securely access remote services through SSH tunnels.</p>
+        </div>
+        <div class="steps">
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">1</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">What is SSH Tunneling?</div>
+              <p>SSH tunneling (port forwarding) creates an encrypted connection between your local machine and a remote server, allowing you to securely access services that aren't directly exposed to the internet.</p>
+              <p style="margin-top: 0.75rem;"><strong>How it works:</strong> Your Computer (<code>localhost:5433</code>) &rarr; Encrypted SSH Tunnel &rarr; Remote Server (<code>postgres:5432</code>)</p>
+              <ul class="doc-list" style="margin-top: 0.75rem;">
+                <li><strong>Local Port Forwarding</strong> &mdash; Forward a port from your local machine to a service on the remote server. Use case: Access a database running on your server from your local machine. Example: <code>Local Port 5433 &rarr; Remote Host:5432</code></li>
+                <li><strong>Remote Port Forwarding</strong> &mdash; Forward a port from the remote server back to a service on your local machine. Use case: Expose your local development server to the remote machine. Example: <code>Remote Port 8080 &rarr; localhost:3000</code></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">2</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Navigate to Tunnels</div>
+              <p>Go to the <strong>Tunnels</strong> section in the sidebar, or click the tunnel icon on a connection card.</p>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">3</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Create New Tunnel</div>
+              <p>Click "Add Tunnel" and configure your tunnel:</p>
+              <div class="code-block terminal">
+                Connection: Select your SSH connection<br>
+                Type: Local or Remote forwarding<br>
+                Local Port: Port on your machine (e.g., 5433)<br>
+                Remote Host: Target host (e.g., localhost)<br>
+                Remote Port: Target port (e.g., 5432)
+              </div>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">4</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Start the Tunnel</div>
+              <p>Click the <strong>Start</strong> button to activate the tunnel. The status indicator will turn green when active.</p>
+              <div class="callout info">
+                <span class="callout-prefix">[info]</span>
+                <div class="callout-body">Enable "Auto-start" to automatically start this tunnel whenever you connect.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">5</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Use Your Tunnel</div>
+              <p>Connect to your local port as if the remote service was running locally:</p>
+              <div class="code-block terminal">
+                <span class="comment"># Connect to PostgreSQL through tunnel</span><br>
+                <span class="prompt">$</span> psql -h localhost -p 5433 -U myuser -d mydb<br>
+                <br>
+                <span class="comment"># Access Redis through tunnel</span><br>
+                <span class="prompt">$</span> redis-cli -h localhost -p 6380
+              </div>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">6</div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Real-World Example: Access PostgreSQL on a Remote Server</div>
+              <p>Say you have a PostgreSQL database running on your server at port 5432, but it's not exposed to the internet for security reasons.</p>
+              <ul class="doc-list">
+                <li>Create a tunnel: Local Port <code>5433</code> &rarr; Remote <code>localhost:5432</code></li>
+                <li>Start the tunnel</li>
+                <li>Connect using: <code>psql -h localhost -p 5433 -U postgres</code></li>
+              </ul>
+              <div class="callout info">
+                <span class="callout-prefix">[info]</span>
+                <div class="callout-body">Your database traffic is now encrypted through the SSH tunnel!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ==========================================
+           20. CONNECTION SHARING GUIDE
+           ========================================== -->
+      <article class="content-panel" id="panel-guide-sharing" aria-label="Connection Sharing Guide">
+        <div class="section-title">
+          <div class="section-man-cmd">
+            <span class="prompt">$</span>
+            <span class="cmd">man connection-sharing</span>
+          </div>
+          <p class="section-desc">Securely share your SSH configurations with teammates or across devices.</p>
+        </div>
+        <div class="steps">
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">1</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">P2P Device Transfer &mdash; On the Sending Device</div>
+              <p>Right-click on a connection and select <strong>"Share"</strong>, or go to Settings &rarr; Transfer Setup.</p>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">2</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Choose What to Share</div>
+              <p>Select whether to include credentials:</p>
+              <ul class="doc-list">
+                <li><strong>With Credentials</strong> &mdash; Share complete connection including password/key</li>
+                <li><strong>Without Credentials</strong> &mdash; Share only host, port, and username</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">3</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Get the Transfer Key</div>
+              <p>A unique transfer key will be generated. Share this key with the recipient.</p>
+              <div class="code-block terminal">
+                Transfer Key: XXXX-XXXX-XXXX-XXXX
+              </div>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">4</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">On the Receiving Device</div>
+              <p>Open Swavan SSH Studio and select <strong>"Receive from Device"</strong> during vault setup, or go to Settings &rarr; Receive Transfer.</p>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">5</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Enter Transfer Key</div>
+              <p>Enter the transfer key and click <strong>"Receive"</strong>. The connections will be securely transferred.</p>
+              <div class="callout info">
+                <span class="callout-prefix">[info]</span>
+                <div class="callout-body">All transfers are encrypted end-to-end. The key is only valid for one transfer.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">6</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Backup &amp; Restore &mdash; Create a Backup</div>
+              <p>Go to <strong>Settings &rarr; Backup</strong> and click "Create Backup". Choose a location to save the encrypted backup file.</p>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">7</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Transfer the Backup File</div>
+              <p>Copy the <code>.backup</code> file to your other device via USB, cloud storage, or any secure method.</p>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">8</div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Restore from Backup</div>
+              <p>On the new device, select <strong>"Restore from Backup"</strong> during vault setup. Select the backup file and enter your master password.</p>
+              <div class="callout info">
+                <span class="callout-prefix">[info]</span>
+                <div class="callout-body">You'll need your original master password to restore the backup!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ==========================================
+           21. TERMINAL USAGE GUIDE
+           ========================================== -->
+      <article class="content-panel" id="panel-guide-terminal" aria-label="Terminal Usage Guide">
+        <div class="section-title">
+          <div class="section-man-cmd">
+            <span class="prompt">$</span>
+            <span class="cmd">man terminal-usage</span>
+          </div>
+          <p class="section-desc">Master the SSH terminal for efficient remote server management.</p>
+        </div>
+        <div class="steps">
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">1</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Starting a Session</div>
+              <p>Click on any saved connection to open a new terminal session. The connection will be established automatically.</p>
+              <ul class="doc-list">
+                <li><strong style="color: var(--accent-green);">Green</strong> &mdash; Connected, session is active</li>
+                <li><strong style="color: var(--accent-yellow);">Yellow</strong> &mdash; Connecting, establishing connection</li>
+                <li><strong style="color: var(--accent-red);">Red</strong> &mdash; Disconnected, session ended</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">2</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Managing Multiple Sessions</div>
+              <p>Open multiple sessions by clicking the same or different connections. Each session opens in a new tab.</p>
+              <div class="callout info">
+                <span class="callout-prefix">[info]</span>
+                <div class="callout-body">Click the "+" button to quickly open another session to the same server.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">3</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Terminal Customization</div>
+              <p>Personalize your terminal in <strong>Settings &rarr; Terminal Preferences</strong>:</p>
+              <ul class="doc-list">
+                <li><strong>Font</strong> &mdash; JetBrains Mono, Fira Code, Monaco, and more</li>
+                <li><strong>Font Size</strong> &mdash; Adjustable from 10px to 64px</li>
+                <li><strong>Colors</strong> &mdash; Custom text, cursor, and selection colors</li>
+                <li><strong>Theme</strong> &mdash; Separate colors for light and dark mode</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">4</div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Disconnecting Safely</div>
+              <p>Click the <strong>X</strong> on the session tab or use the disconnect button. Running processes will be terminated.</p>
+              <div class="callout info">
+                <span class="callout-prefix">[info]</span>
+                <div class="callout-body">Use <code>tmux</code> or <code>screen</code> to keep processes running after disconnect.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ==========================================
+           22. FILE MANAGEMENT GUIDE
+           ========================================== -->
+      <article class="content-panel" id="panel-guide-files" aria-label="File Management Guide">
+        <div class="section-title">
+          <div class="section-man-cmd">
+            <span class="prompt">$</span>
+            <span class="cmd">man file-management</span>
+          </div>
+          <p class="section-desc">Browse, transfer, and edit files on remote servers.</p>
+        </div>
+        <div class="steps">
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">1</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Opening the File Browser</div>
+              <p>Click the <strong>Explorer</strong> icon in the sidebar while connected to a server, or click the folder icon on a connection card.</p>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">2</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Navigating Directories</div>
+              <p>Click folders to navigate, use the breadcrumb path, or click the home icon to go to your home directory.</p>
+              <ul class="doc-list">
+                <li><strong>Home button</strong> &mdash; Go to user home directory</li>
+                <li><strong>Back button</strong> &mdash; Previous directory in history</li>
+                <li><strong>Forward button</strong> &mdash; Next directory in history</li>
+                <li><strong>Refresh button</strong> &mdash; Reload current directory</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">3</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Transferring Files</div>
+              <p>Upload and download files with real-time progress tracking:</p>
+              <ul class="doc-list">
+                <li><strong>Upload</strong> &mdash; Click the upload button and select local files to transfer to the server</li>
+                <li><strong>Download</strong> &mdash; Right-click a file and select "Download" to save it locally</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">4</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Editing Remote Files</div>
+              <p>Double-click any text file (up to 5MB) to open it in the built-in editor. Changes save directly to the server.</p>
+              <div class="callout info">
+                <span class="callout-prefix">[info]</span>
+                <div class="callout-body">The editor supports 50+ file types with syntax awareness!</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">5</div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">File Operations</div>
+              <p>Right-click on files or folders for additional options: Rename, Delete, New Folder, Copy Path.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ==========================================
+           23. TIPS & TRICKS
+           ========================================== -->
+      <article class="content-panel" id="panel-guide-tips" aria-label="Tips &amp; Tricks">
+        <div class="section-title">
+          <div class="section-man-cmd">
+            <span class="prompt">$</span>
+            <span class="cmd">man tips-and-tricks</span>
+          </div>
+          <p class="section-desc">Get the most out of Swavan SSH Studio with these power-user tips.</p>
+        </div>
+        <div class="steps">
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">1</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Security Best Practices</div>
+              <ul class="doc-list">
+                <li>Use SSH keys instead of passwords when possible</li>
+                <li>Lock your vault when stepping away</li>
+                <li>Use strong, unique master password</li>
+                <li>Regularly backup your vault</li>
+                <li>Don't share credentials over insecure channels</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">2</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Productivity Boosters</div>
+              <ul class="doc-list">
+                <li>Set a landing path to start in a specific directory</li>
+                <li>Use descriptive connection names for easy search</li>
+                <li>Enable auto-start for frequently used tunnels</li>
+                <li>Open multiple file browsers in tabs</li>
+                <li>Use the home button for quick navigation</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">3</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Troubleshooting</div>
+              <ul class="doc-list">
+                <li><strong>Connection timeout?</strong> Check firewall and SSH service</li>
+                <li><strong>Authentication failed?</strong> Verify credentials and key permissions</li>
+                <li><strong>Tunnel not working?</strong> Ensure the target service is running</li>
+                <li><strong>P2P not discovering peers on Windows?</strong> Add firewall exceptions (see Windows Firewall panel)</li>
+                <li><strong>AppImage not running?</strong> Install libfuse2 and check permissions</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">4</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Hidden Features</div>
+              <ul class="doc-list">
+                <li>Double-click connection name to quick connect</li>
+                <li>Drag tabs to reorder them</li>
+                <li>Right-click for context menus everywhere</li>
+                <li>Use search to filter connections instantly</li>
+                <li>Theme automatically follows system preference</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">5</div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Cross-Platform Tips</div>
+              <ul class="doc-list">
+                <li>Backup works across all platforms</li>
+                <li>P2P sharing works on same network</li>
+                <li>Settings sync via backup/restore</li>
+                <li>Private keys work on all platforms</li>
+                <li>Tunnels work identically everywhere</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-gutter">
+              <div class="step-num">6</div>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Common Use Cases</div>
+              <ul class="doc-list">
+                <li><strong>Database Access</strong> &mdash; Create a tunnel to access PostgreSQL, MySQL, or Redis from local tools. Example: <code>localhost:5433 &rarr; server:5432</code></li>
+                <li><strong>Web Service Access</strong> &mdash; Access internal web dashboards or APIs only available on the server's localhost. Example: <code>localhost:8080 &rarr; server:3000</code></li>
+                <li><strong>Monitoring Access</strong> &mdash; Connect to Grafana, Prometheus, or other monitoring tools on internal ports. Example: <code>localhost:3001 &rarr; server:3000</code></li>
+                <li><strong>Development Sync</strong> &mdash; Expose your local dev server to a remote machine for testing webhooks. Example: <code>Remote server:8080 &rarr; localhost:3000</code></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
     </main>
   </div>
 
@@ -2469,7 +3053,7 @@
        ================================================ -->
   <footer class="docs-footer">
     <p>Swavan SSH Studio Documentation &mdash; <a href="https://github.com/swavan/studio" target="_blank" rel="noopener">GitHub</a> &middot; <a href="https://github.com/swavan/studio/releases/latest" target="_blank" rel="noopener">Download</a> &middot; <a href="index.html">Home</a></p>
-    <p style="margin-top: 0.4rem; opacity: 0.6;">&copy; 2026 Swavan. Free and open source.</p>
+    <p style="margin-top: 0.4rem; opacity: 0.6;">&copy; 2026 Swavan. Free to use.</p>
   </footer>
 
   <!-- ================================================
