@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="dark light">
   <title>Swavan SSH Studio Documentation - SSH Client, VNC, Tunneling &amp; File Management Guide</title>
-  <meta name="description" content="Complete documentation for Swavan SSH Studio — free SSH client and GUI terminal with VNC remote desktop, secure vault, SSH tunneling, SFTP file browser, command snippets, P2P connection sharing, and more. Available for macOS, Windows, Linux, iOS, and Android.">
-  <meta name="keywords" content="SSH client documentation, SSH GUI guide, SSH terminal tutorial, SSH tunnel setup, SFTP file browser, SSH connection manager, SSH key management, port forwarding guide, VNC remote desktop, command snippets, P2P connection sharing, secure vault, biometric unlock, SSH studio docs, remote server management">
+  <meta name="description" content="Complete documentation for Swavan SSH Studio — free SSH client and GUI terminal with VNC remote desktop, secure vault, SSH tunneling, SFTP file browser, command snippets, and more. Available for macOS, Windows, and Linux.">
+  <meta name="keywords" content="SSH client documentation, SSH GUI guide, SSH terminal tutorial, SSH tunnel setup, SFTP file browser, SSH connection manager, SSH key management, port forwarding guide, VNC remote desktop, command snippets, secure vault, biometric unlock, SSH studio docs, remote server management">
   <meta name="author" content="Swavan">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://swavan.github.io/studio/docs.html">
@@ -15,14 +15,14 @@
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://swavan.github.io/studio/docs.html">
   <meta property="og:title" content="Swavan SSH Studio Documentation - SSH Client, VNC &amp; Tunneling Guide">
-  <meta property="og:description" content="Complete guide for Swavan SSH Studio. Learn SSH connections, VNC remote desktop, tunneling, file management, P2P sharing, and more.">
+  <meta property="og:description" content="Complete guide for Swavan SSH Studio. Learn SSH connections, remote desktop, tunneling, file management, and more.">
   <meta property="og:image" content="https://swavan.github.io/studio/public/icon.svg">
   <meta property="og:site_name" content="Swavan SSH Studio">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Swavan SSH Studio Documentation - SSH Client, VNC &amp; Tunneling Guide">
-  <meta name="twitter:description" content="Complete guide for Swavan SSH Studio. Learn SSH connections, VNC remote desktop, tunneling, file management, P2P sharing, and more.">
+  <meta name="twitter:description" content="Complete guide for Swavan SSH Studio. Learn SSH connections, remote desktop, tunneling, file management, and more.">
   <meta name="twitter:image" content="https://swavan.github.io/studio/public/icon.svg">
 
   <!-- Structured Data -->
@@ -31,13 +31,13 @@
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "headline": "Swavan SSH Studio Documentation",
-    "description": "Complete documentation for Swavan SSH Studio — a free SSH client and GUI terminal with VNC remote desktop, secure vault, SSH tunneling, SFTP file browser, command snippets, and P2P connection sharing for macOS, Windows, Linux, iOS, and Android.",
+    "description": "Complete documentation for Swavan SSH Studio — a free SSH client and GUI terminal with VNC remote desktop, secure vault, SSH tunneling, SFTP file browser, command snippets, and  for macOS, Windows, and Linux.",
     "url": "https://swavan.github.io/studio/docs.html",
     "about": {
       "@type": "SoftwareApplication",
       "name": "Swavan SSH Studio",
       "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "macOS, Windows, Linux, iOS, Android"
+      "operatingSystem": "macOS, Windows, Linux"
     },
     "author": {
       "@type": "Organization",
@@ -871,10 +871,6 @@
           <span class="sidebar-item-prefix">09</span>
           Command Snippets
         </div>
-        <div class="sidebar-item" data-panel="p2p-sharing" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">10</span>
-          P2P Connection Sharing
-        </div>
         <div class="sidebar-item" data-panel="vault" role="button" tabindex="0">
           <span class="sidebar-item-prefix">11</span>
           Secure Vault
@@ -899,10 +895,6 @@
           <span class="sidebar-item-prefix">16</span>
           Installation (Linux)
         </div>
-        <div class="sidebar-item" data-panel="windows-firewall" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">17</span>
-          Windows Firewall (P2P)
-        </div>
         <div class="sidebar-item" data-panel="guide-getting-started" role="button" tabindex="0">
           <span class="sidebar-item-prefix">18</span>
           Quick Start Guide
@@ -910,10 +902,6 @@
         <div class="sidebar-item" data-panel="guide-tunneling" role="button" tabindex="0">
           <span class="sidebar-item-prefix">19</span>
           SSH Tunneling Guide
-        </div>
-        <div class="sidebar-item" data-panel="guide-sharing" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">20</span>
-          Connection Sharing Guide
         </div>
         <div class="sidebar-item" data-panel="guide-terminal" role="button" tabindex="0">
           <span class="sidebar-item-prefix">21</span>
@@ -950,7 +938,7 @@
         <div class="feature-grid">
           <div class="feature-cell">
             <div class="feature-cell-title">Platforms</div>
-            <div class="feature-cell-desc">macOS · Windows · Linux · iOS · Android (coming soon)</div>
+            <div class="feature-cell-desc">macOS · Windows · Linux</div>
           </div>
           <div class="feature-cell">
             <div class="feature-cell-title">Encryption</div>
@@ -974,12 +962,14 @@
             </div>
             <div class="step-body">
               <div class="step-title">Download and install</div>
-              <p>Visit the <a href="https://github.com/swavan/studio/releases/latest" target="_blank" rel="noopener">GitHub Releases page</a> and download the build for your platform.</p>
+              <p>Install the desktop app and <code>s3hs</code> CLI together with the command for your platform:</p>
+              <div class="code-block"><span class="comment"># macOS or Linux</span><br><span class="prompt">$</span> curl -fsSL https://swavan.github.io/studio/install.sh | sh<br><br><span class="comment"># Windows PowerShell</span><br><span class="prompt">PS&gt;</span> irm https://swavan.github.io/studio/install.ps1 | iex</div>
+              <p>You can also visit the <a href="https://github.com/swavan/studio/releases/latest" target="_blank" rel="noopener">GitHub Releases page</a> and download an installer manually.</p>
               <ul class="doc-list">
                 <li><strong>macOS:</strong> .dmg universal binary (Apple Silicon + Intel)</li>
                 <li><strong>Windows:</strong> .msi or .exe installer</li>
                 <li><strong>Linux:</strong> .AppImage (no install required — see Installation section for FUSE setup)</li>
-                <li><strong>iOS / Android:</strong> Available via the App Store and Google Play</li>
+
               </ul>
             </div>
           </div>
@@ -998,7 +988,7 @@
               </div>
               <ul class="doc-list">
                 <li><strong>Create New Vault</strong> — start fresh and add connections manually</li>
-                <li><strong>Receive from another device</strong> — encrypted P2P transfer from an existing device</li>
+
                 <li><strong>Restore from backup</strong> — restore from a previously exported encrypted backup file</li>
               </ul>
             </div>
@@ -1037,7 +1027,7 @@
               </div>
               <div class="callout tip">
                 <span class="callout-prefix">[tip]</span>
-                <div class="callout-body">After unlocking once, you can enable <strong>biometric unlock</strong> (Touch ID, Face ID, Windows Hello) so future launches require only a fingerprint or face scan. Enable it in Settings → General → Vault Security.</div>
+                <div class="callout-body">After unlocking once, you can enable <strong>biometric unlock</strong> (Touch ID or Windows Hello) so future launches use your device authentication. Enable it in Settings → General → Vault Security.</div>
               </div>
             </div>
           </div>
@@ -1194,7 +1184,7 @@
             <span class="prompt">$</span>
             <span class="cmd">man terminal-sessions</span>
           </div>
-          <p class="section-desc">Multi-tab SSH sessions with full terminal emulation. Supports drag-to-reorder tabs, broadcast commands to multiple sessions, a mobile command bar, and a script runner for repeatable tasks.</p>
+          <p class="section-desc">Multi-tab SSH sessions with full terminal emulation. Supports drag-to-reorder tabs, broadcast commands to multiple sessions, and a script runner for repeatable tasks.</p>
         </div>
 
         <div class="steps">
@@ -1254,27 +1244,6 @@
             </div>
           </div>
 
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Mobile command bar (iOS / Android)</div>
-              <p>On mobile, a command bar appears below the terminal with essential control keys that are hard to type on a software keyboard:</p>
-              <ul class="doc-list">
-                <li><strong>^C</strong> — send Ctrl+C to interrupt the current process</li>
-                <li><strong>Tab</strong> — trigger shell autocomplete</li>
-                <li><strong>↑ / ↓</strong> — navigate command history</li>
-                <li><strong>Send</strong> — send the current input line</li>
-                <li><strong>Esc</strong> — send Escape key</li>
-              </ul>
-              <div class="callout tip">
-                <span class="callout-prefix">[tip]</span>
-                <div class="callout-body">The mobile command bar repositions automatically when the iOS software keyboard appears, so it always stays visible above the keyboard.</div>
-              </div>
-            </div>
-          </div>
 
           <div class="step-block">
             <div class="step-gutter">
@@ -1437,7 +1406,7 @@
             </div>
             <div class="step-body">
               <div class="step-title">Downloading files from the remote server</div>
-              <p>Open the context menu (⋯) on any file and choose <strong>Download</strong>. On desktop you will be prompted to choose a local save location. On mobile the file is saved to the default Downloads folder.</p>
+              <p>Open the context menu (⋯) on any file and choose <strong>Download</strong>. You will be prompted to choose a local save location.</p>
               <div class="callout info">
                 <span class="callout-prefix">[info]</span>
                 <div class="callout-body">File upload and download use SFTP under the hood — the same underlying SSH connection is reused, so no extra authentication is required.</div>
@@ -1809,86 +1778,6 @@
         </div>
       </article>
 
-      <!-- ==========================================
-           10. P2P CONNECTION SHARING
-           ========================================== -->
-      <article class="content-panel" id="panel-p2p-sharing" aria-label="P2P Connection Sharing">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man p2p-connection-sharing</span>
-          </div>
-          <p class="section-desc">Share SSH connection profiles between devices over an encrypted peer-to-peer link. Peers are discovered automatically on the same local network using mDNS. QR code scanning available for mobile.</p>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Enabling P2P sharing</div>
-              <p>Go to <strong>Settings → General → P2P Settings</strong> and toggle <strong>Enable P2P Sharing</strong>. The vault must be unlocked before P2P can be enabled.</p>
-              <div class="img-wrap">
-                <img src="img/docs/P2P.png" alt="P2P sharing settings screen">
-                <div class="img-caption">P2P Settings — enable sharing and view discovered peers</div>
-              </div>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">Both devices must be on the same local network (same Wi-Fi or LAN segment). P2P uses mDNS (UDP port 5353) for discovery and QUIC for data transfer.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Peer discovery</div>
-              <p>Once P2P is enabled, the app automatically discovers other Swavan SSH Studio instances on the same network. Discovered peers appear in the peer list in Settings. No manual IP entry is required.</p>
-              <ul class="doc-list">
-                <li>Discovery is automatic — no manual configuration needed</li>
-                <li>Peers appear within a few seconds if both devices have P2P enabled</li>
-                <li>If no peers appear, check the <strong>Windows Firewall</strong> section if you are on Windows</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Sharing connection profiles</div>
-              <p>Select a peer from the discovered list, then choose which connection profiles to share. The selected profiles are encrypted using a one-time transfer key and sent to the peer device.</p>
-              <ul class="doc-list">
-                <li>Profiles are decrypted on the receiving device using the shared transfer key</li>
-                <li>Credentials (passwords, private keys) are included in the encrypted transfer</li>
-                <li>The transfer key is temporary and discarded after use</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">QR code scanning (mobile)</div>
-              <p>On mobile, the receiving device can scan a QR code displayed on the sending device to establish the P2P connection and receive profiles without needing to type a transfer key manually.</p>
-              <ul class="doc-list">
-                <li>On the sending device: tap <strong>Show QR Code</strong> in the peer sharing screen</li>
-                <li>On the receiving device: tap <strong>Scan QR Code</strong> and point the camera at the sender's screen</li>
-                <li>The QR code encodes the transfer key and peer address — valid for a single transfer session</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </article>
 
       <!-- ==========================================
            11. SECURE VAULT
@@ -1930,11 +1819,11 @@
               <p>After unlocking the vault with your master password at least once, you can enable biometric unlock in <strong>Settings → General → Vault Security</strong>.</p>
               <ul class="doc-list">
                 <li><strong>macOS</strong> — Touch ID</li>
-                <li><strong>iOS</strong> — Face ID or Touch ID</li>
+
                 <li><strong>Windows</strong> — Windows Hello (fingerprint, face, or PIN)</li>
-                <li><strong>Android</strong> — fingerprint or device credentials</li>
+
               </ul>
-              <p>The vault key is stored in the platform's secure enclave (Keychain on Apple, Windows Credential Manager, Android Keystore). The master password is not stored.</p>
+              <p>The vault key is stored in the platform credential store. The master password is not stored.</p>
             </div>
           </div>
 
@@ -1994,7 +1883,7 @@
             <span class="prompt">$</span>
             <span class="cmd">man multi-profile-management</span>
           </div>
-          <p class="section-desc">Create multiple independent vaults (profiles) on a single device. Switch between work, personal, or client profiles, each with their own connections, credentials, and settings. Transfer profiles between devices via P2P.</p>
+          <p class="section-desc">Create multiple independent vaults (profiles) on a single device. Switch between work, personal, or client profiles, each with their own connections, credentials, and settings.</p>
         </div>
 
         <div class="steps">
@@ -2040,20 +1929,6 @@
             </div>
           </div>
 
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">P2P profile transfer</div>
-              <p>Transfer a complete profile from one device to another using P2P. On the sending device, go to <strong>Settings → General → P2P Settings → Share Profile</strong>. The receiving device must be on the same network with P2P enabled.</p>
-              <ul class="doc-list">
-                <li>The entire vault (all connections and credentials) is encrypted and sent</li>
-                <li>The receiving device creates a new profile from the transferred data</li>
-                <li>Both devices retain independent copies after the transfer</li>
-              </ul>
-            </div>
-          </div>
         </div>
       </article>
 
@@ -2142,7 +2017,7 @@
             <span class="prompt">$</span>
             <span class="cmd">man application-logs</span>
           </div>
-          <p class="section-desc">Built-in log viewer for diagnosing connection issues, P2P problems, and other application behavior. Search, filter by level, and clear logs from within the Settings panel.</p>
+          <p class="section-desc">Built-in log viewer for diagnosing connection issues and other application behavior. Search, filter by level, and clear logs from within the Settings panel.</p>
         </div>
 
         <div class="steps">
@@ -2177,7 +2052,7 @@
               </table>
               <div class="callout tip">
                 <span class="callout-prefix">[tip]</span>
-                <div class="callout-body">Combine level filter "ERROR" with a keyword search like "p2p" or "sftp" to isolate failures from a specific subsystem quickly.</div>
+                <div class="callout-body">Combine level filter "ERROR" with a keyword search like "sftp" or "ssh" to isolate failures from a specific subsystem quickly.</div>
               </div>
             </div>
           </div>
@@ -2207,7 +2082,7 @@
             <span class="prompt">$</span>
             <span class="cmd">man settings</span>
           </div>
-          <p class="section-desc">App-wide configuration — theme, terminal preferences, keyboard shortcuts, storage, vault security, P2P, and module visibility. Four top-level tabs: General, System, Logs, About.</p>
+          <p class="section-desc">App-wide configuration — theme, terminal preferences, keyboard shortcuts, storage, vault security, and module visibility. Four top-level tabs: General, System, Logs, About.</p>
         </div>
 
         <div class="steps">
@@ -2241,7 +2116,7 @@
                 <li><strong>Keyboard Shortcuts</strong> — View and customize keybindings for terminal operations, tab management, and navigation.</li>
                 <li><strong>Storage</strong> — View the on-disk location of the SQLite database, copy the path, or open the folder.</li>
                 <li><strong>Vault Security</strong> — Change master password, enable/disable biometric unlock.</li>
-                <li><strong>P2P Settings</strong> — Enable P2P sharing, view discovered peers.</li>
+
                 <li><strong>Receive Connections</strong> — Start receiving mode to accept profiles from another device.</li>
               </ul>
             </div>
@@ -2404,86 +2279,6 @@
       <!-- ==========================================
            17. WINDOWS FIREWALL
            ========================================== -->
-      <article class="content-panel" id="panel-windows-firewall" aria-label="Windows Firewall Configuration">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man windows-firewall-p2p</span>
-          </div>
-          <p class="section-desc">Windows Firewall may block P2P peer discovery (mDNS on UDP 5353) and data transfer (QUIC). Add explicit firewall exceptions to enable P2P sharing between Windows devices or between Windows and other platforms.</p>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Understanding the issue</div>
-              <p>P2P sharing uses <strong>mDNS</strong> (multicast DNS, UDP port 5353) for automatic peer discovery. Windows Firewall blocks mDNS multicast by default for applications that have not been granted an explicit exception.</p>
-              <ul class="doc-list">
-                <li><strong>Symptom:</strong> P2P enabled but no peers discovered, or sharing times out</li>
-                <li><strong>Cause:</strong> Windows Firewall blocks UDP 5353 (mDNS) and QUIC protocol traffic</li>
-                <li><strong>Fix:</strong> Add inbound firewall rules via PowerShell (run as Administrator)</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Adding firewall exceptions (PowerShell as Administrator)</div>
-              <div class="code-block terminal">
-                <span class="comment"># Allow mDNS for peer discovery</span><br>
-                <span class="prompt">PS&gt;</span> New-NetFirewallRule -DisplayName "Swavan SSH Studio mDNS" `<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;-Direction Inbound -Protocol UDP -LocalPort 5353 -Action Allow<br>
-                <br>
-                <span class="comment"># Allow QUIC for encrypted data transfer</span><br>
-                <span class="prompt">PS&gt;</span> New-NetFirewallRule -DisplayName "Swavan SSH Studio QUIC" `<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;-Direction Inbound -Protocol UDP -LocalPort 1024-65535 -Action Allow `<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;-Program "C:\Program Files\Swavan SSH Studio\swavan-ssh-studio.exe"
-              </div>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">Adjust the <code>-Program</code> path in the second command if you installed Swavan SSH Studio in a different location. Right-click the app shortcut → "Open file location" to find the correct path.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Verifying the configuration</div>
-              <ul class="doc-list">
-                <li>Restart Swavan SSH Studio on all devices involved</li>
-                <li>Go to <strong>Settings → General → P2P Settings</strong> and confirm P2P is enabled on both devices</li>
-                <li>Ensure both devices are on the same local network (same Wi-Fi or LAN)</li>
-                <li>Peers should appear in the peer list within a few seconds</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Removing firewall rules (if no longer needed)</div>
-              <div class="code-block terminal">
-                <span class="prompt">PS&gt;</span> Remove-NetFirewallRule -DisplayName "Swavan SSH Studio mDNS"<br>
-                <span class="prompt">PS&gt;</span> Remove-NetFirewallRule -DisplayName "Swavan SSH Studio QUIC"
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
 
       <!-- ==========================================
            18. QUICK START GUIDE
@@ -2657,121 +2452,6 @@
         </div>
       </article>
 
-      <!-- ==========================================
-           20. CONNECTION SHARING GUIDE
-           ========================================== -->
-      <article class="content-panel" id="panel-guide-sharing" aria-label="Connection Sharing Guide">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man connection-sharing</span>
-          </div>
-          <p class="section-desc">Securely share your SSH configurations with teammates or across devices.</p>
-        </div>
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">P2P Device Transfer &mdash; On the Sending Device</div>
-              <p>Right-click on a connection and select <strong>"Share"</strong>, or go to Settings &rarr; Transfer Setup.</p>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Choose What to Share</div>
-              <p>Select whether to include credentials:</p>
-              <ul class="doc-list">
-                <li><strong>With Credentials</strong> &mdash; Share complete connection including password/key</li>
-                <li><strong>Without Credentials</strong> &mdash; Share only host, port, and username</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Get the Transfer Key</div>
-              <p>A unique transfer key will be generated. Share this key with the recipient.</p>
-              <div class="code-block terminal">
-                Transfer Key: XXXX-XXXX-XXXX-XXXX
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">On the Receiving Device</div>
-              <p>Open Swavan SSH Studio and select <strong>"Receive from Device"</strong> during vault setup, or go to Settings &rarr; Receive Transfer.</p>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">5</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Enter Transfer Key</div>
-              <p>Enter the transfer key and click <strong>"Receive"</strong>. The connections will be securely transferred.</p>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">All transfers are encrypted end-to-end. The key is only valid for one transfer.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">6</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Backup &amp; Restore &mdash; Create a Backup</div>
-              <p>Go to <strong>Settings &rarr; Backup</strong> and click "Create Backup". Choose a location to save the encrypted backup file.</p>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">7</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Transfer the Backup File</div>
-              <p>Copy the <code>.backup</code> file to your other device via USB, cloud storage, or any secure method.</p>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">8</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Restore from Backup</div>
-              <p>On the new device, select <strong>"Restore from Backup"</strong> during vault setup. Select the backup file and enter your master password.</p>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">You'll need your original master password to restore the backup!</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
 
       <!-- ==========================================
            21. TERMINAL USAGE GUIDE
@@ -2988,7 +2668,7 @@
                 <li><strong>Connection timeout?</strong> Check firewall and SSH service</li>
                 <li><strong>Authentication failed?</strong> Verify credentials and key permissions</li>
                 <li><strong>Tunnel not working?</strong> Ensure the target service is running</li>
-                <li><strong>P2P not discovering peers on Windows?</strong> Add firewall exceptions (see Windows Firewall panel)</li>
+
                 <li><strong>AppImage not running?</strong> Install libfuse2 and check permissions</li>
               </ul>
             </div>
@@ -3020,7 +2700,7 @@
               <div class="step-title">Cross-Platform Tips</div>
               <ul class="doc-list">
                 <li>Backup works across all platforms</li>
-                <li>P2P sharing works on same network</li>
+
                 <li>Settings sync via backup/restore</li>
                 <li>Private keys work on all platforms</li>
                 <li>Tunnels work identically everywhere</li>

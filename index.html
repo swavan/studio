@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="dark light">
-  <title>Swavan SSH Studio - Free SSH Client & GUI Terminal for macOS, Windows, Linux, iOS & Android</title>
-  <meta name="description" content="Swavan SSH Studio is a free, modern SSH client with GUI terminal, VNC remote desktop, secure vault, SSH tunneling, SFTP file browser, command snippets, and P2P connection sharing. Available for macOS, Windows, Linux, iOS, and Android.">
-  <meta name="keywords" content="SSH client, SSH GUI, SSH terminal, SSH studio, SSH connection manager, SSH tunnel, SFTP client, remote terminal, secure shell, SSH key manager, port forwarding, free SSH client, macOS SSH, Windows SSH, Linux SSH, iOS SSH, Android SSH, SSH app, GUI SSH client, SSH desktop app, SSH agent authentication, biometric unlock, SSH key management, directory transfer, VNC client, VNC viewer, remote desktop, command snippets, split terminal, broadcast commands, connection tags">
+  <title>Swavan SSH Studio - Free SSH Client & GUI Terminal for macOS, Windows & Linux</title>
+  <meta name="description" content="Swavan SSH Studio is a free, modern SSH client with GUI terminal, VNC and RDP remote desktop, secure vault, SSH tunneling, SFTP file browser, command snippets, and a desktop CLI. Available for macOS, Windows, and Linux.">
+  <meta name="keywords" content="SSH client, SSH GUI, SSH terminal, SSH studio, SSH connection manager, SSH tunnel, SFTP client, remote terminal, secure shell, SSH key manager, port forwarding, free SSH client, macOS SSH, Windows SSH, Linux SSH, SSH app, GUI SSH client, SSH desktop app, SSH CLI, SSH agent authentication, biometric unlock, SSH key management, directory transfer, VNC client, RDP client, remote desktop, command snippets, split terminal, broadcast commands, connection tags">
   <meta name="author" content="Swavan">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://swavan.github.io/studio/">
@@ -15,14 +15,14 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://swavan.github.io/studio/">
   <meta property="og:title" content="Swavan SSH Studio - Free SSH Client & GUI Terminal">
-  <meta property="og:description" content="Modern SSH client with GUI terminal, VNC remote desktop, secure vault, SSH tunneling, SFTP file browser, command snippets, and P2P sharing. Free for macOS, Windows, Linux, iOS, and Android.">
+  <meta property="og:description" content="Modern SSH client with GUI terminal, remote desktop, secure vault, SSH tunneling, SFTP file browser, command snippets, and a desktop CLI. Free for macOS, Windows, and Linux.">
   <meta property="og:image" content="https://swavan.github.io/studio/public/icon.svg">
   <meta property="og:site_name" content="Swavan SSH Studio">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Swavan SSH Studio - Free SSH Client & GUI Terminal">
-  <meta name="twitter:description" content="Modern SSH client with GUI terminal, VNC remote desktop, secure vault, SSH tunneling, SFTP file browser, command snippets, and P2P sharing. Free for macOS, Windows, Linux, iOS, and Android.">
+  <meta name="twitter:description" content="Modern SSH client with GUI terminal, remote desktop, secure vault, SSH tunneling, SFTP file browser, command snippets, and a desktop CLI. Free for macOS, Windows, and Linux.">
   <meta name="twitter:image" content="https://swavan.github.io/studio/public/icon.svg">
 
   <!-- Structured Data -->
@@ -32,8 +32,8 @@
     "@type": "SoftwareApplication",
     "name": "Swavan SSH Studio",
     "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "macOS, Windows, Linux, iOS, Android",
-    "description": "Free, modern SSH client with GUI terminal emulator, VNC remote desktop, encrypted vault, SSH tunneling, SFTP file browser, command snippets, remote file editor, and peer-to-peer connection sharing.",
+    "operatingSystem": "macOS, Windows, Linux",
+    "description": "Free, modern SSH client with GUI terminal emulator, remote desktop, encrypted vault, SSH tunneling, SFTP file browser, command snippets, remote file editor, and a desktop CLI.",
     "url": "https://swavan.github.io/studio/",
     "downloadUrl": "https://github.com/swavan/studio/releases/latest",
     "softwareVersion": "0.1.9",
@@ -48,7 +48,6 @@
       "SSH tunneling (local, remote, dynamic SOCKS)",
       "SFTP file browser and editor",
       "Encrypted credential vault",
-      "P2P connection sharing",
       "Multi-session terminal tabs",
       "Split terminal panes",
       "Broadcast commands to multiple sessions",
@@ -59,7 +58,12 @@
       "50+ file type support",
       "SSH agent authentication",
       "Biometric vault unlock",
-      "Recursive directory transfers"
+      "Recursive directory transfers",
+      "RDP remote desktop",
+      "Database connection manager",
+      "Server health monitoring",
+      "Terminal session recording",
+      "Desktop CLI (s3hs)"
     ],
     "screenshot": "https://swavan.github.io/studio/img/docs/shellfrontpage.png"
   }
@@ -843,6 +847,38 @@
       margin-bottom: 2rem;
     }
 
+    .quick-install {
+      margin: 0 auto 2rem;
+      text-align: left;
+      max-width: 680px;
+    }
+
+    .quick-install h3 {
+      margin-bottom: 0.75rem;
+      text-align: center;
+      font-size: 1rem;
+      color: #a7f3d0;
+    }
+
+    .install-command {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      margin-top: 0.65rem;
+      overflow-x: auto;
+      border: 1px solid #374151;
+      background: #020617;
+      color: #bbf7d0;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+
+    .install-label {
+      min-width: 5rem;
+      color: #9ca3af;
+    }
+
     /* Footer */
     .footer {
       padding: 3rem 2rem 4rem;
@@ -1202,74 +1238,33 @@
   <!-- Hero Section -->
   <section class="hero">
     <div class="hero-content animate-in">
-      <div class="terminal-shell">
-        <div class="terminal-header">
-          <div class="terminal-app-icon">
-            <img src="public/icon.svg" alt="Swavan SSH Studio icon">
+      <div class="cta-content">
+        <img src="public/icon.svg" alt="Swavan SSH Studio icon" style="width: 72px; height: 72px; margin-bottom: 1.25rem;">
+        <h1 style="font-size: clamp(2.25rem, 6vw, 4.5rem); line-height: 1.1; margin-bottom: 1rem;">Swavan SSH Studio</h1>
+        <p>Manage SSH, remote desktops, databases, tunnels, scripts, and server operations from one secure desktop app.</p>
+        <div class="quick-install" id="install">
+          <h3>Install the desktop app and CLI</h3>
+          <div class="install-command" data-installer="unix">
+            <span class="install-label">macOS/Linux</span>
+            <code>curl -fsSL https://swavan.github.io/studio/install.sh | sh</code>
           </div>
-          <span class="terminal-title">swavan@studio — ssh</span>
+          <div class="install-command" data-installer="windows">
+            <span class="install-label">Windows</span>
+            <code>irm https://swavan.github.io/studio/install.ps1 | iex</code>
+          </div>
         </div>
-        <div class="terminal-body">
-          <div class="terminal-line">
-            <span class="terminal-prompt">swavan@studio</span>
-            <span class="terminal-path">~</span>
-            <span class="terminal-symbol">$</span>
-            <span id="terminal-typing" class="terminal-text" data-text="Test SwaVan SSH Studio">Test SwaVan SSH Studio</span>
-            <span id="terminal-cursor" class="terminal-cursor"></span>
-          </div>
-            <pre id="terminal-logo" class="terminal-logo">
-            o────────────o
-           /              \
-        o─┘    [ SSH ]     └─o
-           \              /
-            o────────────o
-
-          SWAVAN · SSH Studio
-            </pre>
-            <div class="terminal-playground" aria-label="Interactive command playground">
-              <div id="terminal-output" class="terminal-output" aria-live="polite"></div>
-              <div class="terminal-input-line">
-                <span class="terminal-prompt">swavan@studio</span>
-                <span class="terminal-path">~</span>
-                <span class="terminal-symbol">$</span>
-                <input
-                  id="terminal-command-input"
-                  class="terminal-input-field"
-                  type="text"
-                  autocomplete="off"
-                  spellcheck="false"
-                  placeholder="type 'help' and press Enter"
-                  aria-label="Terminal command input"
-                />
-              </div>
-            </div>
-            <div class="tui-menu" aria-label="Main navigation">
-              <span class="tui-menu-label">[ MENU ]</span>
-              <button type="button" class="tui-menu-item" data-key="1" data-target="hero">
-                <span class="tui-menu-item-key">[1]</span>
-                <span>Overview</span>
-              </button>
-              <button type="button" class="tui-menu-item" data-key="2" data-target="#features">
-                <span class="tui-menu-item-key">[2]</span>
-                <span>Features</span>
-              </button>
-              <button type="button" class="tui-menu-item" data-key="3" data-target="#security">
-                <span class="tui-menu-item-key">[3]</span>
-                <span>Security</span>
-              </button>
-              <button type="button" class="tui-menu-item" data-key="4" data-target="cta">
-                <span class="tui-menu-item-key">[4]</span>
-                <span>Download</span>
-              </button>
-            </div>
-          <div class="terminal-hint">
-              Press 1–4 to jump · Enter/Space/PageDown to scroll ↓
-          </div>
-          <div class="terminal-theme-toggle">
-            <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle light and dark theme">
-              [ theme: dark ]
-            </button>
-          </div>
+        <div class="hero-buttons">
+          <a href="#" id="hero-download-btn" class="btn btn-primary">
+            <span class="download-icon">⬇</span>
+            <span class="download-text">Download for Free</span>
+          </a>
+          <a href="#features" class="btn btn-secondary">View Features</a>
+        </div>
+        <div class="other-platforms" id="other-platforms-hero">
+          <span>Available for:</span>
+          <a href="#" class="platform-link" data-os="macos">macOS</a>
+          <a href="#" class="platform-link" data-os="windows">Windows</a>
+          <a href="#" class="platform-link" data-os="linux">Linux</a>
         </div>
       </div>
     </div>
@@ -1386,22 +1381,6 @@
         </ul>
       </div>
 
-      <!-- P2P Connections -->
-      <div class="feature-card">
-        <div class="feature-icon blue">🔄</div>
-        <h3>P2P Connection Sharing</h3>
-        <p>Share SSH connection profiles securely with other devices.</p>
-        <ul class="feature-list">
-          <li>Peer-to-peer networking</li>
-          <li>Share profiles with/without credentials</li>
-          <li>Automatic peer discovery</li>
-          <li>Encrypted P2P transfers</li>
-          <li>Accept/reject incoming shares</li>
-          <li>Real-time share notifications</li>
-          <li>QR code scanning on desktop via webcam</li>
-        </ul>
-      </div>
-
       <!-- VNC Remote Desktop -->
       <div class="feature-card">
         <div class="feature-icon purple">🖥️</div>
@@ -1416,8 +1395,7 @@
           <li>Clipboard sync between local and remote</li>
           <li>View-only mode for monitoring</li>
           <li>macOS Screen Sharing (ARD) authentication</li>
-          <li>Auto-reconnect on mobile resume</li>
-          <li>Auto landscape orientation on small screens</li>
+          <li>Reliable reconnect handling</li>
         </ul>
       </div>
 
@@ -1448,7 +1426,7 @@
           <li>Change master password</li>
           <li>Vault security settings</li>
           <li>Backup & restore vault</li>
-          <li>Biometric unlock (Touch ID / Face ID / Windows Hello)</li>
+          <li>Biometric unlock (Touch ID / Windows Hello)</li>
           <li>"Remember this device" — one-tap unlock after setup</li>
         </ul>
       </div>
@@ -1496,16 +1474,31 @@
         </ul>
       </div>
 
-      <!-- P2P Profile Setup -->
       <div class="feature-card">
-        <div class="feature-icon teal">📲</div>
-        <h3>P2P Profile Setup</h3>
-        <p>Bootstrap a new device instantly by receiving your full profile setup over an encrypted peer-to-peer connection.</p>
+        <div class="feature-icon green">⌨️</div>
+        <h3>Desktop CLI & Operations</h3>
+        <p>Manage the same profiles and connections from your terminal with the <code>s3hs</code> CLI.</p>
         <ul class="feature-list">
-          <li>QR code scanning — works on mobile and desktop (webcam)</li>
-          <li>Encrypted vault transfer between devices</li>
-          <li>No cloud account required</li>
-          <li>Works on iOS, Android, and desktop</li>
+          <li>SSH, VNC, RDP, and database connections</li>
+          <li>Test and launch saved connections</li>
+          <li>Create, edit, list, and remove connection profiles</li>
+          <li>Run snippets across multiple servers</li>
+          <li>SSH agent with per-signature approval</li>
+          <li>Bash, Zsh, Fish, and PowerShell completion</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon blue">📈</div>
+        <h3>Monitoring & Recording</h3>
+        <p>Watch server health and keep a playback-ready record of important terminal sessions.</p>
+        <ul class="feature-list">
+          <li>CPU, memory, disk, and network monitoring</li>
+          <li>Configurable health thresholds and notifications</li>
+          <li>Terminal session recording and playback</li>
+          <li>Host key management and verification</li>
+          <li>Encrypted profile export and import</li>
+          <li>Custom file executors per connection</li>
         </ul>
       </div>
     </div>
@@ -1533,12 +1526,7 @@
       <div class="security-item">
         <div class="security-icon">👆</div>
         <h4>Biometric Unlock</h4>
-        <p>Optionally save your vault key to the device's secure enclave for Touch ID, Face ID, or Windows Hello unlock.</p>
-      </div>
-      <div class="security-item">
-        <div class="security-icon">🔗</div>
-        <h4>Encrypted P2P</h4>
-        <p>All peer-to-peer transfers are encrypted end-to-end for secure sharing.</p>
+        <p>Optionally save your vault key to the device's secure enclave for Touch ID or Windows Hello unlock.</p>
       </div>
       <div class="security-item">
         <div class="security-icon">🗄️</div>
@@ -1702,22 +1690,12 @@
           <span class="download-icon">⬇</span>
           <span class="download-text">Download for Free</span>
         </a>
-        <a href="https://apps.apple.com/us/app/swavan-ssh-studio/id6756827241"
-           class="btn btn-appstore" target="_blank" rel="noopener">
-          <span class="appstore-icon">🍎</span>
-          <span class="appstore-text">
-            <span class="appstore-sub">Download on the</span>
-            <span class="appstore-main">App Store</span>
-          </span>
-        </a>
       </div>
       <div class="other-platforms" id="other-platforms-cta">
         <span>Also available for:</span>
         <a href="#" class="platform-link" data-os="macos">macOS</a>
         <a href="#" class="platform-link" data-os="windows">Windows</a>
         <a href="#" class="platform-link" data-os="linux">Linux</a>
-        <a href="https://apps.apple.com/us/app/swavan-ssh-studio/id6756827241" class="platform-link" target="_blank" rel="noopener">iOS</a>
-        <span class="platform-link" style="opacity:0.5;cursor:default;border-bottom-style:none;">Android (coming soon)</span>
       </div>
     </div>
   </section>
@@ -1938,15 +1916,6 @@
           'Automatic lock & backup / restore options'
         ]
       },
-      p2p: {
-        title: 'P2P Connection Sharing',
-        description: 'Share SSH profiles between devices over an encrypted peer-to-peer link.',
-        bullets: [
-          'Send profiles with or without credentials',
-          'Encrypted transfers with one-time transfer keys',
-          'Works across desktop and mobile on the same network'
-        ]
-      },
       profiles: {
         title: 'Multi-Profile Management',
         description: 'Keep separate profiles for workspaces, teams or environments.',
@@ -1973,7 +1942,7 @@
           'JPEG-encoded streaming with configurable quality and color depth',
           'Full keyboard, mouse and clipboard forwarding',
           'macOS Screen Sharing (ARD) authentication support',
-          'View-only mode, auto-reconnect on mobile, landscape lock on small screens'
+          'View-only mode and reliable reconnect handling'
         ]
       },
       snippets: {
@@ -2102,9 +2071,6 @@
         tunnels: 'tunnels',
         vault: 'vault',
         security: 'vault',
-        p2p: 'p2p',
-        sharing: 'p2p',
-        share: 'p2p',
         profile: 'profiles',
         profiles: 'profiles',
         logs: 'logs',
@@ -2224,7 +2190,7 @@
         appendOutputLine('     topics: ssh, vault, tunneling');
         appendOutputLine('  theme     - show current theme');
         appendOutputLine('  theme dark|light - switch theme');
-        appendOutputLine('Feature docs: help ssh | help terminal | help files | help tunnels | help vault | help p2p | help vnc | help snippets | help profiles | help logs');
+        appendOutputLine('Feature docs: help ssh | help terminal | help files | help tunnels | help vault | help vnc | help snippets | help profiles | help logs');
       } else if (lower.startsWith('help ')) {
         const arg = cmd.slice(5).trim();
         if (!arg) {
@@ -2279,7 +2245,6 @@
         appendOutputLine('    - Connect to remote desktops via VNC');
         appendOutputLine('  [ Cross-Platform ]');
         appendOutputLine('    - Backups and private keys work across platforms');
-        appendOutputLine('    - P2P sharing works on the same network');
         appendOutputLine('    - Tunnels behave the same on all OSes');
       } else if (lower === 'download') {
         appendOutputLine('→ Opening Download…');
