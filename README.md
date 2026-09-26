@@ -1,4 +1,4 @@
-# Swavan SSH Studio
+# Swavan Studio
 
 A cross-platform SSH connection manager, terminal, remote desktop client, and operations toolkit for developers and system administrators.
 
@@ -45,4 +45,4 @@ Credentials remain on the device and are encrypted at rest with ChaCha20-Poly130
 
 Read the [user documentation](https://swavan.github.io/studio/docs.html) for setup and feature guides.
 
-© 2026 Swavan SSH Studio
+© 2026 Swavan Studio
