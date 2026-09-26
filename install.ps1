@@ -48,7 +48,7 @@ try {
     [Environment]::SetEnvironmentVariable("Path", (($parts + $installDir) -join ';'), "User")
   }
   $env:Path = "$installDir;$env:Path"
-  Write-Host "Installed Swavan SSH Studio and s3hs. Open a new terminal and run: s3hs --help"
+  Write-Host "Installed Swavan Studio and s3hs. Open a new terminal and run: s3hs --help"
 } finally {
   Remove-Item -Recurse -Force $tempDir -ErrorAction SilentlyContinue
 }

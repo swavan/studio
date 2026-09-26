@@ -32,16 +32,16 @@ case "$os" in
     app_path="$(find "$mount_dir" -maxdepth 1 -name '*.app' -print -quit)"
     [ -n "$app_path" ] || { hdiutil detach "$mount_dir" -quiet; echo "App bundle missing from DMG." >&2; exit 1; }
     if [ -w /Applications ]; then
-      ditto "$app_path" "/Applications/Swavan SSH Studio.app"
+      ditto "$app_path" "/Applications/Swavan Studio.app"
     else
-      sudo ditto "$app_path" "/Applications/Swavan SSH Studio.app"
+      sudo ditto "$app_path" "/Applications/Swavan Studio.app"
     fi
     hdiutil detach "$mount_dir" -quiet
     cli_url="$(asset_url 's3hs-macos-universal$' || true)"
     if [ -n "$cli_url" ]; then
       curl -fL "$cli_url" -o "$install_dir/s3hs"
     else
-      cp "/Applications/Swavan SSH Studio.app/Contents/MacOS/s3hs" "$install_dir/s3hs"
+      cp "/Applications/Swavan Studio.app/Contents/MacOS/s3hs" "$install_dir/s3hs"
     fi
     ;;
   Linux)
@@ -68,7 +68,7 @@ case "$os" in
       studio_bin="$app_dir/swavan-ssh-studio.AppImage"
       cat > "$HOME/.local/share/applications/swavan-ssh-studio.desktop" <<EOF
 [Desktop Entry]
-Name=Swavan SSH Studio
+Name=Swavan Studio
 Exec=$app_dir/swavan-ssh-studio.AppImage
 Type=Application
 Terminal=false
@@ -96,7 +96,7 @@ EOF
 esac
 
 chmod +x "$install_dir/s3hs"
-echo "Installed Swavan SSH Studio and s3hs."
+echo "Installed Swavan Studio and s3hs."
 case ":$PATH:" in
   *":$install_dir:"*) ;;
   *) echo "Add $install_dir to PATH, then run: s3hs --help" ;;
