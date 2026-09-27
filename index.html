@@ -9,21 +9,21 @@
   <meta name="keywords" content="SSH client, SSH GUI, SSH terminal, SSH studio, SSH connection manager, SSH tunnel, SFTP client, remote terminal, secure shell, SSH key manager, port forwarding, free SSH client, macOS SSH, Windows SSH, Linux SSH, SSH app, GUI SSH client, SSH desktop app, SSH CLI, SSH agent authentication, biometric unlock, SSH key management, directory transfer, VNC client, RDP client, remote desktop, command snippets, split terminal, broadcast commands, connection tags">
   <meta name="author" content="Swavan">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://swavan.github.io/studio/">
+  <link rel="canonical" href="https://studio.swavan.io/">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://swavan.github.io/studio/">
+  <meta property="og:url" content="https://studio.swavan.io/">
   <meta property="og:title" content="Swavan Studio - Free SSH, VNC & RDP Client">
   <meta property="og:description" content="Modern SSH client with GUI terminal, remote desktop, secure vault, SSH tunneling, SFTP file browser, command snippets, and a desktop CLI. Free for macOS, Windows, and Linux.">
-  <meta property="og:image" content="https://swavan.github.io/studio/public/icon.svg">
+  <meta property="og:image" content="https://studio.swavan.io/public/icon.svg">
   <meta property="og:site_name" content="Swavan Studio">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Swavan Studio - Free SSH, VNC & RDP Client">
   <meta name="twitter:description" content="Modern SSH client with GUI terminal, remote desktop, secure vault, SSH tunneling, SFTP file browser, command snippets, and a desktop CLI. Free for macOS, Windows, and Linux.">
-  <meta name="twitter:image" content="https://swavan.github.io/studio/public/icon.svg">
+  <meta name="twitter:image" content="https://studio.swavan.io/public/icon.svg">
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -34,7 +34,7 @@
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "macOS, Windows, Linux",
     "description": "Free, modern SSH client with GUI terminal emulator, remote desktop, encrypted vault, SSH tunneling, SFTP file browser, command snippets, remote file editor, and a desktop CLI.",
-    "url": "https://swavan.github.io/studio/",
+    "url": "https://studio.swavan.io/",
     "downloadUrl": "https://github.com/swavan/studio/releases/latest",
     "softwareVersion": "0.1.9",
     "offers": {
@@ -65,7 +65,7 @@
       "Terminal session recording",
       "Desktop CLI (s3hs)"
     ],
-    "screenshot": "https://swavan.github.io/studio/img/docs/shellfrontpage.png"
+    "screenshot": "https://studio.swavan.io/img/docs/shellfrontpage.png"
   }
   </script>
 
@@ -884,6 +884,51 @@
       color: #9ca3af;
     }
 
+    .install-command code {
+      flex: 1;
+    }
+
+    .copy-install-btn {
+      display: inline-flex;
+      position: sticky;
+      right: 0;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+      border: 1px solid #4b5563;
+      border-radius: 0.375rem;
+      background: #111827;
+      color: #d1fae5;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+    }
+
+    .copy-install-btn:hover,
+    .copy-install-btn:focus-visible {
+      border-color: #34d399;
+      color: #6ee7b7;
+      outline: none;
+    }
+
+    .copy-install-btn.copied {
+      border-color: #10b981;
+      background: #064e3b;
+      color: #d1fae5;
+    }
+
+    .copy-install-btn svg {
+      width: 1rem;
+      height: 1rem;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 2;
+    }
+
     /* Footer */
     .footer {
       padding: 3rem 2rem 4rem;
@@ -1251,11 +1296,17 @@
           <h3>Install the desktop app and CLI</h3>
           <div class="install-command" data-installer="unix">
             <span class="install-label">macOS/Linux</span>
-            <code>curl -fsSL https://swavan.github.io/studio/install.sh | sh</code>
+            <code>curl -fsSL https://studio.swavan.io/install.sh | sh</code>
+            <button type="button" class="copy-install-btn" aria-label="Copy macOS and Linux install command" title="Copy install command">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 8V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-3m-8-8H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3m-8-8h6a2 2 0 0 1 2 2v6"/></svg>
+            </button>
           </div>
           <div class="install-command" data-installer="windows">
             <span class="install-label">Windows</span>
-            <code>irm https://swavan.github.io/studio/install.ps1 | iex</code>
+            <code>irm https://studio.swavan.io/install.ps1 | iex</code>
+            <button type="button" class="copy-install-btn" aria-label="Copy Windows install command" title="Copy install command">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 8V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-3m-8-8H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3m-8-8h6a2 2 0 0 1 2 2v6"/></svg>
+            </button>
           </div>
         </div>
       </div>
@@ -1337,8 +1388,8 @@
   <section class="features-section" id="features">
     <div class="section-header">
       <span class="section-tag">Features</span>
-      <h2>Everything You Need for SSH</h2>
-      <p>A comprehensive suite of tools designed to make SSH connections effortless, secure, and productive.</p>
+      <h2>Everything You Need for Remote Connections</h2>
+      <p>A comprehensive suite of tools designed to make remote connections effortless, secure, and productive.</p>
     </div>
 
     <div class="features-grid">
@@ -1742,10 +1793,10 @@
   <!-- CTA Section -->
   <section class="cta-section">
     <div class="cta-content">
-      <h2>Ready to Simplify Your SSH Workflow?</h2>
+      <h2>Ready to Simplify Your Remote Workflow?</h2>
       <p>
         Download Swavan Studio today and experience the modern way to manage
-        your SSH connections. Free to use.
+        your remote server connections.
       </p>
       <div class="hero-buttons">
         <a href="#" id="cta-download-btn" class="btn btn-primary">
@@ -1774,7 +1825,7 @@
         <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
         <a href="terms-and-conditions.html" target="_blank" rel="noopener noreferrer">Terms and Conditions</a>
         <a href="thanks.html" target="_blank" rel="noopener noreferrer">Open Source Thanks</a>
-        <a href="mailto:sshstudiosupport@swavan.io">Contact Support</a>
+        <a href="mailto:studio@swavan.io">Contact Support</a>
       </div>
       <p style="margin-top: 2rem; opacity: 0.6;">© 2026 Swavan Studio. All rights reserved.</p>
     </div>
@@ -2452,6 +2503,34 @@
       }
     }
 
+    async function copyInstallCommand(button) {
+      const command = button.closest('.install-command')?.querySelector('code')?.textContent?.trim();
+      if (!command) return;
+
+      try {
+        await navigator.clipboard.writeText(command);
+        button.classList.add('copied');
+        button.setAttribute('aria-label', 'Install command copied');
+        button.title = 'Copied';
+        window.setTimeout(() => {
+          button.classList.remove('copied');
+          const platform = button.closest('.install-command')?.dataset.installer === 'windows'
+            ? 'Windows'
+            : 'macOS and Linux';
+          button.setAttribute('aria-label', `Copy ${platform} install command`);
+          button.title = 'Copy install command';
+        }, 2000);
+      } catch (error) {
+        console.error('Failed to copy install command:', error);
+      }
+    }
+
+    function initInstallCommandCopyButtons() {
+      document.querySelectorAll('.copy-install-btn').forEach((button) => {
+        button.addEventListener('click', () => copyInstallCommand(button));
+      });
+    }
+
     // Run on page load
     document.addEventListener('DOMContentLoaded', async () => {
       await fetchLatestRelease();
@@ -2459,6 +2538,7 @@
       startTerminalTyping();
       initKeyboardNavigation();
       initThemeToggle();
+      initInstallCommandCopyButtons();
 
       // Focus the command input when clicking anywhere in the terminal body
       const terminalBody = document.querySelector('.terminal-body');

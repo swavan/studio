@@ -9,13 +9,13 @@ The installer detects the operating system and installs both the desktop app and
 ### macOS or Linux
 
 ```sh
-curl -fsSL https://swavan.github.io/studio/install.sh | sh
+curl -fsSL https://studio.swavan.io/install.sh | sh
 ```
 
 ### Windows PowerShell
 
 ```powershell
-irm https://swavan.github.io/studio/install.ps1 | iex
+irm https://studio.swavan.io/install.ps1 | iex
 ```
 
 Manual installers are available from [GitHub Releases](https://github.com/swavan/studio/releases/latest).
@@ -43,6 +43,6 @@ Credentials remain on the device and are encrypted at rest with ChaCha20-Poly130
 
 ## Documentation
 
-Read the [user documentation](https://swavan.github.io/studio/docs.html) for setup and feature guides.
+Read the [user documentation](https://studio.swavan.io/docs.html) for setup and feature guides.
 
 © 2026 Swavan Studio
