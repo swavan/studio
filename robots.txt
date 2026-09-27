@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ssh-studio.swavan.io/sitemap.xml
+Sitemap: https://studio.swavan.io/sitemap.xml
