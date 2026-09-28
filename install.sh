@@ -20,6 +20,7 @@ asset_url() {
 os="$(uname -s)"
 arch="$(uname -m)"
 mkdir -p "$install_dir"
+cli_path="$tmp_dir/s2s"
 
 case "$os" in
   Darwin)
@@ -37,11 +38,11 @@ case "$os" in
       sudo ditto "$app_path" "/Applications/Swavan Studio.app"
     fi
     hdiutil detach "$mount_dir" -quiet
-    cli_url="$(asset_url 's3hs-macos-universal$' || true)"
+    cli_url="$(asset_url 's2s-macos-universal$' || true)"
     if [ -n "$cli_url" ]; then
-      curl -fL "$cli_url" -o "$install_dir/s3hs"
+      curl -fL "$cli_url" -o "$cli_path"
     else
-      cp "/Applications/Swavan Studio.app/Contents/MacOS/s3hs" "$install_dir/s3hs"
+      cp "/Applications/Swavan Studio.app/Contents/MacOS/s2s" "$cli_path"
     fi
     ;;
   Linux)
@@ -75,15 +76,15 @@ Terminal=false
 Categories=Development;Network;
 EOF
     fi
-    cli_url="$(asset_url 's3hs-linux-x86_64$' || true)"
+    cli_url="$(asset_url 's2s-linux-x86_64$' || true)"
     if [ -n "$cli_url" ]; then
-      curl -fL "$cli_url" -o "$install_dir/s3hs"
+      curl -fL "$cli_url" -o "$cli_path"
     else
       [ -n "${studio_bin:-}" ] || {
         echo "Desktop executable not found after installation." >&2
         exit 1
       }
-      cat > "$install_dir/s3hs" <<EOF
+      cat > "$cli_path" <<EOF
 #!/usr/bin/env sh
 exec "$studio_bin" cli "\$@"
 EOF
@@ -95,9 +96,13 @@ EOF
     ;;
 esac
 
-chmod +x "$install_dir/s3hs"
-echo "Installed Swavan Studio and s3hs."
+chmod +x "$cli_path"
+mv -f "$cli_path" "$install_dir/s2s"
+rm -f "$install_dir/s3hs"
+ln -s "s2s" "$install_dir/s3hs"
+
+echo "Installed Swavan Studio and s2s (with s3hs compatibility alias)."
 case ":$PATH:" in
   *":$install_dir:"*) ;;
-  *) echo "Add $install_dir to PATH, then run: s3hs --help" ;;
+  *) echo "Add $install_dir to PATH, then run: s2s --help" ;;
 esac

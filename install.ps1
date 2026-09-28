@@ -26,10 +26,16 @@ try {
   Invoke-WebRequest (Get-Asset '_x64-setup\.exe$') -OutFile $setup
   Start-Process $setup -ArgumentList "/S" -Wait
 
-  $cliAsset = Find-Asset '^s3hs-windows-x86_64\.exe$'
+  $canonicalExe = Join-Path $installDir "s2s.exe"
+  $canonicalWrapper = Join-Path $installDir "s2s.cmd"
+
+  $cliAsset = Find-Asset '^s2s-windows-x86_64\.exe$'
   if ($cliAsset) {
-    $cli = Join-Path $installDir "s3hs.exe"
-    Invoke-WebRequest $cliAsset.browser_download_url -OutFile $cli
+    $downloadedCli = Join-Path $tempDir "s2s.exe"
+    Invoke-WebRequest $cliAsset.browser_download_url -OutFile $downloadedCli
+    Remove-Item $canonicalWrapper -Force -ErrorAction SilentlyContinue
+    Move-Item $downloadedCli $canonicalExe -Force
+    $canonicalCommand = "s2s.exe"
   } else {
     $searchRoots = @(
       (Join-Path $env:LOCALAPPDATA "Programs"),
@@ -38,9 +44,17 @@ try {
     ) | Where-Object { $_ -and (Test-Path $_) }
     $desktop = Get-ChildItem $searchRoots -Filter "swavan-ssh-studio.exe" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
     if (-not $desktop) { throw "Desktop executable not found after installation." }
-    $wrapper = Join-Path $installDir "s3hs.cmd"
-    Set-Content $wrapper "@echo off`r`n`"$($desktop.FullName)`" cli %*" -Encoding ASCII
+    $downloadedCli = Join-Path $tempDir "s2s.cmd"
+    Set-Content $downloadedCli "@echo off`r`n`"$($desktop.FullName)`" cli %*" -Encoding ASCII
+    Remove-Item $canonicalExe -Force -ErrorAction SilentlyContinue
+    Move-Item $downloadedCli $canonicalWrapper -Force
+    $canonicalCommand = "s2s.cmd"
   }
+
+  $legacyExe = Join-Path $installDir "s3hs.exe"
+  $legacyWrapper = Join-Path $installDir "s3hs.cmd"
+  Remove-Item $legacyExe, $legacyWrapper -Force -ErrorAction SilentlyContinue
+  Set-Content $legacyWrapper "@echo off`r`n`"%~dp0$canonicalCommand`" %*" -Encoding ASCII
 
   $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
   $parts = @($userPath -split ';' | Where-Object { $_ })
@@ -48,7 +62,7 @@ try {
     [Environment]::SetEnvironmentVariable("Path", (($parts + $installDir) -join ';'), "User")
   }
   $env:Path = "$installDir;$env:Path"
-  Write-Host "Installed Swavan Studio and s3hs. Open a new terminal and run: s3hs --help"
+  Write-Host "Installed Swavan Studio and s2s (with s3hs compatibility alias). Open a new terminal and run: s2s --help"
 } finally {
   Remove-Item -Recurse -Force $tempDir -ErrorAction SilentlyContinue
 }
