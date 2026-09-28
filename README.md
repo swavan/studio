@@ -4,7 +4,7 @@ A cross-platform SSH connection manager, terminal, remote desktop client, and op
 
 ## Install
 
-The installer detects the operating system and installs both the desktop app and the `s3hs` CLI.
+The installer detects the operating system and installs both the desktop app and the `s2s` CLI. The deprecated `s3hs` command remains available as a compatibility alias through version 0.2.13.
 
 ### macOS or Linux
 
@@ -31,7 +31,7 @@ Manual installers are available from [GitHub Releases](https://github.com/swavan
 - Server health monitoring for CPU, memory, disk, and network usage
 - VNC and RDP remote desktop connections
 - Saved database connections and desktop database workspace
-- `s3hs` desktop CLI for SSH, VNC, RDP, databases, snippets, and SSH agent workflows
+- `s2s` desktop CLI for SSH, VNC, RDP, databases, snippets, and SSH agent workflows
 
 ## Platforms
 
