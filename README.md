@@ -41,8 +41,8 @@ The desktop app supports macOS, Windows, and Linux.
 
 Credentials remain on the device and are encrypted at rest with ChaCha20-Poly1305 using an Argon2-derived key. The vault must be unlocked before protected connection data can be used.
 
-## Documentation
+## CLI documentation
 
-Read the [user documentation](https://studio.swavan.io/docs.html) for setup and feature guides.
+Read the [s2s CLI documentation](https://studio.swavan.io/docs.html) for installation, workflow examples, and the command reference captured from version 0.2.13.
 
 © 2026 Swavan Studio

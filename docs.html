@@ -1,2869 +1,1138 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="dark light">
-  <title>Swavan Studio Documentation - SSH, VNC, RDP, Tunneling &amp; File Management Guide</title>
-  <meta name="description" content="Complete documentation for Swavan Studio — a free remote access client with SSH, VNC and RDP, a secure vault, tunneling, SFTP file browser, command snippets, and more. Available for macOS, Windows, and Linux.">
-  <meta name="keywords" content="SSH client documentation, SSH GUI guide, SSH terminal tutorial, SSH tunnel setup, SFTP file browser, SSH connection manager, SSH key management, port forwarding guide, VNC remote desktop, command snippets, secure vault, biometric unlock, SSH studio docs, remote server management">
-  <meta name="author" content="Swavan">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://studio.swavan.io/docs.html">
-
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://studio.swavan.io/docs.html">
-  <meta property="og:title" content="Swavan Studio Documentation - SSH, VNC, RDP &amp; Tunneling Guide">
-  <meta property="og:description" content="Complete guide for Swavan Studio. Learn SSH connections, remote desktop, tunneling, file management, and more.">
-  <meta property="og:image" content="https://studio.swavan.io/public/icon.svg">
-  <meta property="og:site_name" content="Swavan Studio">
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Swavan Studio Documentation - SSH, VNC, RDP &amp; Tunneling Guide">
-  <meta name="twitter:description" content="Complete guide for Swavan Studio. Learn SSH connections, remote desktop, tunneling, file management, and more.">
-  <meta name="twitter:image" content="https://studio.swavan.io/public/icon.svg">
-
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "TechArticle",
-    "headline": "Swavan Studio Documentation",
-    "description": "Complete documentation for Swavan Studio — a free remote access client with SSH, VNC and RDP, a secure vault, tunneling, SFTP file browser, command snippets, and more for macOS, Windows, and Linux.",
-    "url": "https://studio.swavan.io/docs.html",
-    "about": {
-      "@type": "SoftwareApplication",
-      "name": "Swavan Studio",
-      "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "macOS, Windows, Linux"
-    },
-    "author": {
-      "@type": "Organization",
-      "name": "Swavan"
-    }
-  }
-  </script>
-
-  <link rel="icon" type="image/svg+xml" href="public/icon.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    /* ============================================
-       CSS VARIABLES — Dark terminal-first default
-       ============================================ */
-    :root {
-      --background: #020617;
-      --foreground: #e5e7eb;
-      --card: #0a0f1e;
-      --card-alt: #0d1526;
-      --primary: #0d9488;
-      --primary-light: #14b8a6;
-      --muted-foreground: #9ca3af;
-      --border: #1f2937;
-      --border-bright: #4b5563;
-      --accent-green: #22c55e;
-      --accent-green-dim: #a7f3d0;
-      --accent-blue: #38bdf8;
-      --accent-yellow: #facc15;
-      --accent-red: #ef4444;
-      --accent-orange: #f97316;
-      --accent-purple: #8b5cf6;
-      --sidebar-width: 260px;
-      --header-height: 52px;
-    }
-
-    /* Light theme override */
-    html[data-theme='light'] {
-      --background: #f9fafb;
-      --foreground: #111827;
-      --card: #ffffff;
-      --card-alt: #f3f4f6;
-      --muted-foreground: #6b7280;
-      --border: #e5e7eb;
-      --border-bright: #d1d5db;
-      --accent-green: #16a34a;
-      --accent-green-dim: #15803d;
-      --accent-blue: #0ea5e9;
-      --accent-yellow: #ca8a04;
-      --accent-red: #dc2626;
-      --accent-orange: #ea580c;
-      --accent-purple: #7c3aed;
-    }
-
-    /* ============================================
-       RESET
-       ============================================ */
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'JetBrains Mono', 'Fira Code', SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      background: var(--background);
-      color: var(--foreground);
-      line-height: 1.6;
-      min-height: 100vh;
-      font-size: 0.9rem;
-    }
-
-    a {
-      color: var(--accent-green-dim);
-      text-decoration: none;
-    }
-
-    a:hover {
-      color: var(--accent-green);
-      text-decoration: underline;
-    }
-
-    code {
-      font-family: inherit;
-      background: var(--card-alt);
-      border: 1px solid var(--border-bright);
-      padding: 0.1em 0.35em;
-      font-size: 0.88em;
-      color: var(--accent-green-dim);
-    }
-
-    strong {
-      color: var(--foreground);
-      font-weight: 600;
-    }
-
-    /* ============================================
-       HEADER
-       ============================================ */
-    .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: var(--header-height);
-      background: rgba(2, 6, 23, 0.97);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      padding: 0 1.5rem;
-    }
-
-    html[data-theme='light'] .header {
-      background: rgba(249, 250, 251, 0.97);
-    }
-
-    .header-inner {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      text-decoration: none;
-      color: var(--foreground);
-      flex-shrink: 0;
-    }
-
-    .logo-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 4px;
-    }
-
-    .logo-text {
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #9ca3af;
-    }
-
-    .logo-badge {
-      font-size: 0.65rem;
-      padding: 0.1rem 0.4rem;
-      border: 1px solid var(--border-bright);
-      color: var(--accent-green);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .header-nav {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    .header-nav a {
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #6b7280;
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    .header-nav a:hover {
-      color: var(--accent-green-dim);
-      text-decoration: none;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .theme-toggle-btn {
-      background: transparent;
-      border: 1px solid var(--border-bright);
-      color: #9ca3af;
-      font-family: inherit;
-      font-size: 0.72rem;
-      padding: 0.2rem 0.55rem;
-      border-radius: 0;
-      cursor: pointer;
-      letter-spacing: 0.06em;
-      transition: color 0.15s, border-color 0.15s;
-    }
-
-    .theme-toggle-btn:hover {
-      color: var(--foreground);
-      border-color: var(--accent-green-dim);
-    }
-
-    /* Mobile hamburger */
-    .mobile-menu-btn {
-      display: none;
-      background: transparent;
-      border: 1px solid var(--border-bright);
-      color: var(--muted-foreground);
-      font-family: inherit;
-      font-size: 1rem;
-      width: 32px;
-      height: 32px;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      border-radius: 0;
-    }
-
-    /* ============================================
-       LAYOUT — sidebar + main
-       ============================================ */
-    .docs-layout {
-      display: flex;
-      padding-top: var(--header-height);
-      min-height: 100vh;
-    }
-
-    /* ============================================
-       SIDEBAR
-       ============================================ */
-    .sidebar {
-      width: var(--sidebar-width);
-      flex-shrink: 0;
-      position: fixed;
-      top: var(--header-height);
-      left: 0;
-      bottom: 0;
-      overflow-y: auto;
-      border-right: 1px solid var(--border);
-      background: var(--card);
-      z-index: 100;
-      padding: 1rem 0;
-    }
-
-    .sidebar::-webkit-scrollbar {
-      width: 4px;
-    }
-
-    .sidebar::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .sidebar::-webkit-scrollbar-thumb {
-      background: var(--border-bright);
-    }
-
-    .sidebar-tree-label {
-      padding: 0 1rem 0.5rem;
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--muted-foreground);
-      opacity: 0.7;
-    }
-
-    .sidebar-section {
-      margin-bottom: 0.25rem;
-    }
-
-    .sidebar-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.35rem 1rem;
-      font-size: 0.78rem;
-      color: var(--muted-foreground);
-      cursor: pointer;
-      border-left: 2px solid transparent;
-      transition: color 0.12s, border-color 0.12s, background 0.12s;
-      user-select: none;
-      line-height: 1.4;
-    }
-
-    .sidebar-item:hover {
-      color: var(--foreground);
-      background: rgba(34, 197, 94, 0.04);
-      border-left-color: var(--border-bright);
-    }
-
-    .sidebar-item.active {
-      color: var(--accent-green);
-      border-left-color: var(--accent-green);
-      background: rgba(34, 197, 94, 0.07);
-    }
-
-    .sidebar-item-prefix {
-      color: var(--accent-green);
-      font-size: 0.7rem;
-      flex-shrink: 0;
-      opacity: 0.8;
-    }
-
-    .sidebar-item.active .sidebar-item-prefix {
-      opacity: 1;
-    }
-
-    /* ============================================
-       MAIN CONTENT AREA
-       ============================================ */
-    .docs-main {
-      flex: 1;
-      margin-left: var(--sidebar-width);
-      min-width: 0;
-    }
-
-    .content-panel {
-      display: none;
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 2.5rem 2rem 4rem;
-    }
-
-    .content-panel.active {
-      display: block;
-    }
-
-    /* ============================================
-       TERMINAL-STYLE SECTION HEADER
-       ============================================ */
-    .section-title {
-      margin-bottom: 1.75rem;
-    }
-
-    .section-man-cmd {
-      font-size: 1rem;
-      color: var(--accent-green);
-      margin-bottom: 0.4rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .section-man-cmd .prompt {
-      color: var(--accent-green);
-    }
-
-    .section-man-cmd .cmd {
-      color: var(--foreground);
-    }
-
-    .section-desc {
-      color: var(--muted-foreground);
-      font-size: 0.875rem;
-      line-height: 1.7;
-      border-left: 2px solid var(--border-bright);
-      padding-left: 1rem;
-      margin-top: 0.5rem;
-    }
-
-    /* ============================================
-       STEP LIST
-       ============================================ */
-    .steps {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      margin-top: 1.5rem;
-    }
-
-    .step-block {
-      display: flex;
-      gap: 1rem;
-      padding: 1.25rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .step-block:last-child {
-      border-bottom: none;
-    }
-
-    .step-gutter {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0;
-      flex-shrink: 0;
-      width: 2rem;
-    }
-
-    .step-num {
-      width: 1.6rem;
-      height: 1.6rem;
-      border: 1px solid var(--accent-green);
-      color: var(--accent-green);
-      font-size: 0.7rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      border-radius: 0;
-    }
-
-    .step-connector {
-      flex: 1;
-      width: 1px;
-      background: var(--border);
-      margin-top: 0.25rem;
-    }
-
-    .step-body {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .step-title {
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--foreground);
-      margin-bottom: 0.5rem;
-    }
-
-    .step-body p {
-      color: var(--muted-foreground);
-      font-size: 0.84rem;
-      line-height: 1.7;
-      margin-bottom: 0.75rem;
-    }
-
-    .step-body p:last-child {
-      margin-bottom: 0;
-    }
-
-    /* ============================================
-       LISTS
-       ============================================ */
-    .doc-list {
-      list-style: none;
-      margin: 0.5rem 0;
-    }
-
-    .doc-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.5rem;
-      padding: 0.3rem 0;
-      font-size: 0.82rem;
-      color: var(--muted-foreground);
-      line-height: 1.6;
-    }
-
-    .doc-list li::before {
-      content: "›";
-      color: var(--accent-green);
-      flex-shrink: 0;
-      margin-top: 0.05rem;
-      font-weight: 700;
-    }
-
-    .doc-list li strong {
-      color: var(--foreground);
-      font-weight: 500;
-    }
-
-    /* ============================================
-       CALLOUT BLOCKS (note / tip / warning)
-       ============================================ */
-    .callout {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      padding: 0.85rem 1rem;
-      margin: 1rem 0;
-      border-left: 2px solid;
-      font-size: 0.82rem;
-      line-height: 1.65;
-    }
-
-    .callout-prefix {
-      flex-shrink: 0;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-    }
-
-    .callout-body {
-      color: var(--muted-foreground);
-    }
-
-    .callout-body strong {
-      font-weight: 500;
-    }
-
-    .callout.tip {
-      border-left-color: var(--accent-green);
-      background: rgba(34, 197, 94, 0.05);
-    }
-
-    .callout.tip .callout-prefix {
-      color: var(--accent-green);
-    }
-
-    .callout.info {
-      border-left-color: var(--accent-blue);
-      background: rgba(56, 189, 248, 0.05);
-    }
-
-    .callout.info .callout-prefix {
-      color: var(--accent-blue);
-    }
-
-    .callout.warning {
-      border-left-color: var(--accent-orange);
-      background: rgba(249, 115, 22, 0.05);
-    }
-
-    .callout.warning .callout-prefix {
-      color: var(--accent-orange);
-    }
-
-    .callout.danger {
-      border-left-color: var(--accent-red);
-      background: rgba(239, 68, 68, 0.05);
-    }
-
-    .callout.danger .callout-prefix {
-      color: var(--accent-red);
-    }
-
-    /* ============================================
-       CODE / TERMINAL BLOCKS
-       ============================================ */
-    .code-block {
-      background: var(--card);
-      border: 1px solid var(--border-bright);
-      padding: 0.85rem 1rem;
-      margin: 0.75rem 0;
-      font-size: 0.82rem;
-      overflow-x: auto;
-      line-height: 1.8;
-    }
-
-    .code-block.terminal {
-      border-color: var(--accent-green);
-      color: #bbf7d0;
-    }
-
-    .code-block .prompt {
-      color: var(--accent-green);
-      user-select: none;
-    }
-
-    .code-block .comment {
-      color: #4b5563;
-    }
-
-    /* ============================================
-       KEY-VALUE TABLE (connection fields)
-       ============================================ */
-    .kv-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 0.75rem 0;
-      font-size: 0.82rem;
-    }
-
-    .kv-table tr {
-      border-bottom: 1px solid var(--border);
-    }
-
-    .kv-table tr:last-child {
-      border-bottom: none;
-    }
-
-    .kv-table td {
-      padding: 0.5rem 0.75rem;
-      vertical-align: top;
-      line-height: 1.55;
-    }
-
-    .kv-table td:first-child {
-      color: var(--accent-green-dim);
-      font-weight: 600;
-      white-space: nowrap;
-      padding-right: 1.5rem;
-      min-width: 150px;
-    }
-
-    .kv-table td:last-child {
-      color: var(--muted-foreground);
-    }
-
-    /* ============================================
-       IMAGE CONTAINER
-       ============================================ */
-    .img-wrap {
-      margin: 1rem 0;
-      border: 1px solid var(--border-bright);
-      background: var(--card);
-      overflow: hidden;
-    }
-
-    .img-wrap img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .img-caption {
-      padding: 0.4rem 0.75rem;
-      font-size: 0.75rem;
-      color: var(--muted-foreground);
-      border-top: 1px solid var(--border);
-      background: var(--card-alt);
-    }
-
-    .img-caption::before {
-      content: "# ";
-      color: var(--border-bright);
-    }
-
-    /* ============================================
-       FEATURE GRID (used in summary sections)
-       ============================================ */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      margin: 1rem 0;
-    }
-
-    .feature-cell {
-      background: var(--card);
-      padding: 0.85rem 1rem;
-    }
-
-    .feature-cell-title {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--accent-green-dim);
-      margin-bottom: 0.25rem;
-    }
-
-    .feature-cell-desc {
-      font-size: 0.75rem;
-      color: var(--muted-foreground);
-      line-height: 1.5;
-    }
-
-    /* ============================================
-       FOOTER
-       ============================================ */
-    .docs-footer {
-      margin-left: var(--sidebar-width);
-      padding: 1.5rem 2rem;
-      border-top: 1px solid var(--border);
-      text-align: center;
-      color: var(--muted-foreground);
-      font-size: 0.75rem;
-    }
-
-    .docs-footer a {
-      color: var(--muted-foreground);
-    }
-
-    .docs-footer a:hover {
-      color: var(--accent-green-dim);
-    }
-
-    /* ============================================
-       MOBILE SIDEBAR OVERLAY
-       ============================================ */
-    .sidebar-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: 99;
-    }
-
-    /* ============================================
-       RESPONSIVE
-       ============================================ */
-    @media (max-width: 768px) {
-      .sidebar {
-        transform: translateX(-100%);
-        transition: transform 0.25s ease;
-      }
-
-      .sidebar.open {
-        transform: translateX(0);
-      }
-
-      .sidebar-overlay {
-        display: block;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.25s ease;
-      }
-
-      .sidebar-overlay.open {
-        pointer-events: all;
-        opacity: 1;
-      }
-
-      .docs-main {
-        margin-left: 0;
-      }
-
-      .docs-footer {
-        margin-left: 0;
-      }
-
-      .mobile-menu-btn {
-        display: flex;
-      }
-
-      .header-nav {
-        display: none;
-      }
-
-      .content-panel {
-        padding: 1.5rem 1rem 3rem;
-      }
-    }
-
-    @media (max-width: 500px) {
-      .kv-table td:first-child {
-        min-width: 100px;
-      }
-    }
-
-    /* ============================================
-       SCROLLBAR — subtle
-       ============================================ */
-    .docs-main::-webkit-scrollbar,
-    html::-webkit-scrollbar {
-      width: 4px;
-    }
-
-    html::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    html::-webkit-scrollbar-thumb {
-      background: var(--border-bright);
-    }
-  </style>
-</head>
-<body>
-
-  <!-- ================================================
-       HEADER
-       ================================================ -->
-  <header class="header" role="banner">
-    <div class="header-inner">
-      <a href="index.html" class="logo" aria-label="Swavan Studio home">
-        <img src="public/icon.svg" alt="" class="logo-icon">
-        <span class="logo-text">Swavan Studio</span>
-        <span class="logo-badge">docs</span>
-      </a>
-
-      <nav class="header-nav" aria-label="Site navigation">
-        <a href="index.html">Home</a>
-        <a href="index.html#features">Features</a>
-        <a href="https://github.com/swavan/studio/releases/latest" target="_blank" rel="noopener">Download</a>
-        <a href="https://github.com/swavan/studio" target="_blank" rel="noopener">GitHub</a>
-      </nav>
-
-      <div class="header-actions">
-        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">[ theme ]</button>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false">☰</button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Mobile overlay -->
-  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
-
-  <div class="docs-layout">
-
-    <!-- ================================================
-         SIDEBAR — terminal file tree
-         ================================================ -->
-    <nav class="sidebar" id="sidebar" aria-label="Documentation sections">
-      <p class="sidebar-tree-label">~/docs</p>
-
-      <div class="sidebar-section">
-        <div class="sidebar-item active" data-panel="getting-started" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">01</span>
-          Getting Started
-        </div>
-        <div class="sidebar-item" data-panel="ssh-connections" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">02</span>
-          SSH Connections
-        </div>
-        <div class="sidebar-item" data-panel="terminal-sessions" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">03</span>
-          Terminal &amp; Sessions
-        </div>
-        <div class="sidebar-item" data-panel="file-browser" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">04</span>
-          Remote File Browser
-        </div>
-        <div class="sidebar-item" data-panel="file-transfers" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">05</span>
-          File Transfers
-        </div>
-        <div class="sidebar-item" data-panel="file-editor" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">06</span>
-          Remote File Editor
-        </div>
-        <div class="sidebar-item" data-panel="ssh-tunneling" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">07</span>
-          SSH Tunneling
-        </div>
-        <div class="sidebar-item" data-panel="vnc-desktop" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">08</span>
-          VNC Remote Desktop
-        </div>
-        <div class="sidebar-item" data-panel="snippets" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">09</span>
-          Command Snippets
-        </div>
-        <div class="sidebar-item" data-panel="vault" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">11</span>
-          Secure Vault
-        </div>
-        <div class="sidebar-item" data-panel="profiles" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">12</span>
-          Multi-Profile Management
-        </div>
-        <div class="sidebar-item" data-panel="terminal-custom" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">13</span>
-          Terminal Customization
-        </div>
-        <div class="sidebar-item" data-panel="app-logs" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">14</span>
-          Application Logs
-        </div>
-        <div class="sidebar-item" data-panel="settings" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">15</span>
-          Settings
-        </div>
-        <div class="sidebar-item" data-panel="installation" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">16</span>
-          Installation (Linux)
-        </div>
-        <div class="sidebar-item" data-panel="guide-getting-started" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">18</span>
-          Quick Start Guide
-        </div>
-        <div class="sidebar-item" data-panel="guide-tunneling" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">19</span>
-          SSH Tunneling Guide
-        </div>
-        <div class="sidebar-item" data-panel="guide-terminal" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">21</span>
-          Terminal Usage Guide
-        </div>
-        <div class="sidebar-item" data-panel="guide-files" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">22</span>
-          File Management Guide
-        </div>
-        <div class="sidebar-item" data-panel="guide-tips" role="button" tabindex="0">
-          <span class="sidebar-item-prefix">23</span>
-          Tips &amp; Tricks
-        </div>
-      </div>
-    </nav>
-
-    <!-- ================================================
-         MAIN CONTENT
-         ================================================ -->
-    <main class="docs-main" id="docsMain">
-
-      <!-- ==========================================
-           01. GETTING STARTED
-           ========================================== -->
-      <article class="content-panel active" id="panel-getting-started" aria-label="Getting Started">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man getting-started</span>
-          </div>
-          <p class="section-desc">Install Swavan Studio, complete first launch, and set up your secure vault. Your credentials are encrypted locally — nothing leaves your device.</p>
-        </div>
-
-        <div class="feature-grid">
-          <div class="feature-cell">
-            <div class="feature-cell-title">Platforms</div>
-            <div class="feature-cell-desc">macOS · Windows · Linux</div>
-          </div>
-          <div class="feature-cell">
-            <div class="feature-cell-title">Encryption</div>
-            <div class="feature-cell-desc">ChaCha20-Poly1305 + Argon2 key derivation</div>
-          </div>
-          <div class="feature-cell">
-            <div class="feature-cell-title">Storage</div>
-            <div class="feature-cell-desc">100% local SQLite — no cloud sync required</div>
-          </div>
-          <div class="feature-cell">
-            <div class="feature-cell-title">Price</div>
-            <div class="feature-cell-desc">Free to use</div>
-          </div>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Download and install</div>
-              <p>Install the desktop app and <code>s2s</code> CLI together with the command for your platform. The deprecated <code>s3hs</code> command remains available as a compatibility alias through version 0.2.13.</p>
-              <div class="code-block"><span class="comment"># macOS or Linux</span><br><span class="prompt">$</span> curl -fsSL https://studio.swavan.io/install.sh | sh<br><br><span class="comment"># Windows PowerShell</span><br><span class="prompt">PS&gt;</span> irm https://studio.swavan.io/install.ps1 | iex</div>
-              <p>You can also visit the <a href="https://github.com/swavan/studio/releases/latest" target="_blank" rel="noopener">GitHub Releases page</a> and download an installer manually.</p>
-              <ul class="doc-list">
-                <li><strong>macOS:</strong> .dmg universal binary (Apple Silicon + Intel)</li>
-                <li><strong>Windows:</strong> .msi or .exe installer</li>
-                <li><strong>Linux:</strong> .AppImage (no install required — see Installation section for FUSE setup)</li>
-
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Choose vault setup method</div>
-              <p>On first launch you will see the vault setup screen. Three options are available:</p>
-              <div class="img-wrap">
-                <img src="img/docs/1.png" alt="Initial vault setup screen showing three options">
-                <div class="img-caption">Vault initialization — choose your setup method</div>
-              </div>
-              <ul class="doc-list">
-                <li><strong>Create New Vault</strong> — start fresh and add connections manually</li>
-
-                <li><strong>Restore from backup</strong> — restore from a previously exported encrypted backup file</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Create your master password</div>
-              <p>Choose "Create New Vault", enter a strong master password, confirm it, then click <strong>Initialize Vault</strong>.</p>
-              <div class="img-wrap">
-                <img src="img/docs/2.png" alt="Master password creation form">
-                <div class="img-caption">Create master password — this encrypts all stored credentials</div>
-              </div>
-              <div class="callout warning">
-                <span class="callout-prefix">[warn]</span>
-                <div class="callout-body">There is no password recovery. If you lose your master password and have no backup, your stored credentials cannot be recovered. Store it in a password manager.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Unlock the vault on subsequent launches</div>
-              <p>Every time you open the app, enter your master password to unlock the vault.</p>
-              <div class="img-wrap">
-                <img src="img/docs/3.png" alt="Vault unlock screen">
-                <div class="img-caption">Unlock screen — enter master password to access credentials</div>
-              </div>
-              <div class="callout tip">
-                <span class="callout-prefix">[tip]</span>
-                <div class="callout-body">After unlocking once, you can enable <strong>biometric unlock</strong> (Touch ID or Windows Hello) so future launches use your device authentication. Enable it in Settings → General → Vault Security.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">5</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Main application screen</div>
-              <p>After unlocking you will see the full application. The sidebar gives access to all features.</p>
-              <div class="img-wrap">
-                <img src="img/docs/shellfrontpage.png" alt="Main application screen">
-                <div class="img-caption">Main screen — sidebar navigation to all features</div>
-              </div>
-              <ul class="doc-list">
-                <li><strong>Terminal icon</strong> — multi-tab SSH terminal sessions</li>
-                <li><strong>Connections icon</strong> — manage saved SSH connections</li>
-                <li><strong>Explorer icon</strong> — remote file browser and editor</li>
-                <li><strong>Tunnels icon</strong> — SSH port forwarding and SOCKS proxy</li>
-                <li><strong>Settings icon</strong> — preferences, security, customization</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ==========================================
-           02. SSH CONNECTIONS
-           ========================================== -->
-      <article class="content-panel" id="panel-ssh-connections" aria-label="SSH Connections">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man ssh-connections</span>
-          </div>
-          <p class="section-desc">Create, edit, organize, and connect to SSH servers. Supports password, private key, SSH agent, and multi-factor auth. Connection tags, SSH config import, and host key verification (TOFU) included.</p>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Connections screen overview</div>
-              <p>Open the Connections screen from the sidebar. It shows your active sessions at the top and all saved connection profiles below.</p>
-              <div class="img-wrap">
-                <img src="img/docs/8.png" alt="Connections screen with saved connections list">
-                <div class="img-caption">Connections screen — active sessions and saved profiles</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Create a new connection</div>
-              <p>Tap <strong>+ New Connection</strong>. Fill in the required fields marked with *.</p>
-              <div class="img-wrap">
-                <img src="img/docs/9.png" alt="New connection configuration form">
-                <div class="img-caption">New connection form — configure host, port, auth method</div>
-              </div>
-              <table class="kv-table">
-                <tr><td>Name *</td><td>Display name for the connection (e.g., "Production Web")</td></tr>
-                <tr><td>Host *</td><td>Server hostname or IP address</td></tr>
-                <tr><td>Port *</td><td>SSH port (default: 22)</td></tr>
-                <tr><td>Username *</td><td>SSH login username</td></tr>
-                <tr><td>Auth Method</td><td>Password, Private Key, SSH Agent, or Password + Key</td></tr>
-                <tr><td>Landing Path</td><td>Optional starting directory after connect (e.g., /var/www)</td></tr>
-                <tr><td>Tags</td><td>Optional labels for filtering (e.g., "production", "dev")</td></tr>
-              </table>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Authentication methods</div>
-              <p>Four auth methods are supported:</p>
-              <ul class="doc-list">
-                <li><strong>Password</strong> — standard SSH password authentication</li>
-                <li><strong>Private Key</strong> — paste key content or supply a file path; supports RSA, Ed25519, ECDSA</li>
-                <li><strong>SSH Agent</strong> — delegates auth to the system SSH agent socket; no credential stored in the app</li>
-                <li><strong>Password + Key (MFA)</strong> — private key authenticates first, password is required as a second factor</li>
-              </ul>
-              <div class="callout tip">
-                <span class="callout-prefix">[tip]</span>
-                <div class="callout-body">SSH Agent auth is the most secure option for desktop. The app never sees your private key — the OS agent handles signing. Recommended for servers with sensitive data.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Connection tags and filtering</div>
-              <p>Add tags to connections to group them by environment, project, or any label you choose. Use the search bar and tag filter to quickly find connections in large lists.</p>
-              <ul class="doc-list">
-                <li>Tags are free-text — type any label during connection creation or edit</li>
-                <li>Filter connections by tag from the Connections screen search bar</li>
-                <li>Multiple tags per connection are supported</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">5</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Host key verification (TOFU)</div>
-              <p>On first connection to a new server, the app records the server's host key fingerprint using Trust On First Use (TOFU). On subsequent connections, if the host key changes, you will see a warning before proceeding.</p>
-              <div class="callout warning">
-                <span class="callout-prefix">[warn]</span>
-                <div class="callout-body">A changed host key may indicate a man-in-the-middle attack or server reinstallation. Only accept a changed key if you are certain the server was legitimately re-provisioned.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">6</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Editing and managing connections</div>
-              <p>Long-press or use the context menu on any connection to access edit, duplicate, delete, and share actions. All changes are encrypted and saved immediately.</p>
-              <div class="img-wrap">
-                <img src="img/docs/10.png" alt="Connection list with a saved connection entry">
-                <div class="img-caption">Connection entry — tap to connect, hold or use menu for actions</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ==========================================
-           03. TERMINAL & SESSIONS
-           ========================================== -->
-      <article class="content-panel" id="panel-terminal-sessions" aria-label="Terminal and Sessions">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man terminal-sessions</span>
-          </div>
-          <p class="section-desc">Multi-tab SSH sessions with full terminal emulation. Supports drag-to-reorder tabs, broadcast commands to multiple sessions, and a script runner for repeatable tasks.</p>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Opening a terminal session</div>
-              <p>From the Connections screen, tap the play button next to any saved connection. A new tab opens in the terminal view. You can open multiple tabs to the same or different servers.</p>
-              <div class="img-wrap">
-                <img src="img/docs/terminal.png" alt="Terminal view with an active SSH session">
-                <div class="img-caption">Terminal — full ANSI color and UTF-8 support</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Multi-tab session management</div>
-              <p>Up to 10 terminal tabs can be open simultaneously. Each tab is an independent SSH session.</p>
-              <ul class="doc-list">
-                <li>Click the <strong>+</strong> button in the tab bar to open another terminal to any connection</li>
-                <li>Duplicate an existing tab with the duplicate icon — reconnects to the same host in a new tab</li>
-                <li><strong>Drag tabs</strong> left or right to reorder them</li>
-                <li>Close a tab with the × button — the session disconnects cleanly</li>
-              </ul>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">Tab labels show "Name #2", "Name #3" etc. when multiple tabs connect to the same server, so you can always distinguish them at a glance.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Broadcast commands to multiple sessions</div>
-              <p>Enable broadcast mode to send the same input to all open terminal sessions simultaneously. Useful for running the same command across multiple servers at once.</p>
-              <ul class="doc-list">
-                <li>Toggle broadcast mode from the terminal toolbar</li>
-                <li>Keystrokes are echoed to all tabs in real time</li>
-                <li>Disable broadcast to return to single-session input</li>
-              </ul>
-              <div class="callout warning">
-                <span class="callout-prefix">[warn]</span>
-                <div class="callout-body">Broadcast mode sends every keystroke to all sessions. Double-check which tabs are open before running destructive commands in broadcast mode.</div>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">5</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Script runner</div>
-              <p>Select a saved command snippet from the snippet library and inject it directly into the active terminal session. See the <strong>Command Snippets</strong> section for how to create and organize snippets.</p>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ==========================================
-           04. REMOTE FILE BROWSER
-           ========================================== -->
-      <article class="content-panel" id="panel-file-browser" aria-label="Remote File Browser">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man remote-file-browser</span>
-          </div>
-          <p class="section-desc">Browse, create, rename, and delete files and directories on remote servers over SFTP. Supports 50+ file types, multi-tab browsing, and seamless integration with the file editor and transfer tools.</p>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Opening the file browser</div>
-              <p>Navigate to the Explorer section from the sidebar, or click the folder icon on a connection card when a session is active. You can also open the file browser directly from an active terminal session.</p>
-              <div class="img-wrap">
-                <img src="img/docs/openfile.png" alt="Explorer session picker screen">
-                <div class="img-caption">Explorer — select an active session to browse its filesystem</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Navigating the filesystem</div>
-              <p>The file browser shows the current directory listing with icons for each file type. Tap a directory to enter it. Use the breadcrumb bar at the top to navigate back up the path.</p>
-              <div class="img-wrap">
-                <img src="img/docs/files.png" alt="File explorer listing files and folders">
-                <div class="img-caption">File browser — directory listing with file type icons</div>
-              </div>
-              <ul class="doc-list">
-                <li>Tap a folder to navigate into it</li>
-                <li>Tap the breadcrumb segments to jump up the path</li>
-                <li>Use the search icon to filter files by name within the current directory</li>
-                <li>Tap the home icon to jump to the session's home directory</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Creating files and directories</div>
-              <p>Use the <strong>+</strong> button in the toolbar to create a new file or a new directory at the current path. Enter the name in the prompt that appears.</p>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Renaming files and directories</div>
-              <p>Long-press or use the context menu (⋯) on any file or folder and choose <strong>Rename</strong>. Enter the new name in the dialog that appears.</p>
-              <div class="img-wrap">
-                <img src="img/docs/renamefile.png" alt="Rename file dialog with text input">
-                <div class="img-caption">Rename dialog — type the new filename and confirm</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">5</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Deleting files and directories</div>
-              <p>From the context menu, choose <strong>Delete</strong>. A confirmation dialog is shown before any deletion. Recursive deletion of non-empty directories is supported.</p>
-              <div class="img-wrap">
-                <img src="img/docs/deletefile.png" alt="Delete confirmation dialog">
-                <div class="img-caption">Delete confirmation — destructive action requires explicit confirmation</div>
-              </div>
-              <div class="callout danger">
-                <span class="callout-prefix">[danger]</span>
-                <div class="callout-body">Deletion is permanent on the remote server. There is no trash/recycle bin. Double-check the path before confirming.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ==========================================
-           05. FILE TRANSFERS
-           ========================================== -->
-      <article class="content-panel" id="panel-file-transfers" aria-label="File Transfers">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man file-transfers</span>
-          </div>
-          <p class="section-desc">Upload files from your local device to a remote server, or download remote files to your local machine. Supports recursive folder transfers and shows real-time progress.</p>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Uploading files to the remote server</div>
-              <p>In the file browser, navigate to the destination directory on the remote server, then click the <strong>Upload</strong> button in the toolbar.</p>
-              <div class="img-wrap">
-                <img src="img/docs/uploadfile.png" alt="File picker dialog for upload">
-                <div class="img-caption">Upload — select local files to transfer to the current remote directory</div>
-              </div>
-              <ul class="doc-list">
-                <li>Select one or multiple files from your local filesystem</li>
-                <li>Entire folders can be selected — the full directory tree is transferred recursively</li>
-                <li>Progress is shown per-file during transfer</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">After upload — verifying the transfer</div>
-              <p>After a successful upload the file browser refreshes automatically and shows the newly uploaded files alongside existing entries.</p>
-              <div class="img-wrap">
-                <img src="img/docs/fileuploaded.png" alt="File browser after successful upload showing new files">
-                <div class="img-caption">Post-upload — newly transferred files appear in the listing</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Downloading files from the remote server</div>
-              <p>Open the context menu (⋯) on any file and choose <strong>Download</strong>. You will be prompted to choose a local save location.</p>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">File upload and download use SFTP under the hood — the same underlying SSH connection is reused, so no extra authentication is required.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ==========================================
-           06. REMOTE FILE EDITOR
-           ========================================== -->
-      <article class="content-panel" id="panel-file-editor" aria-label="Remote File Editor">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man remote-file-editor</span>
-          </div>
-          <p class="section-desc">Edit remote files in place — no download-edit-upload cycle. Changes are saved directly back to the server. Supports syntax highlighting for 50+ file types.</p>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Opening a file for editing</div>
-              <p>In the remote file browser, tap any supported text file. The file editor opens with the file contents loaded and syntax highlighting applied based on the file extension.</p>
-              <div class="img-wrap">
-                <img src="img/docs/editfile.png" alt="Remote file editor with syntax highlighting">
-                <div class="img-caption">File editor — syntax-highlighted editing of remote files</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Supported file types</div>
-              <p>The editor recognizes 50+ file types for syntax highlighting, including but not limited to:</p>
-              <ul class="doc-list">
-                <li>Config files — nginx, Apache, SSH config, systemd units, TOML, YAML, JSON, INI</li>
-                <li>Shell scripts — bash, zsh, fish, PowerShell</li>
-                <li>Web — HTML, CSS, JavaScript, TypeScript, JSX, TSX</li>
-                <li>Backend — Python, Go, Ruby, PHP, Java, Kotlin, Swift</li>
-                <li>Database — SQL, PostgreSQL, MySQL dialects</li>
-                <li>DevOps — Dockerfile, Makefile, GitHub Actions YAML, Terraform HCL</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Saving changes to the server</div>
-              <p>Tap <strong>Save</strong> (or use the keyboard shortcut Ctrl+S / Cmd+S) to write changes back to the remote server over SFTP. An indicator confirms a successful save.</p>
-              <div class="callout tip">
-                <span class="callout-prefix">[tip]</span>
-                <div class="callout-body">The editor fetches the file content fresh on open and writes it back on save. If another process modified the file while you were editing, your save will overwrite those changes — same behavior as <code>nano</code> or <code>vim</code>.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ==========================================
-           07. SSH TUNNELING
-           ========================================== -->
-      <article class="content-panel" id="panel-ssh-tunneling" aria-label="SSH Tunneling">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man ssh-tunneling</span>
-          </div>
-          <p class="section-desc">Create and manage SSH tunnels for local port forwarding (ssh -L), remote port forwarding (ssh -R), and dynamic SOCKS5 proxy (ssh -D). Monitor tunnel status in real time.</p>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Tunnel types overview</div>
-              <table class="kv-table">
-                <tr>
-                  <td>Local (ssh -L)</td>
-                  <td>Forwards a local port to a service reachable from the remote server. Use this to access a remote database or internal service via a local port.</td>
-                </tr>
-                <tr>
-                  <td>Remote (ssh -R)</td>
-                  <td>Exposes a local port on the remote server. Use this to make a locally-running service accessible from the remote machine.</td>
-                </tr>
-                <tr>
-                  <td>Dynamic SOCKS (ssh -D)</td>
-                  <td>Creates a SOCKS5 proxy on a local port. Configure your browser or system to route all traffic through it — encrypts everything via SSH.</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Tunnels screen</div>
-              <p>Navigate to the Tunnels section from the sidebar. All configured tunnels are listed with their type, port configuration, and current status (running / stopped).</p>
-              <div class="img-wrap">
-                <img src="img/docs/tunnels.png" alt="Tunnels screen with empty state">
-                <div class="img-caption">Tunnels screen — lists all saved tunnel configurations</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Creating a tunnel</div>
-              <p>Tap the <strong>+</strong> button to create a new tunnel. Configure the following fields:</p>
-              <div class="img-wrap">
-                <img src="img/docs/createtunnel.png" alt="Create tunnel dialog with type selection">
-                <div class="img-caption">Create tunnel — choose type and configure port mapping</div>
-              </div>
-              <table class="kv-table">
-                <tr><td>Tunnel Name</td><td>Descriptive label (e.g., "DB via production")</td></tr>
-                <tr><td>SSH Connection</td><td>Which saved connection to use as the tunnel gateway</td></tr>
-                <tr><td>Tunnel Type</td><td>Local, Remote, or Dynamic SOCKS</td></tr>
-                <tr><td>Local Port</td><td>Port on your local machine</td></tr>
-                <tr><td>Remote Host</td><td>Target host reachable from the SSH server (Local tunnels)</td></tr>
-                <tr><td>Remote Port</td><td>Target port on the remote side</td></tr>
-              </table>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Starting and stopping tunnels</div>
-              <p>Each tunnel entry has a toggle to start or stop forwarding. The status indicator shows green when active and gray when stopped.</p>
-              <div class="img-wrap">
-                <img src="img/docs/createdlocaltunnel.png" alt="Tunnel list showing an active local tunnel">
-                <div class="img-caption">Active local tunnel — status indicator shows running state</div>
-              </div>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">Tunnels require an active SSH session on the backing connection. If the session drops, the tunnel stops automatically and can be restarted with a single tap.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">5</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Using a dynamic SOCKS proxy</div>
-              <p>After creating a Dynamic SOCKS tunnel and starting it, configure your browser or OS to use a SOCKS5 proxy at <code>127.0.0.1:&lt;local-port&gt;</code>.</p>
-              <div class="code-block terminal">
-                <span class="comment"># Example: configure curl to use the proxy</span><br>
-                <span class="prompt">$</span> curl --socks5 127.0.0.1:5080 https://example.com
-              </div>
-              <ul class="doc-list">
-                <li>Firefox: Preferences → Network Settings → Manual Proxy → SOCKS5 Host: 127.0.0.1, Port: your local port</li>
-                <li>macOS System Proxy: System Settings → Network → Advanced → Proxies → SOCKS Proxy</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ==========================================
-           08. VNC REMOTE DESKTOP
-           ========================================== -->
-      <article class="content-panel" id="panel-vnc-desktop" aria-label="VNC Remote Desktop">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man vnc-remote-desktop</span>
-          </div>
-          <p class="section-desc">Connect to remote desktops using VNC. Supports direct TCP connections and SSH-tunneled VNC for secure access through firewalls. Configurable color depth, JPEG quality, ARD authentication, and view-only mode.</p>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Creating a VNC connection</div>
-              <p>VNC connections are created from the Connections screen alongside SSH connections. Tap <strong>+ New Connection</strong> and select <strong>VNC</strong> as the connection type.</p>
-              <table class="kv-table">
-                <tr><td>Name *</td><td>Display name for this VNC target</td></tr>
-                <tr><td>Host *</td><td>Hostname or IP of the VNC server</td></tr>
-                <tr><td>Port *</td><td>VNC port (default: 5900 for VNC, 5800 for web VNC)</td></tr>
-                <tr><td>Password</td><td>VNC authentication password</td></tr>
-                <tr><td>Auth Type</td><td>Standard VNC password or ARD (Apple Remote Desktop) authentication</td></tr>
-              </table>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Direct vs. SSH-tunneled VNC</div>
-              <p>Two connection modes are available:</p>
-              <ul class="doc-list">
-                <li><strong>Direct</strong> — connects to the VNC server's TCP port directly. The VNC server must be reachable from your device. VNC traffic is not encrypted unless TLS is configured on the server.</li>
-                <li><strong>SSH-tunneled</strong> — routes VNC through an SSH tunnel. Select an existing SSH connection as the gateway. The VNC port never needs to be open on the firewall. All traffic is encrypted by SSH.</li>
-              </ul>
-              <div class="callout tip">
-                <span class="callout-prefix">[tip]</span>
-                <div class="callout-body">SSH-tunneled VNC is strongly recommended. It eliminates the need to expose the VNC port to the internet and adds SSH-layer encryption on top of whatever VNC provides.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Display settings — color depth and JPEG quality</div>
-              <p>Adjust these settings to balance visual quality against bandwidth consumption:</p>
-              <table class="kv-table">
-                <tr><td>Color Depth</td><td>8-bit, 16-bit, or 24-bit. Lower depth reduces bandwidth. 24-bit is full color.</td></tr>
-                <tr><td>JPEG Quality</td><td>0–9 scale. Higher values improve image sharpness; lower values reduce bandwidth. Recommended: 6 for LAN, 3–4 for WAN.</td></tr>
-              </table>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">ARD authentication (Apple Remote Desktop)</div>
-              <p>If you are connecting to a macOS machine with Screen Sharing enabled, select <strong>ARD</strong> as the auth type and enter the macOS user credentials. ARD auth uses an Apple-specific challenge-response scheme over the VNC protocol.</p>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">ARD auth is not the same as a VNC password. Use the macOS user's account credentials (username + password), not a separate VNC password.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">5</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">View-only mode</div>
-              <p>Enable <strong>View Only</strong> in the connection settings to observe the remote desktop without sending any keyboard or mouse input. Useful for monitoring and demonstrations.</p>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">6</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Keyboard, mouse, and clipboard</div>
-              <p>When connected to a VNC session:</p>
-              <ul class="doc-list">
-                <li>Mouse movements and clicks are forwarded to the remote desktop in real time</li>
-                <li>Keyboard input is forwarded with full modifier key support (Ctrl, Alt, Cmd, Shift)</li>
-                <li>Clipboard sync: text copied on your local device can be pasted on the remote, and vice versa (when supported by the VNC server)</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ==========================================
-           09. COMMAND SNIPPETS
-           ========================================== -->
-      <article class="content-panel" id="panel-snippets" aria-label="Command Snippets">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man command-snippets</span>
-          </div>
-          <p class="section-desc">Save, organize, and quickly insert frequently-used commands into any terminal session. Tag and search snippets. Works as a script runner for repeatable tasks.</p>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Creating a snippet</div>
-              <p>Navigate to <strong>Settings → Snippets</strong> or access the snippet library from the terminal toolbar. Tap <strong>+ New Snippet</strong> and fill in:</p>
-              <table class="kv-table">
-                <tr><td>Title</td><td>Short, descriptive name (e.g., "Tail nginx error log")</td></tr>
-                <tr><td>Command</td><td>The full command text to insert</td></tr>
-                <tr><td>Tags</td><td>Optional labels for grouping (e.g., "nginx", "logs", "linux")</td></tr>
-                <tr><td>Description</td><td>Optional notes about when to use the snippet</td></tr>
-              </table>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Tags and categories</div>
-              <p>Use tags to group snippets by topic, tool, or project. The snippet library can be filtered by tag or searched by title or command text, making it fast to locate a specific snippet even in a large collection.</p>
-              <ul class="doc-list">
-                <li>Multiple tags per snippet are supported</li>
-                <li>Tags are shared across connections and sessions</li>
-                <li>Use consistent tagging conventions for best discoverability</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Searching snippets</div>
-              <p>The snippet search bar performs a full-text search across snippet titles, command bodies, and tags in real time as you type.</p>
-              <div class="callout tip">
-                <span class="callout-prefix">[tip]</span>
-                <div class="callout-body">Searching by a tag name returns all snippets with that tag. Searching by part of a command (e.g., "journalctl") returns every snippet containing that text.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Inserting a snippet into the terminal</div>
-              <p>Open the snippet library from the terminal toolbar (the snippet icon). Tap a snippet to insert its command text at the terminal cursor. The command is injected into the active terminal — review it before pressing Enter to execute.</p>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">Snippets are inserted as text — not automatically executed. This gives you a chance to review or modify the command before sending it.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-
-      <!-- ==========================================
-           11. SECURE VAULT
-           ========================================== -->
-      <article class="content-panel" id="panel-vault" aria-label="Secure Vault">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man secure-vault</span>
-          </div>
-          <p class="section-desc">All credentials are encrypted locally using ChaCha20-Poly1305 with Argon2id key derivation. Lock, unlock, change password, and back up your vault. Biometric unlock available on supported devices.</p>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Master password and encryption</div>
-              <p>The vault is protected by your master password. The password is run through Argon2id (a memory-hard KDF) to derive the encryption key — the password itself is never stored anywhere.</p>
-              <table class="kv-table">
-                <tr><td>Algorithm</td><td>ChaCha20-Poly1305 authenticated encryption</td></tr>
-                <tr><td>KDF</td><td>Argon2id (memory-hard, GPU-resistant)</td></tr>
-                <tr><td>Storage</td><td>SQLite database on the local device only</td></tr>
-                <tr><td>Cloud sync</td><td>None — your data never leaves the device</td></tr>
-              </table>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Biometric unlock</div>
-              <p>After unlocking the vault with your master password at least once, you can enable biometric unlock in <strong>Settings → General → Vault Security</strong>.</p>
-              <ul class="doc-list">
-                <li><strong>macOS</strong> — Touch ID</li>
-
-                <li><strong>Windows</strong> — Windows Hello (fingerprint, face, or PIN)</li>
-
-              </ul>
-              <p>The vault key is stored in the platform credential store. The master password is not stored.</p>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Locking the vault</div>
-              <p>Tap <strong>Lock Vault</strong> at the bottom of the Connections screen, or from <strong>Settings → Security → Lock Vault</strong>. This immediately clears the vault key from memory — the app locks and requires your master password (or biometric) to continue.</p>
-              <div class="callout tip">
-                <span class="callout-prefix">[tip]</span>
-                <div class="callout-body">Lock the vault whenever you step away from your device to prevent unauthorized access to your SSH credentials.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Changing the master password</div>
-              <p>Go to <strong>Settings → General → Vault Security → Change Password</strong>. Enter your current password, then your new password (twice to confirm). All stored credentials are re-encrypted with the new key immediately.</p>
-              <div class="img-wrap">
-                <img src="img/docs/security.png" alt="Security settings with change password option">
-                <div class="img-caption">Vault security settings — change password and manage biometric unlock</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">5</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Backup and restore</div>
-              <p>Export an encrypted backup of your vault from <strong>Settings → General → Storage</strong>. The backup file is encrypted with your master password and can be restored on any device running Swavan Studio.</p>
-              <ul class="doc-list">
-                <li>Backup format: encrypted archive containing all connections, tunnels, and configuration</li>
-                <li>The backup is useless without your master password — it is safe to store in cloud storage</li>
-                <li>To restore: choose "Restore from backup" on first launch or from the profile screen</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ==========================================
-           12. MULTI-PROFILE MANAGEMENT
-           ========================================== -->
-      <article class="content-panel" id="panel-profiles" aria-label="Multi-Profile Management">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man multi-profile-management</span>
-          </div>
-          <p class="section-desc">Create multiple independent vaults (profiles) on a single device. Switch between work, personal, or client profiles, each with their own connections, credentials, and settings.</p>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Creating a new profile</div>
-              <p>From the profile selection screen (shown before vault unlock), tap <strong>+ New Profile</strong>. Each profile is a fully isolated vault with its own master password and connection database.</p>
-              <ul class="doc-list">
-                <li>Profiles are listed on the profile picker screen</li>
-                <li>Each profile has its own master password — they are fully independent</li>
-                <li>Data in one profile is never accessible from another</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Switching between profiles</div>
-              <p>Lock the current vault. The profile picker appears, letting you select and unlock a different profile. No data crosses between profiles during the switch.</p>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Deleting a profile</div>
-              <p>From the profile picker, long-press or use the menu on a profile and choose <strong>Delete</strong>. Confirm the deletion. This permanently removes the vault database for that profile — all connections stored in it are lost.</p>
-              <div class="callout danger">
-                <span class="callout-prefix">[danger]</span>
-                <div class="callout-body">Profile deletion is irreversible. Export a backup before deleting a profile if you may need the connections later.</div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </article>
-
-      <!-- ==========================================
-           13. TERMINAL CUSTOMIZATION
-           ========================================== -->
-      <article class="content-panel" id="panel-terminal-custom" aria-label="Terminal Customization">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man terminal-customization</span>
-          </div>
-          <p class="section-desc">Personalize your terminal with 8 font choices, adjustable font size, custom foreground/background colors, and cursor style. Preferences are per-device and stored locally.</p>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Opening terminal preferences</div>
-              <p>Navigate to <strong>Settings → General → Terminal</strong>. Changes are applied live — you can see them reflected in any open terminal sessions immediately.</p>
-              <div class="img-wrap">
-                <img src="img/docs/terminalfont.png" alt="Terminal customization settings panel">
-                <div class="img-caption">Terminal preferences — font, size, and color settings</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Font selection</div>
-              <p>Eight monospace fonts are available, embedded directly in the app so they work consistently across all platforms:</p>
-              <ul class="doc-list">
-                <li>JetBrains Mono</li>
-                <li>Fira Code</li>
-                <li>Cascadia Code</li>
-                <li>Source Code Pro</li>
-                <li>IBM Plex Mono</li>
-                <li>Inconsolata</li>
-                <li>Hack</li>
-                <li>Ubuntu Mono</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Font size</div>
-              <p>Use the font size slider to adjust text size. The app has sensible platform defaults — 17px on desktop, 10px on mobile — with a minimum of 6px.</p>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">Font size changes resize the terminal grid via FitAddon — the number of columns and rows updates automatically to match the new size.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Terminal colors and theme</div>
-              <p>The terminal color scheme follows the app theme (light / dark / system). In the terminal customization panel you can also set a custom foreground color, background color, and cursor color independent of the app theme.</p>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ==========================================
-           14. APPLICATION LOGS
-           ========================================== -->
-      <article class="content-panel" id="panel-app-logs" aria-label="Application Logs">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man application-logs</span>
-          </div>
-          <p class="section-desc">Built-in log viewer for diagnosing connection issues and other application behavior. Search, filter by level, and clear logs from within the Settings panel.</p>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Accessing the log viewer</div>
-              <p>Navigate to <strong>Settings</strong> and tap the <strong>Logs</strong> button (scroll icon) in the settings navigation bar. The log viewer loads the current log file automatically.</p>
-              <ul class="doc-list">
-                <li>Logs are loaded from disk when the panel opens</li>
-                <li>Tap the <strong>Refresh</strong> button to reload after new log entries are written</li>
-                <li>Logs scroll from oldest at the top to newest at the bottom</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Searching and filtering</div>
-              <p>Use the search input and the log level dropdown to narrow down entries:</p>
-              <table class="kv-table">
-                <tr><td>Search box</td><td>Filters log lines by any text keyword (case-insensitive, real-time)</td></tr>
-                <tr><td>Level filter</td><td>ALL / ERROR / WARN / INFO / DEBUG</td></tr>
-                <tr><td>Color coding</td><td>ERROR = red · WARN = amber · DEBUG = gray · INFO = default</td></tr>
-              </table>
-              <div class="callout tip">
-                <span class="callout-prefix">[tip]</span>
-                <div class="callout-body">Combine level filter "ERROR" with a keyword search like "sftp" or "ssh" to isolate failures from a specific subsystem quickly.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Clearing logs</div>
-              <p>Tap the trash icon in the log viewer toolbar. This erases the log file on disk and clears the viewer. Useful to start with a clean log before reproducing an issue.</p>
-              <div class="callout danger">
-                <span class="callout-prefix">[danger]</span>
-                <div class="callout-body">Clearing logs is permanent. The log file is overwritten and previous entries cannot be recovered. Copy any relevant entries before clearing.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ==========================================
-           15. SETTINGS
-           ========================================== -->
-      <article class="content-panel" id="panel-settings" aria-label="Settings">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man settings</span>
-          </div>
-          <p class="section-desc">App-wide configuration — theme, terminal preferences, keyboard shortcuts, storage, vault security, and module visibility. Four top-level tabs: General, System, Logs, About.</p>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Settings overview</div>
-              <p>Open Settings from the sidebar. Four navigation tabs are shown as icon-only buttons at the top: <strong>General</strong>, <strong>System</strong>, <strong>Logs</strong>, and <strong>About</strong>.</p>
-              <div class="img-wrap">
-                <img src="img/docs/setting.png" alt="Main settings screen with four tab sections">
-                <div class="img-caption">Settings — four tabs: General, System, Logs, About</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">General tab</div>
-              <p>The General tab contains all user-configurable preferences organized as an accordion:</p>
-              <ul class="doc-list">
-                <li><strong>Theme</strong> — Light, Dark, or System. Switches the entire UI including the terminal.</li>
-                <li><strong>Terminal</strong> — Font family, font size, cursor style, custom colors.</li>
-                <li><strong>File Executors</strong> — Configure which applications open specific file types in the remote editor.</li>
-                <li><strong>Keyboard Shortcuts</strong> — View and customize keybindings for terminal operations, tab management, and navigation.</li>
-                <li><strong>Storage</strong> — View the on-disk location of the SQLite database, copy the path, or open the folder.</li>
-                <li><strong>Vault Security</strong> — Change master password, enable/disable biometric unlock.</li>
-
-                <li><strong>Receive Connections</strong> — Start receiving mode to accept profiles from another device.</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Theme customization</div>
-              <div class="img-wrap">
-                <img src="img/docs/theme.png" alt="Theme selection with Light, Dark, System options">
-                <div class="img-caption">Theme settings — choose between Light, Dark, or System theme</div>
-              </div>
-              <table class="kv-table">
-                <tr><td>Light</td><td>Bright backgrounds, optimal for well-lit environments</td></tr>
-                <tr><td>Dark</td><td>Near-black backgrounds, reduced eye strain in low light</td></tr>
-                <tr><td>System</td><td>Automatically follows the OS preference (dark mode toggle)</td></tr>
-              </table>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Keyboard shortcuts</div>
-              <p>The keyboard shortcuts panel lists all configurable keybindings grouped by category. Click a shortcut to reassign it. Shortcuts support modifier keys (Ctrl, Alt/Option, Cmd/Win, Shift).</p>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">Keyboard shortcuts are platform-aware — the same action uses Cmd on macOS and Ctrl on Windows/Linux. The settings panel shows the correct modifier for your platform.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">5</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Storage settings</div>
-              <div class="img-wrap">
-                <img src="img/docs/storage.png" alt="Storage settings showing database path">
-                <div class="img-caption">Storage — view and copy the local database path</div>
-              </div>
-              <ul class="doc-list">
-                <li>Shows the full path to the SQLite database on your device</li>
-                <li>Tap <strong>Copy Path</strong> to copy it to the clipboard</li>
-                <li>On desktop, tap <strong>Open Folder</strong> to reveal the database directory in Finder/Explorer</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ==========================================
-           16. INSTALLATION (LINUX)
-           ========================================== -->
-      <article class="content-panel" id="panel-installation" aria-label="Linux Installation">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man installation-linux</span>
-          </div>
-          <p class="section-desc">Swavan Studio ships as an AppImage for Linux — a self-contained executable that works on most distributions without installation. FUSE is required to run AppImages.</p>
-        </div>
-
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Download the AppImage</div>
-              <p>Visit the <a href="https://github.com/swavan/studio/releases/latest" target="_blank" rel="noopener">GitHub Releases page</a> and download the <code>.AppImage</code> file for your architecture.</p>
-              <ul class="doc-list">
-                <li><strong>x86_64</strong> — most desktop and server CPUs</li>
-                <li><strong>aarch64</strong> — ARM64 (Raspberry Pi 4/5, ARM servers)</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Make it executable</div>
-              <div class="code-block terminal">
-                <span class="prompt">$</span> chmod +x swavan-ssh-studio_*.AppImage
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Install FUSE (if needed)</div>
-              <p>AppImages require FUSE to mount themselves. Most distributions include it. If you see an error like "FUSE library not found", install it:</p>
-              <div class="code-block terminal">
-                <span class="comment"># Ubuntu 24.04+</span><br>
-                <span class="prompt">$</span> sudo apt install libfuse2t64<br>
-                <br>
-                <span class="comment"># Ubuntu 22.04 and older, Debian</span><br>
-                <span class="prompt">$</span> sudo apt install libfuse2<br>
-                <br>
-                <span class="comment"># Fedora</span><br>
-                <span class="prompt">$</span> sudo dnf install fuse-libs<br>
-                <br>
-                <span class="comment"># Arch Linux</span><br>
-                <span class="prompt">$</span> sudo pacman -S fuse2
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Run the AppImage</div>
-              <p>Double-click the AppImage in your file manager, or launch from the terminal:</p>
-              <div class="code-block terminal">
-                <span class="prompt">$</span> ./swavan-ssh-studio_*.AppImage
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">5</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">NixOS</div>
-              <p>NixOS does not support AppImages directly due to its immutable filesystem layout. Two options:</p>
-              <div class="code-block terminal">
-                <span class="comment"># Option 1: Enable AppImage support in configuration.nix</span><br>
-                <span class="prompt">#</span> programs.appimage.enable = true;<br>
-                <span class="prompt">#</span> programs.appimage.binfmt = true;<br>
-                <span class="prompt">$</span> sudo nixos-rebuild switch<br>
-                <br>
-                <span class="comment"># Option 2: Use appimage-run from nixpkgs</span><br>
-                <span class="prompt">$</span> nix-shell -p appimage-run --run "appimage-run ./swavan-ssh-studio_*.AppImage"
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ==========================================
-           17. WINDOWS FIREWALL
-           ========================================== -->
-
-      <!-- ==========================================
-           18. QUICK START GUIDE
-           ========================================== -->
-      <article class="content-panel" id="panel-guide-getting-started" aria-label="Quick Start Guide">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man quick-start</span>
-          </div>
-          <p class="section-desc">Learn how to set up your first SSH connection and start using Swavan Studio.</p>
-        </div>
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Create Your Vault</div>
-              <p>When you first launch the app, you'll be prompted to create a master password. This password encrypts all your credentials.</p>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">Choose a strong master password &mdash; it's the only password you need to remember!</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Add Your First Connection</div>
-              <p>Click "New Connection" in the sidebar and fill in your server details:</p>
-              <div class="code-block terminal">
-                Name: My Server<br>
-                Host: 192.168.1.100 or myserver.com<br>
-                Port: 22 (default SSH port)<br>
-                Username: your_username<br>
-                Auth: Password or Private Key
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Connect to Your Server</div>
-              <p>Click on your saved connection to open a terminal session. You can open multiple sessions by clicking the connection again.</p>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">Right-click on a connection for quick actions like Edit, Delete, or Share.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ==========================================
-           19. SSH TUNNELING GUIDE
-           ========================================== -->
-      <article class="content-panel" id="panel-guide-tunneling" aria-label="SSH Tunneling Guide">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man ssh-tunneling-guide</span>
-          </div>
-          <p class="section-desc">Learn how to securely access remote services through SSH tunnels.</p>
-        </div>
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">What is SSH Tunneling?</div>
-              <p>SSH tunneling (port forwarding) creates an encrypted connection between your local machine and a remote server, allowing you to securely access services that aren't directly exposed to the internet.</p>
-              <p style="margin-top: 0.75rem;"><strong>How it works:</strong> Your Computer (<code>localhost:5433</code>) &rarr; Encrypted SSH Tunnel &rarr; Remote Server (<code>postgres:5432</code>)</p>
-              <ul class="doc-list" style="margin-top: 0.75rem;">
-                <li><strong>Local Port Forwarding</strong> &mdash; Forward a port from your local machine to a service on the remote server. Use case: Access a database running on your server from your local machine. Example: <code>Local Port 5433 &rarr; Remote Host:5432</code></li>
-                <li><strong>Remote Port Forwarding</strong> &mdash; Forward a port from the remote server back to a service on your local machine. Use case: Expose your local development server to the remote machine. Example: <code>Remote Port 8080 &rarr; localhost:3000</code></li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Navigate to Tunnels</div>
-              <p>Go to the <strong>Tunnels</strong> section in the sidebar, or click the tunnel icon on a connection card.</p>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Create New Tunnel</div>
-              <p>Click "Add Tunnel" and configure your tunnel:</p>
-              <div class="code-block terminal">
-                Connection: Select your SSH connection<br>
-                Type: Local or Remote forwarding<br>
-                Local Port: Port on your machine (e.g., 5433)<br>
-                Remote Host: Target host (e.g., localhost)<br>
-                Remote Port: Target port (e.g., 5432)
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Start the Tunnel</div>
-              <p>Click the <strong>Start</strong> button to activate the tunnel. The status indicator will turn green when active.</p>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">Enable "Auto-start" to automatically start this tunnel whenever you connect.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">5</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Use Your Tunnel</div>
-              <p>Connect to your local port as if the remote service was running locally:</p>
-              <div class="code-block terminal">
-                <span class="comment"># Connect to PostgreSQL through tunnel</span><br>
-                <span class="prompt">$</span> psql -h localhost -p 5433 -U myuser -d mydb<br>
-                <br>
-                <span class="comment"># Access Redis through tunnel</span><br>
-                <span class="prompt">$</span> redis-cli -h localhost -p 6380
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">6</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Real-World Example: Access PostgreSQL on a Remote Server</div>
-              <p>Say you have a PostgreSQL database running on your server at port 5432, but it's not exposed to the internet for security reasons.</p>
-              <ul class="doc-list">
-                <li>Create a tunnel: Local Port <code>5433</code> &rarr; Remote <code>localhost:5432</code></li>
-                <li>Start the tunnel</li>
-                <li>Connect using: <code>psql -h localhost -p 5433 -U postgres</code></li>
-              </ul>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">Your database traffic is now encrypted through the SSH tunnel!</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-
-      <!-- ==========================================
-           21. TERMINAL USAGE GUIDE
-           ========================================== -->
-      <article class="content-panel" id="panel-guide-terminal" aria-label="Terminal Usage Guide">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man terminal-usage</span>
-          </div>
-          <p class="section-desc">Master the SSH terminal for efficient remote server management.</p>
-        </div>
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Starting a Session</div>
-              <p>Click on any saved connection to open a new terminal session. The connection will be established automatically.</p>
-              <ul class="doc-list">
-                <li><strong style="color: var(--accent-green);">Green</strong> &mdash; Connected, session is active</li>
-                <li><strong style="color: var(--accent-yellow);">Yellow</strong> &mdash; Connecting, establishing connection</li>
-                <li><strong style="color: var(--accent-red);">Red</strong> &mdash; Disconnected, session ended</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Managing Multiple Sessions</div>
-              <p>Open multiple sessions by clicking the same or different connections. Each session opens in a new tab.</p>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">Click the "+" button to quickly open another session to the same server.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Terminal Customization</div>
-              <p>Personalize your terminal in <strong>Settings &rarr; Terminal Preferences</strong>:</p>
-              <ul class="doc-list">
-                <li><strong>Font</strong> &mdash; JetBrains Mono, Fira Code, Monaco, and more</li>
-                <li><strong>Font Size</strong> &mdash; Adjustable from 10px to 64px</li>
-                <li><strong>Colors</strong> &mdash; Custom text, cursor, and selection colors</li>
-                <li><strong>Theme</strong> &mdash; Separate colors for light and dark mode</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Disconnecting Safely</div>
-              <p>Click the <strong>X</strong> on the session tab or use the disconnect button. Running processes will be terminated.</p>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">Use <code>tmux</code> or <code>screen</code> to keep processes running after disconnect.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ==========================================
-           22. FILE MANAGEMENT GUIDE
-           ========================================== -->
-      <article class="content-panel" id="panel-guide-files" aria-label="File Management Guide">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man file-management</span>
-          </div>
-          <p class="section-desc">Browse, transfer, and edit files on remote servers.</p>
-        </div>
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Opening the File Browser</div>
-              <p>Click the <strong>Explorer</strong> icon in the sidebar while connected to a server, or click the folder icon on a connection card.</p>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Navigating Directories</div>
-              <p>Click folders to navigate, use the breadcrumb path, or click the home icon to go to your home directory.</p>
-              <ul class="doc-list">
-                <li><strong>Home button</strong> &mdash; Go to user home directory</li>
-                <li><strong>Back button</strong> &mdash; Previous directory in history</li>
-                <li><strong>Forward button</strong> &mdash; Next directory in history</li>
-                <li><strong>Refresh button</strong> &mdash; Reload current directory</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Transferring Files</div>
-              <p>Upload and download files with real-time progress tracking:</p>
-              <ul class="doc-list">
-                <li><strong>Upload</strong> &mdash; Click the upload button and select local files to transfer to the server</li>
-                <li><strong>Download</strong> &mdash; Right-click a file and select "Download" to save it locally</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Editing Remote Files</div>
-              <p>Double-click any text file (up to 5MB) to open it in the built-in editor. Changes save directly to the server.</p>
-              <div class="callout info">
-                <span class="callout-prefix">[info]</span>
-                <div class="callout-body">The editor supports 50+ file types with syntax awareness!</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">5</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">File Operations</div>
-              <p>Right-click on files or folders for additional options: Rename, Delete, New Folder, Copy Path.</p>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ==========================================
-           23. TIPS & TRICKS
-           ========================================== -->
-      <article class="content-panel" id="panel-guide-tips" aria-label="Tips &amp; Tricks">
-        <div class="section-title">
-          <div class="section-man-cmd">
-            <span class="prompt">$</span>
-            <span class="cmd">man tips-and-tricks</span>
-          </div>
-          <p class="section-desc">Get the most out of Swavan Studio with these power-user tips.</p>
-        </div>
-        <div class="steps">
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">1</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Security Best Practices</div>
-              <ul class="doc-list">
-                <li>Use SSH keys instead of passwords when possible</li>
-                <li>Lock your vault when stepping away</li>
-                <li>Use strong, unique master password</li>
-                <li>Regularly backup your vault</li>
-                <li>Don't share credentials over insecure channels</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">2</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Productivity Boosters</div>
-              <ul class="doc-list">
-                <li>Set a landing path to start in a specific directory</li>
-                <li>Use descriptive connection names for easy search</li>
-                <li>Enable auto-start for frequently used tunnels</li>
-                <li>Open multiple file browsers in tabs</li>
-                <li>Use the home button for quick navigation</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">3</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Troubleshooting</div>
-              <ul class="doc-list">
-                <li><strong>Connection timeout?</strong> Check firewall and SSH service</li>
-                <li><strong>Authentication failed?</strong> Verify credentials and key permissions</li>
-                <li><strong>Tunnel not working?</strong> Ensure the target service is running</li>
-
-                <li><strong>AppImage not running?</strong> Install libfuse2 and check permissions</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">4</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Hidden Features</div>
-              <ul class="doc-list">
-                <li>Double-click connection name to quick connect</li>
-                <li>Drag tabs to reorder them</li>
-                <li>Right-click for context menus everywhere</li>
-                <li>Use search to filter connections instantly</li>
-                <li>Theme automatically follows system preference</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">5</div>
-              <div class="step-connector"></div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Cross-Platform Tips</div>
-              <ul class="doc-list">
-                <li>Backup works across all platforms</li>
-
-                <li>Settings sync via backup/restore</li>
-                <li>Private keys work on all platforms</li>
-                <li>Tunnels work identically everywhere</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="step-block">
-            <div class="step-gutter">
-              <div class="step-num">6</div>
-            </div>
-            <div class="step-body">
-              <div class="step-title">Common Use Cases</div>
-              <ul class="doc-list">
-                <li><strong>Database Access</strong> &mdash; Create a tunnel to access PostgreSQL, MySQL, or Redis from local tools. Example: <code>localhost:5433 &rarr; server:5432</code></li>
-                <li><strong>Web Service Access</strong> &mdash; Access internal web dashboards or APIs only available on the server's localhost. Example: <code>localhost:8080 &rarr; server:3000</code></li>
-                <li><strong>Monitoring Access</strong> &mdash; Connect to Grafana, Prometheus, or other monitoring tools on internal ports. Example: <code>localhost:3001 &rarr; server:3000</code></li>
-                <li><strong>Development Sync</strong> &mdash; Expose your local dev server to a remote machine for testing webhooks. Example: <code>Remote server:8080 &rarr; localhost:3000</code></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </article>
-
-    </main>
-  </div>
-
-  <!-- ================================================
-       FOOTER
-       ================================================ -->
-  <footer class="docs-footer">
-    <p>Swavan Studio Documentation &mdash; <a href="https://github.com/swavan/studio" target="_blank" rel="noopener">GitHub</a> &middot; <a href="https://github.com/swavan/studio/releases/latest" target="_blank" rel="noopener">Download</a> &middot; <a href="index.html">Home</a></p>
-    <p style="margin-top: 0.4rem; opacity: 0.6;">&copy; 2026 Swavan. Free to use.</p>
-  </footer>
-
-  <!-- ================================================
-       JAVASCRIPT — vanilla, no dependencies
-       ================================================ -->
-  <script>
-    // ----------------------------------------
-    // Theme
-    // ----------------------------------------
-    (function() {
-      var saved = localStorage.getItem('swavan-theme');
-      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (saved === 'light') {
-        document.documentElement.setAttribute('data-theme', 'light');
-      }
-      // default is dark (CSS :root), no attribute needed for dark
-    })();
-
-    function updateThemeBtn() {
-      var btn = document.getElementById('themeToggleBtn');
-      if (!btn) return;
-      var isLight = document.documentElement.getAttribute('data-theme') === 'light';
-      btn.textContent = isLight ? '[ dark ]' : '[ light ]';
-    }
-
-    function toggleTheme() {
-      var isLight = document.documentElement.getAttribute('data-theme') === 'light';
-      if (isLight) {
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('swavan-theme', 'dark');
-      } else {
-        document.documentElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('swavan-theme', 'light');
-      }
-      updateThemeBtn();
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      updateThemeBtn();
-
-      document.getElementById('themeToggleBtn').addEventListener('click', toggleTheme);
-
-      // ----------------------------------------
-      // Sidebar navigation — panel switching
-      // ----------------------------------------
-      var items = document.querySelectorAll('.sidebar-item[data-panel]');
-      var panels = document.querySelectorAll('.content-panel');
-
-      function showPanel(panelId) {
-        // Deactivate all items and panels
-        items.forEach(function(el) { el.classList.remove('active'); });
-        panels.forEach(function(el) { el.classList.remove('active'); });
-
-        // Activate matching item
-        items.forEach(function(el) {
-          if (el.getAttribute('data-panel') === panelId) {
-            el.classList.add('active');
-          }
-        });
-
-        // Activate panel
-        var target = document.getElementById('panel-' + panelId);
-        if (target) {
-          target.classList.add('active');
-          // Scroll main area to top
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Update URL hash without scrolling
-        history.replaceState(null, '', '#' + panelId);
-      }
-
-      items.forEach(function(item) {
-        item.addEventListener('click', function() {
-          showPanel(this.getAttribute('data-panel'));
-          // Auto-close sidebar on mobile
-          if (window.innerWidth <= 768) {
-            closeSidebar();
-          }
-        });
-
-        item.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            this.click();
-          }
-        });
-      });
-
-      // Restore panel from hash on load
-      var hash = window.location.hash.replace('#', '');
-      if (hash) {
-        var matchingItem = document.querySelector('.sidebar-item[data-panel="' + hash + '"]');
-        if (matchingItem) {
-          showPanel(hash);
-        }
-      }
-
-      // ----------------------------------------
-      // Mobile sidebar toggle
-      // ----------------------------------------
-      var sidebar = document.getElementById('sidebar');
-      var overlay = document.getElementById('sidebarOverlay');
-      var menuBtn = document.getElementById('mobileMenuBtn');
-
-      function openSidebar() {
-        sidebar.classList.add('open');
-        overlay.classList.add('open');
-        menuBtn.setAttribute('aria-expanded', 'true');
-        menuBtn.textContent = '✕';
-      }
-
-      function closeSidebar() {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('open');
-        menuBtn.setAttribute('aria-expanded', 'false');
-        menuBtn.textContent = '☰';
-      }
-
-      menuBtn.addEventListener('click', function() {
-        if (sidebar.classList.contains('open')) {
-          closeSidebar();
-        } else {
-          openSidebar();
-        }
-      });
-
-      overlay.addEventListener('click', closeSidebar);
-    });
-  </script>
-
-</body>
-</html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>s2s CLI Documentation — Swavan Studio</title><meta name="description" content="Install and use the Swavan Studio s2s CLI. Workflow examples and a searchable command reference for profiles, SSH, Docker, Memory, secrets, and more."><link rel="canonical" href="https://studio.swavan.io/docs.html"><link rel="icon" href="public/icon.svg" type="image/svg+xml"><script>
+let theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+try { const saved = localStorage.getItem('swavan-theme'); if (saved === 'dark' || saved === 'light') theme = saved; } catch (_) {}
+document.documentElement.dataset.theme = theme;
+</script><style>    :root { color-scheme: light; --bg: #f4f4f4; --text: #202020; --muted: #626262; --line: #d9d9d9; --accent: #007f79; --panel: #ffffff; --panel-soft: #e3f2f0; --button-bg: #007f79; --button-text: #ffffff; --button-hover: #006b66; --separator: #a0a0a0; --shadow: #0000000c; }    :root[data-theme="dark"] { color-scheme: dark; --bg: #171717; --text: #eeeeee; --muted: #aaaaaa; --line: #343434; --accent: #00b5aa; --panel: #1e1e1e; --panel-soft: #24312f; --button-bg: #009d92; --button-text: #ffffff; --button-hover: #00877e; --separator: #686868; --shadow: #00000033; }
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--accent);text-underline-offset:3px}button,input{font:inherit}a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}header,footer{max-width:1280px;margin:auto;padding:24px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px}.layout{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:220px minmax(0,1fr);gap:48px;padding:16px 32px 64px}nav{position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);overflow:auto}nav a{display:block;padding:4px 0;text-decoration:none;font-size:13px}nav p,.eyebrow{font:11px/1.6 monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}h1{font-size:clamp(36px,5vw,56px);line-height:1.1;letter-spacing:-.045em;margin:12px 0 20px}h2{font-size:26px;line-height:1.3;letter-spacing:-.025em}h3{font-size:17px;margin-top:28px}p{color:var(--muted)}section{padding:20px 0 28px;border-bottom:1px solid var(--line);scroll-margin-top:24px}code{font:12px/1.7 SFMono-Regular,Menlo,Consolas,monospace}pre{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:18px;overflow:auto;max-width:100%}pre code{color:var(--text)}.command{border:1px solid var(--line);border-radius:4px;margin:10px 0;background:var(--panel)}.command summary{cursor:pointer;padding:12px 16px}.command pre{margin:0;border:0;border-top:1px solid var(--line);border-radius:0}.search-label{display:block;margin-top:28px;color:var(--muted);font-size:13px}input{width:100%;padding:12px 14px;margin:8px 0 0;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:4px}.theme-toggle{background:var(--panel);color:var(--text);border:1px solid var(--line);padding:6px 12px;border-radius:4px;cursor:pointer}footer{border-top:1px solid var(--line);font-size:12px;color:var(--muted)}[hidden]{display:none!important}@media(max-width:800px){.layout{grid-template-columns:1fr;gap:24px;padding:12px 20px 40px}header,footer{padding:20px}nav{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:6px 16px}nav p{width:100%;margin-bottom:0}h2{font-size:24px}pre{padding:12px}footer{flex-wrap:wrap}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style></head><body><header><a href="index.html">← Swavan Studio</a><button class="theme-toggle" type="button" id="theme-toggle">Switch theme</button></header><div class="layout"><nav aria-label="CLI documentation sections"><p>Getting started</p><a href="#install">Install</a><a href="#start">Profiles &amp; credentials</a><a href="#workflows">Common workflows</a><a href="#help">Using help</a><a href="#reference">Search commands</a><p>Command groups</p><a href="#completion">Shell completion</a><a href="#experimental">Experimental features</a><a href="#profile">Profiles</a><a href="#ssh">SSH</a><a href="#vnc">VNC</a><a href="#docker">Docker</a><a href="#kubernetes">Kubernetes</a><a href="#script">Scripts</a><a href="#skill">Agent skill</a><a href="#snippet">Snippets</a><a href="#memory">Memory</a><a href="#secret">Secrets</a><a href="#rdp">RDP</a><a href="#database">Databases</a><a href="#sync">S3 sync</a></nav><main><span class="eyebrow">Desktop + CLI / 0.2.13</span><h1>The s2s command line.</h1><p>Manage Studio connections, profiles, scripts, notes, and secrets from your terminal.</p><p>Reference captured from <code>s2s 0.2.13</code> on October 4, 2026.</p><section id="install"><h2>Install the app and CLI</h2><p>The installer installs Studio and <code>s2s</code>. Manual downloads are available from <a href="https://github.com/swavan/studio/releases/latest">GitHub Releases</a>.</p><h3>macOS / Linux</h3><pre><code>curl -fsSL https://studio.swavan.io/install.sh | sh</code></pre><h3>Windows PowerShell</h3><pre><code>irm https://studio.swavan.io/install.ps1 | iex</code></pre><p>Check the installed version and available commands:</p><pre><code>s2s --version
+s2s --help</code></pre></section>
+<section id="start"><h2>Choose a profile</h2><p>List profiles and use a returned profile ID. Replace example IDs and host names with your own values.</p><pre><code>s2s profile list
+s2s profile default
+s2s profile use PROFILE_ID
+s2s profile default PROFILE_ID</code></pre><p><code>profile use</code> unlocks a profile and shows its identity. <code>profile default PROFILE_ID</code> changes the default used by CLI commands.</p><p>Where a command group supports <code>--profile</code>, put it before the subcommand:</p><pre><code>s2s ssh --profile PROFILE_ID list
+s2s memory --profile PROFILE_ID list</code></pre><p>SSH, VNC, RDP, database, snippet, secret, and sync groups also expose <code>--vault-password-env</code>. It takes the name of an environment variable containing the vault password. Connection options such as <code>--password-env</code> refer to the connection password instead.</p></section>
+<section id="workflows"><h2>Common workflows</h2><h3>Add and open an SSH connection</h3><p>Create a named connection using a private key file, then use the saved connection ID from your list.</p><pre><code>s2s ssh create --name staging --host staging.example.com --username deploy --private-key-path ~/.ssh/id_ed25519
+s2s ssh list
+s2s ssh test CONNECTION_ID
+s2s ssh connect CONNECTION_ID</code></pre><p>Open a saved connection in the desktop app with <code>--gui</code>. Use <code>--shell</code> for the system OpenSSH client, config, and agent instead of the vault credential. Extra OpenSSH arguments require <code>--shell</code> and follow <code>--</code>.</p><pre><code>s2s ssh connect CONNECTION_ID --gui
+s2s ssh connect CONNECTION_ID --shell
+s2s ssh connect CONNECTION_ID --shell -- -L 8080:localhost:80</code></pre><h3>Save scripts and run snippets</h3><p>Scripts store reusable bodies; snippets provide a command that can run against saved SSH connection IDs.</p><pre><code>s2s script create --name health-check --content-file ./health-check.sh
+s2s script list
+s2s snippet create --title uptime --command uptime
+s2s snippet list
+s2s snippet execute SNIPPET_ID --servers SSH_ID_1,SSH_ID_2</code></pre><h3>Create and export a note</h3><pre><code>s2s memory create --title &quot;Deployment notes&quot; --content &quot;Verify the service after deploy.&quot;
+s2s memory list
+s2s memory search deployment
+s2s memory export-note NOTE_ID --output ./deployment.md --format markdown</code></pre><h3>Open a saved desktop or database connection</h3><pre><code>s2s vnc list
+s2s vnc connect VNC_ID --fullscreen
+s2s rdp list
+s2s rdp connect RDP_ID
+s2s database list
+s2s database connect DATABASE_ID</code></pre><h3>Connect to Docker or save a Kubernetes context</h3><pre><code>s2s docker connect --mode local
+s2s kubernetes create --context my-context --kubeconfig-path ~/.kube/config
+s2s kubernetes list</code></pre><h3>Inspect sync configuration</h3><p><code>sync show</code> displays endpoint settings without revealing credentials. <code>sync test</code> checks whether the configured bucket can be listed. <code>sync now</code> exchanges the selected profile with its configured sync space.</p><pre><code>s2s sync show
+s2s sync test</code></pre><h3>Generate shell completions</h3><p>Write the completion script to a file and load it into the current shell. This example uses zsh.</p><pre><code>s2s completion zsh &gt; ./s2s-completion.zsh
+source ./s2s-completion.zsh</code></pre></section>
+<section id="help"><h2>Read the reference</h2><p>Each entry below contains the installed CLI’s exact help output, including required arguments, defaults, options, and accepted values. Parent entries show options shared by their subcommands. Run help locally if your version differs.</p><pre><code>s2s ssh --help
+s2s ssh create --help
+s2s memory folder --help</code></pre><p>The help output does not define the full JSON schema for RDP, database, SSH edit, or secret records. Those commands are documented below without invented payloads. Delete and purge commands remove saved data; check their exact options before using them.</p><p>Examples illustrate command syntax. Remote connections, writes, secret exports, and sync operations were not executed while preparing this page.</p></section><section id="reference"><h2>Command reference</h2><label class="search-label" for="command-search">Find a command or option</label><input type="search" id="command-search" placeholder="Try ssh connect, --profile, or export" autocomplete="off"><p id="search-status" role="status">124 command entries. Expand any entry to see its help.</p></section><section class="reference-group" id="s2s"><h2>Top-level CLI</h2><details class="command" id="command-root"><summary><code>s2s</code></summary><pre><code>Swavan Studio desktop CLI
+
+Usage: s2s &lt;COMMAND&gt;
+
+Commands:
+  completion    Print a shell completion script to stdout
+  experimental  Manage access to features that are still under active development
+  profile
+  ssh
+  vnc
+  docker
+  kubernetes    Manage saved Kubernetes hosts in the selected CLI profile
+  script        Manage saved shell scripts for a profile
+  skill         Print or sync the Swavan Studio agent skill
+  snippet
+  memory        Manage Memory notes, folders, and links
+  secret        Manage encrypted profile secrets and connection attachments
+  rdp
+  database
+  sync          Configure and check S3-compatible application sync storage
+  help          Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help     Print help
+  -V, --version  Print version</code></pre></details></section><section class="reference-group" id="completion"><h2>Shell completion</h2><p>Generate completion scripts for bash, elvish, fish, PowerShell, and zsh.</p><details class="command" id="s2s-completion"><summary><code>s2s completion</code></summary><pre><code>Print a shell completion script to stdout
+
+Usage: s2s completion &lt;SHELL&gt;
+
+Arguments:
+  &lt;SHELL&gt;  [possible values: bash, elvish, fish, powershell, zsh]
+
+Options:
+  -h, --help  Print help</code></pre></details></section>
+<section class="reference-group" id="experimental"><h2>Experimental features</h2><p>Inspect or change experimental feature access for a profile.</p><details class="command" id="s2s-experimental"><summary><code>s2s experimental</code></summary><pre><code>Manage access to features that are still under active development
+
+Usage: s2s experimental [OPTIONS] &lt;COMMAND&gt;
+
+Commands:
+  status   Show whether experimental features are enabled for the profile
+  enable   Opt in to experimental features for the profile
+  disable  Opt out of experimental features for the profile
+  help     Print this message or the help of the given subcommand(s)
+
+Options:
+      --profile &lt;PROFILE&gt;
+  -h, --help               Print help</code></pre></details><details class="command" id="s2s-experimental-status"><summary><code>s2s experimental status</code></summary><pre><code>Show whether experimental features are enabled for the profile
+
+Usage: s2s experimental status
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-experimental-enable"><summary><code>s2s experimental enable</code></summary><pre><code>Opt in to experimental features for the profile
+
+Usage: s2s experimental enable
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-experimental-disable"><summary><code>s2s experimental disable</code></summary><pre><code>Opt out of experimental features for the profile
+
+Usage: s2s experimental disable
+
+Options:
+  -h, --help  Print help</code></pre></details></section>
+<section class="reference-group" id="profile"><h2>Profiles</h2><p>List, create, update, unlock, and select CLI profiles. The use command unlocks a profile and shows its identity; default selects the profile used by CLI commands.</p><details class="command" id="s2s-profile"><summary><code>s2s profile</code></summary><pre><code>Usage: s2s profile &lt;COMMAND&gt;
+
+Commands:
+  list
+  get
+  create
+  update
+  delete
+  default  Show or change the default profile for CLI commands
+  use      Unlock a profile and show its identity
+  help     Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-profile-list"><summary><code>s2s profile list</code></summary><pre><code>Usage: s2s profile list
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-profile-get"><summary><code>s2s profile get</code></summary><pre><code>Usage: s2s profile get &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-profile-create"><summary><code>s2s profile create</code></summary><pre><code>Usage: s2s profile create [OPTIONS] --display-name &lt;DISPLAY_NAME&gt; --username &lt;USERNAME&gt;
+
+Options:
+      --display-name &lt;DISPLAY_NAME&gt;
+      --username &lt;USERNAME&gt;
+      --email &lt;EMAIL&gt;                            [default: &quot;&quot;]
+      --avatar-base64 &lt;AVATAR_BASE64&gt;            [default: &quot;&quot;]
+      --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-profile-update"><summary><code>s2s profile update</code></summary><pre><code>Usage: s2s profile update [OPTIONS] --display-name &lt;DISPLAY_NAME&gt; --username &lt;USERNAME&gt; &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --display-name &lt;DISPLAY_NAME&gt;
+      --username &lt;USERNAME&gt;
+      --email &lt;EMAIL&gt;                            [default: &quot;&quot;]
+      --avatar-base64 &lt;AVATAR_BASE64&gt;            [default: &quot;&quot;]
+      --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-profile-delete"><summary><code>s2s profile delete</code></summary><pre><code>Usage: s2s profile delete [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-profile-default"><summary><code>s2s profile default</code></summary><pre><code>Show or change the default profile for CLI commands
+
+Usage: s2s profile default [ID]
+
+Arguments:
+  [ID]
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-profile-use"><summary><code>s2s profile use</code></summary><pre><code>Unlock a profile and show its identity
+
+Usage: s2s profile use &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details></section>
+<section class="reference-group" id="ssh"><h2>SSH</h2><p>Manage saved SSH connections, test connections, start an agent, or connect through Studio or the system OpenSSH client.</p><details class="command" id="s2s-ssh"><summary><code>s2s ssh</code></summary><pre><code>Usage: s2s ssh [OPTIONS] &lt;COMMAND&gt;
+
+Commands:
+  list
+  get
+  create
+  update
+  edit
+  delete
+  purge
+  load
+  test
+  agent
+  agent-auto-check  Configure automatic `ssh-add -l` checks after the agent starts
+  connect
+  help              Print this message or the help of the given subcommand(s)
+
+Options:
+      --profile &lt;PROFILE&gt;
+      --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-ssh-list"><summary><code>s2s ssh list</code></summary><pre><code>Usage: s2s ssh list [OPTIONS]
+
+Options:
+      --page &lt;PAGE&gt;      [default: 1]
+      --size &lt;SIZE&gt;      [default: 50]
+      --search &lt;SEARCH&gt;
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-ssh-get"><summary><code>s2s ssh get</code></summary><pre><code>Usage: s2s ssh get &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-ssh-create"><summary><code>s2s ssh create</code></summary><pre><code>Usage: s2s ssh create [OPTIONS] --name &lt;NAME&gt; --host &lt;HOST&gt; --username &lt;USERNAME&gt;
+
+Options:
+      --name &lt;NAME&gt;
+      --description &lt;DESCRIPTION&gt;                [default: &quot;&quot;]
+      --host &lt;HOST&gt;
+      --port &lt;PORT&gt;                              [default: 22]
+      --username &lt;USERNAME&gt;
+      --password-env &lt;PASSWORD_ENV&gt;
+      --private-key-path &lt;PRIVATE_KEY_PATH&gt;
+      --private-key &lt;PRIVATE_KEY&gt;
+      --passphrase-env &lt;PASSPHRASE_ENV&gt;
+      --key-and-password
+      --ssh-agent
+      --landing-path &lt;LANDING_PATH&gt;
+      --os-type &lt;OS_TYPE&gt;                        [default: auto]
+      --agent-forwarding
+      --use-mosh
+      --connection-timeout &lt;CONNECTION_TIMEOUT&gt;  [default: 30]
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-ssh-update"><summary><code>s2s ssh update</code></summary><pre><code>Usage: s2s ssh update [OPTIONS] --name &lt;NAME&gt; --host &lt;HOST&gt; --username &lt;USERNAME&gt; &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --name &lt;NAME&gt;
+      --description &lt;DESCRIPTION&gt;                [default: &quot;&quot;]
+      --host &lt;HOST&gt;
+      --port &lt;PORT&gt;                              [default: 22]
+      --username &lt;USERNAME&gt;
+      --password-env &lt;PASSWORD_ENV&gt;
+      --private-key-path &lt;PRIVATE_KEY_PATH&gt;
+      --private-key &lt;PRIVATE_KEY&gt;
+      --passphrase-env &lt;PASSPHRASE_ENV&gt;
+      --key-and-password
+      --ssh-agent
+      --landing-path &lt;LANDING_PATH&gt;
+      --os-type &lt;OS_TYPE&gt;                        [default: auto]
+      --agent-forwarding
+      --use-mosh
+      --connection-timeout &lt;CONNECTION_TIMEOUT&gt;  [default: 30]
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-ssh-edit"><summary><code>s2s ssh edit</code></summary><pre><code>Usage: s2s ssh edit --json &lt;JSON&gt; &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --json &lt;JSON&gt;
+  -h, --help         Print help</code></pre></details><details class="command" id="s2s-ssh-delete"><summary><code>s2s ssh delete</code></summary><pre><code>Usage: s2s ssh delete [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --force
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-ssh-purge"><summary><code>s2s ssh purge</code></summary><pre><code>Usage: s2s ssh purge [OPTIONS]
+
+Options:
+      --force
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-ssh-load"><summary><code>s2s ssh load</code></summary><pre><code>Usage: s2s ssh load --from &lt;FROM&gt;
+
+Options:
+      --from &lt;FROM&gt;
+  -h, --help         Print help</code></pre></details><details class="command" id="s2s-ssh-test"><summary><code>s2s ssh test</code></summary><pre><code>Usage: s2s ssh test &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-ssh-agent"><summary><code>s2s ssh agent</code></summary><pre><code>Usage: s2s ssh agent &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-ssh-agent-auto-check"><summary><code>s2s ssh agent-auto-check</code></summary><pre><code>Configure automatic `ssh-add -l` checks after the agent starts
+
+Usage: s2s ssh agent-auto-check &lt;MODE&gt;
+
+Arguments:
+  &lt;MODE&gt;  [possible values: on, off, status]
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-ssh-connect"><summary><code>s2s ssh connect</code></summary><pre><code>Usage: s2s ssh connect [OPTIONS] &lt;ID&gt; [-- &lt;ARGS&gt;...]
+
+Arguments:
+  &lt;ID&gt;
+  [ARGS]...  Arguments passed to OpenSSH. Requires --shell
+
+Options:
+      --shell  Use the system OpenSSH client, config, and agent instead of the vault credential
+      --gui    Open the connection in the desktop app
+  -h, --help   Print help</code></pre></details></section>
+<section class="reference-group" id="vnc"><h2>VNC</h2><p>Manage saved VNC connections and open them with fullscreen or test options.</p><details class="command" id="s2s-vnc"><summary><code>s2s vnc</code></summary><pre><code>Usage: s2s vnc [OPTIONS] &lt;COMMAND&gt;
+
+Commands:
+  list
+  get
+  create
+  update
+  delete
+  purge
+  connect
+  status
+  help     Print this message or the help of the given subcommand(s)
+
+Options:
+      --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-vnc-list"><summary><code>s2s vnc list</code></summary><pre><code>Usage: s2s vnc list [OPTIONS]
+
+Options:
+      --page &lt;PAGE&gt;      [default: 1]
+      --size &lt;SIZE&gt;      [default: 50]
+      --search &lt;SEARCH&gt;
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-vnc-get"><summary><code>s2s vnc get</code></summary><pre><code>Usage: s2s vnc get &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-vnc-create"><summary><code>s2s vnc create</code></summary><pre><code>Usage: s2s vnc create [OPTIONS] --name &lt;NAME&gt; --host &lt;HOST&gt;
+
+Options:
+      --name &lt;NAME&gt;
+
+      --host &lt;HOST&gt;
+
+      --port &lt;PORT&gt;
+          [default: 5900]
+      --mode &lt;MODE&gt;
+          [default: direct] [possible values: direct, ssh-tunnel]
+      --ssh-connection-id &lt;SSH_CONNECTION_ID&gt;
+
+      --username &lt;USERNAME&gt;
+
+      --password-env &lt;PASSWORD_ENV&gt;
+
+      --color-depth &lt;COLOR_DEPTH&gt;
+          [default: 32]
+      --view-only
+
+      --jpeg-quality &lt;JPEG_QUALITY&gt;
+          [default: 90]
+      --auth-mode &lt;AUTH_MODE&gt;
+          [default: auto] [possible values: auto, password, vencrypt]
+      --connect-timeout-ms &lt;CONNECT_TIMEOUT_MS&gt;
+          [default: 30000]
+  -h, --help
+          Print help</code></pre></details><details class="command" id="s2s-vnc-update"><summary><code>s2s vnc update</code></summary><pre><code>Usage: s2s vnc update [OPTIONS] --name &lt;NAME&gt; --host &lt;HOST&gt; &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --name &lt;NAME&gt;
+
+      --host &lt;HOST&gt;
+
+      --port &lt;PORT&gt;
+          [default: 5900]
+      --mode &lt;MODE&gt;
+          [default: direct] [possible values: direct, ssh-tunnel]
+      --ssh-connection-id &lt;SSH_CONNECTION_ID&gt;
+
+      --username &lt;USERNAME&gt;
+
+      --password-env &lt;PASSWORD_ENV&gt;
+
+      --color-depth &lt;COLOR_DEPTH&gt;
+          [default: 32]
+      --view-only
+
+      --jpeg-quality &lt;JPEG_QUALITY&gt;
+          [default: 90]
+      --auth-mode &lt;AUTH_MODE&gt;
+          [default: auto] [possible values: auto, password, vencrypt]
+      --connect-timeout-ms &lt;CONNECT_TIMEOUT_MS&gt;
+          [default: 30000]
+  -h, --help
+          Print help</code></pre></details><details class="command" id="s2s-vnc-delete"><summary><code>s2s vnc delete</code></summary><pre><code>Usage: s2s vnc delete [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --force
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-vnc-purge"><summary><code>s2s vnc purge</code></summary><pre><code>Usage: s2s vnc purge [OPTIONS]
+
+Options:
+      --force
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-vnc-connect"><summary><code>s2s vnc connect</code></summary><pre><code>Usage: s2s vnc connect [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --fullscreen
+      --test
+  -h, --help        Print help</code></pre></details><details class="command" id="s2s-vnc-status"><summary><code>s2s vnc status</code></summary><pre><code>Usage: s2s vnc status &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details></section>
+<section class="reference-group" id="docker"><h2>Docker</h2><p>Manage Docker hosts or connect using local, SSH, or TCP modes.</p><details class="command" id="s2s-docker"><summary><code>s2s docker</code></summary><pre><code>Usage: s2s docker &lt;COMMAND&gt;
+
+Commands:
+  list
+  get
+  create
+  update
+  delete
+  connect
+  help     Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-docker-list"><summary><code>s2s docker list</code></summary><pre><code>Usage: s2s docker list
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-docker-get"><summary><code>s2s docker get</code></summary><pre><code>Usage: s2s docker get &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-docker-create"><summary><code>s2s docker create</code></summary><pre><code>Usage: s2s docker create [OPTIONS]
+
+Options:
+      --label &lt;LABEL&gt;
+      --mode &lt;MODE&gt;                              [default: local] [possible values: local, ssh, tcp]
+      --host &lt;HOST&gt;
+      --port &lt;PORT&gt;
+      --socket-path &lt;SOCKET_PATH&gt;
+      --runtime-type &lt;RUNTIME_TYPE&gt;
+      --ssh-method &lt;SSH_METHOD&gt;                  [possible values: native, tunnel]
+      --remote-socket-path &lt;REMOTE_SOCKET_PATH&gt;
+      --profile-id &lt;PROFILE_ID&gt;
+      --connect-timeout-ms &lt;CONNECT_TIMEOUT_MS&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-docker-update"><summary><code>s2s docker update</code></summary><pre><code>Usage: s2s docker update [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --label &lt;LABEL&gt;
+      --mode &lt;MODE&gt;                              [default: local] [possible values: local, ssh, tcp]
+      --host &lt;HOST&gt;
+      --port &lt;PORT&gt;
+      --socket-path &lt;SOCKET_PATH&gt;
+      --runtime-type &lt;RUNTIME_TYPE&gt;
+      --ssh-method &lt;SSH_METHOD&gt;                  [possible values: native, tunnel]
+      --remote-socket-path &lt;REMOTE_SOCKET_PATH&gt;
+      --profile-id &lt;PROFILE_ID&gt;
+      --connect-timeout-ms &lt;CONNECT_TIMEOUT_MS&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-docker-delete"><summary><code>s2s docker delete</code></summary><pre><code>Usage: s2s docker delete &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-docker-connect"><summary><code>s2s docker connect</code></summary><pre><code>Usage: s2s docker connect [OPTIONS]
+
+Options:
+      --label &lt;LABEL&gt;
+      --mode &lt;MODE&gt;                              [default: local] [possible values: local, ssh, tcp]
+      --host &lt;HOST&gt;
+      --port &lt;PORT&gt;
+      --socket-path &lt;SOCKET_PATH&gt;
+      --runtime-type &lt;RUNTIME_TYPE&gt;
+      --ssh-method &lt;SSH_METHOD&gt;                  [possible values: native, tunnel]
+      --remote-socket-path &lt;REMOTE_SOCKET_PATH&gt;
+      --profile-id &lt;PROFILE_ID&gt;
+      --connect-timeout-ms &lt;CONNECT_TIMEOUT_MS&gt;
+  -h, --help                                     Print help</code></pre></details></section>
+<section class="reference-group" id="kubernetes"><h2>Kubernetes</h2><p>Manage saved Kubernetes hosts, contexts, kubeconfig inputs, and optional bastion SSH connection IDs.</p><details class="command" id="s2s-kubernetes"><summary><code>s2s kubernetes</code></summary><pre><code>Manage saved Kubernetes hosts in the selected CLI profile
+
+Usage: s2s kubernetes &lt;COMMAND&gt;
+
+Commands:
+  list
+  get
+  create
+  update
+  delete
+  help    Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-kubernetes-list"><summary><code>s2s kubernetes list</code></summary><pre><code>Usage: s2s kubernetes list
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-kubernetes-get"><summary><code>s2s kubernetes get</code></summary><pre><code>Usage: s2s kubernetes get &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-kubernetes-create"><summary><code>s2s kubernetes create</code></summary><pre><code>Usage: s2s kubernetes create [OPTIONS] --context &lt;CONTEXT&gt;
+
+Options:
+      --context &lt;CONTEXT&gt;
+      --label &lt;LABEL&gt;
+      --kubeconfig-path &lt;KUBECONFIG_PATH&gt;
+      --setup-command &lt;SETUP_COMMAND&gt;
+      --connect-timeout-ms &lt;CONNECT_TIMEOUT_MS&gt;
+      --bastion-ssh-connection-id &lt;BASTION_SSH_CONNECTION_ID&gt;
+      --kubeconfig-yaml-file &lt;KUBECONFIG_YAML_FILE&gt;
+  -h, --help                                                   Print help</code></pre></details><details class="command" id="s2s-kubernetes-update"><summary><code>s2s kubernetes update</code></summary><pre><code>Usage: s2s kubernetes update [OPTIONS] --context &lt;CONTEXT&gt; &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --context &lt;CONTEXT&gt;
+      --label &lt;LABEL&gt;
+      --kubeconfig-path &lt;KUBECONFIG_PATH&gt;
+      --setup-command &lt;SETUP_COMMAND&gt;
+      --connect-timeout-ms &lt;CONNECT_TIMEOUT_MS&gt;
+      --bastion-ssh-connection-id &lt;BASTION_SSH_CONNECTION_ID&gt;
+      --kubeconfig-yaml-file &lt;KUBECONFIG_YAML_FILE&gt;
+  -h, --help                                                   Print help</code></pre></details><details class="command" id="s2s-kubernetes-delete"><summary><code>s2s kubernetes delete</code></summary><pre><code>Usage: s2s kubernetes delete [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --force
+  -h, --help   Print help</code></pre></details></section>
+<section class="reference-group" id="script"><h2>Scripts</h2><p>Store script bodies, edit them, and organize them into folders. This command group has no execute subcommand.</p><details class="command" id="s2s-script"><summary><code>s2s script</code></summary><pre><code>Manage saved shell scripts for a profile
+
+Usage: s2s script [OPTIONS] &lt;COMMAND&gt;
+
+Commands:
+  list
+  get
+  create
+  edit
+  delete
+  folder  Manage script folders
+  help    Print this message or the help of the given subcommand(s)
+
+Options:
+      --profile &lt;PROFILE&gt;
+  -h, --help               Print help</code></pre></details><details class="command" id="s2s-script-list"><summary><code>s2s script list</code></summary><pre><code>Usage: s2s script list
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-script-get"><summary><code>s2s script get</code></summary><pre><code>Usage: s2s script get &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-script-create"><summary><code>s2s script create</code></summary><pre><code>Usage: s2s script create [OPTIONS] --name &lt;NAME&gt;
+
+Options:
+      --name &lt;NAME&gt;
+      --content &lt;CONTENT&gt;            Script body. Use --content-file to load it from a file instead
+      --content-file &lt;CONTENT_FILE&gt;  Path to a file containing the script body
+      --favorite
+      --folder-id &lt;FOLDER_ID&gt;
+      --dangerous
+  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-script-edit"><summary><code>s2s script edit</code></summary><pre><code>Usage: s2s script edit [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --name &lt;NAME&gt;
+      --content &lt;CONTENT&gt;            Replacement script body. Use --content-file to load it from a file
+      --content-file &lt;CONTENT_FILE&gt;
+      --favorite &lt;FAVORITE&gt;          [possible values: true, false]
+      --folder-id &lt;FOLDER_ID&gt;
+      --dangerous &lt;DANGEROUS&gt;        [possible values: true, false]
+  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-script-delete"><summary><code>s2s script delete</code></summary><pre><code>Usage: s2s script delete [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --force
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-script-folder"><summary><code>s2s script folder</code></summary><pre><code>Manage script folders
+
+Usage: s2s script folder &lt;COMMAND&gt;
+
+Commands:
+  list
+  get
+  create
+  edit
+  delete
+  move-scripts  Move every script from one folder to another
+  help          Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-script-folder-list"><summary><code>s2s script folder list</code></summary><pre><code>Usage: s2s script folder list
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-script-folder-get"><summary><code>s2s script folder get</code></summary><pre><code>Usage: s2s script folder get &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-script-folder-create"><summary><code>s2s script folder create</code></summary><pre><code>Usage: s2s script folder create --name &lt;NAME&gt;
+
+Options:
+      --name &lt;NAME&gt;
+  -h, --help         Print help</code></pre></details><details class="command" id="s2s-script-folder-edit"><summary><code>s2s script folder edit</code></summary><pre><code>Usage: s2s script folder edit --name &lt;NAME&gt; &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --name &lt;NAME&gt;
+  -h, --help         Print help</code></pre></details><details class="command" id="s2s-script-folder-delete"><summary><code>s2s script folder delete</code></summary><pre><code>Usage: s2s script folder delete [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --force
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-script-folder-move-scripts"><summary><code>s2s script folder move-scripts</code></summary><pre><code>Move every script from one folder to another
+
+Usage: s2s script folder move-scripts &lt;SOURCE_ID&gt; &lt;DESTINATION_ID&gt;
+
+Arguments:
+  &lt;SOURCE_ID&gt;
+  &lt;DESTINATION_ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details></section>
+<section class="reference-group" id="skill"><h2>Agent skill</h2><p>Find the installed agent skill or sync it to registered agent locations. Use s2s skill --path, list, or sync; calling s2s skill alone returns an error in this version.</p><details class="command" id="s2s-skill"><summary><code>s2s skill</code></summary><pre><code>Print or sync the Swavan Studio agent skill
+
+Usage: s2s skill [OPTIONS] [COMMAND]
+
+Commands:
+  list  List registered agent skill locations
+  sync  Sync the current skill to registered agent locations
+  help  Print this message or the help of the given subcommand(s)
+
+Options:
+      --path  Print the installed path to the skill&#x27;s SKILL.md file
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-skill-list"><summary><code>s2s skill list</code></summary><pre><code>List registered agent skill locations
+
+Usage: s2s skill list
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-skill-sync"><summary><code>s2s skill sync</code></summary><pre><code>Sync the current skill to registered agent locations
+
+Usage: s2s skill sync [OPTIONS]
+
+Options:
+      --add &lt;ADD&gt;        Copy the skill to this target SKILL.md path and register it
+      --remove &lt;REMOVE&gt;  Stop syncing the registered location with this ID
+      --remove-all       Stop syncing every registered location
+  -h, --help             Print help</code></pre></details></section>
+<section class="reference-group" id="snippet"><h2>Snippets</h2><p>Save command snippets and execute a snippet on selected saved SSH connections.</p><details class="command" id="s2s-snippet"><summary><code>s2s snippet</code></summary><pre><code>Usage: s2s snippet [OPTIONS] &lt;COMMAND&gt;
+
+Commands:
+  list
+  create
+  edit
+  delete
+  execute
+  help     Print this message or the help of the given subcommand(s)
+
+Options:
+      --profile &lt;PROFILE&gt;
+      --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-snippet-list"><summary><code>s2s snippet list</code></summary><pre><code>Usage: s2s snippet list
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-snippet-create"><summary><code>s2s snippet create</code></summary><pre><code>Usage: s2s snippet create [OPTIONS] --title &lt;TITLE&gt; --command &lt;COMMAND&gt;
+
+Options:
+      --title &lt;TITLE&gt;
+      --command &lt;COMMAND&gt;
+      --tags &lt;TAGS&gt;
+      --category &lt;CATEGORY&gt;
+  -h, --help                 Print help</code></pre></details><details class="command" id="s2s-snippet-edit"><summary><code>s2s snippet edit</code></summary><pre><code>Usage: s2s snippet edit [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --title &lt;TITLE&gt;
+      --command &lt;COMMAND&gt;
+      --tags &lt;TAGS&gt;
+      --category &lt;CATEGORY&gt;
+  -h, --help                 Print help</code></pre></details><details class="command" id="s2s-snippet-delete"><summary><code>s2s snippet delete</code></summary><pre><code>Usage: s2s snippet delete [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --force
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-snippet-execute"><summary><code>s2s snippet execute</code></summary><pre><code>Usage: s2s snippet execute [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --servers &lt;SERVERS&gt;...  Comma-separated saved SSH connection IDs
+  -h, --help                  Print help</code></pre></details></section>
+<section class="reference-group" id="memory"><h2>Memory</h2><p>Manage notes, folders, links, search, and imports/exports. Single notes export as Markdown, HTML, or PDF; workspace exports include Swavan metadata.</p><details class="command" id="s2s-memory"><summary><code>s2s memory</code></summary><pre><code>Manage Memory notes, folders, and links
+
+Usage: s2s memory [OPTIONS] &lt;COMMAND&gt;
+
+Commands:
+  list
+  show
+  create
+  edit
+  delete
+  link
+  unlink
+  search
+  find
+  export-note  Export one note as Markdown, HTML, or PDF
+  export       Export a workspace or folder subtree with Swavan metadata
+  import       Import a Swavan Memory metadata file or compressed archive
+  folder
+  help         Print this message or the help of the given subcommand(s)
+
+Options:
+      --profile &lt;PROFILE&gt;
+  -h, --help               Print help</code></pre></details><details class="command" id="s2s-memory-list"><summary><code>s2s memory list</code></summary><pre><code>Usage: s2s memory list [OPTIONS]
+
+Options:
+      --folder &lt;FOLDER&gt;
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-memory-show"><summary><code>s2s memory show</code></summary><pre><code>Usage: s2s memory show &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-create"><summary><code>s2s memory create</code></summary><pre><code>Usage: s2s memory create [OPTIONS] --title &lt;TITLE&gt;
+
+Options:
+      --title &lt;TITLE&gt;
+      --content &lt;CONTENT&gt;
+      --from &lt;FROM&gt;
+      --folder &lt;FOLDER&gt;
+  -h, --help               Print help</code></pre></details><details class="command" id="s2s-memory-edit"><summary><code>s2s memory edit</code></summary><pre><code>Usage: s2s memory edit [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --title &lt;TITLE&gt;
+      --content &lt;CONTENT&gt;
+      --from &lt;FROM&gt;
+      --folder &lt;FOLDER&gt;
+      --root
+  -h, --help               Print help</code></pre></details><details class="command" id="s2s-memory-delete"><summary><code>s2s memory delete</code></summary><pre><code>Usage: s2s memory delete [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --force
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-memory-link"><summary><code>s2s memory link</code></summary><pre><code>Usage: s2s memory link &lt;ID&gt; &lt;LINKED_ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+  &lt;LINKED_ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-unlink"><summary><code>s2s memory unlink</code></summary><pre><code>Usage: s2s memory unlink &lt;ID&gt; &lt;LINKED_ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+  &lt;LINKED_ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-search"><summary><code>s2s memory search</code></summary><pre><code>Usage: s2s memory search &lt;QUERY&gt;
+
+Arguments:
+  &lt;QUERY&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-find"><summary><code>s2s memory find</code></summary><pre><code>Usage: s2s memory find &lt;ID&gt; &lt;QUERY&gt;
+
+Arguments:
+  &lt;ID&gt;
+  &lt;QUERY&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-export-note"><summary><code>s2s memory export-note</code></summary><pre><code>Export one note as Markdown, HTML, or PDF
+
+Usage: s2s memory export-note [OPTIONS] --output &lt;OUTPUT&gt; &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --output &lt;OUTPUT&gt;
+      --format &lt;FORMAT&gt;  [default: markdown] [possible values: markdown, html, pdf]
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-memory-export"><summary><code>s2s memory export</code></summary><pre><code>Export a workspace or folder subtree with Swavan metadata
+
+Usage: s2s memory export [OPTIONS] --output &lt;OUTPUT&gt;
+
+Options:
+      --output &lt;OUTPUT&gt;
+      --folder &lt;FOLDER&gt;
+      --compressed
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-memory-import"><summary><code>s2s memory import</code></summary><pre><code>Import a Swavan Memory metadata file or compressed archive
+
+Usage: s2s memory import [OPTIONS] --input &lt;INPUT&gt;
+
+Options:
+      --input &lt;INPUT&gt;
+      --folder &lt;FOLDER&gt;
+      --replace
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-memory-folder"><summary><code>s2s memory folder</code></summary><pre><code>Usage: s2s memory folder &lt;COMMAND&gt;
+
+Commands:
+  list
+  create
+  rename
+  delete
+  help    Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-folder-list"><summary><code>s2s memory folder list</code></summary><pre><code>Usage: s2s memory folder list
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-folder-create"><summary><code>s2s memory folder create</code></summary><pre><code>Usage: s2s memory folder create [OPTIONS] --name &lt;NAME&gt;
+
+Options:
+      --name &lt;NAME&gt;
+      --parent &lt;PARENT&gt;
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-memory-folder-rename"><summary><code>s2s memory folder rename</code></summary><pre><code>Usage: s2s memory folder rename --name &lt;NAME&gt; &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --name &lt;NAME&gt;
+  -h, --help         Print help</code></pre></details><details class="command" id="s2s-memory-folder-delete"><summary><code>s2s memory folder delete</code></summary><pre><code>Usage: s2s memory folder delete [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --force
+  -h, --help   Print help</code></pre></details></section>
+<section class="reference-group" id="secret"><h2>Secrets</h2><p>Manage encrypted profile secrets and attach them to SSH, Docker, or Kubernetes targets. Secret export writes decrypted JSON; environment prints secret values.</p><details class="command" id="s2s-secret"><summary><code>s2s secret</code></summary><pre><code>Manage encrypted profile secrets and connection attachments
+
+Usage: s2s secret [OPTIONS] &lt;COMMAND&gt;
+
+Commands:
+  list
+  get
+  export       Export a decrypted managed secret to a portable JSON file
+  environment  Print environment values as dotenv or shell assignments
+  put          Create or update from JSON containing name, type, values, and optional metadata
+  delete
+  attach
+  detach
+  attachments
+  help         Print this message or the help of the given subcommand(s)
+
+Options:
+      --profile &lt;PROFILE&gt;
+      --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-secret-list"><summary><code>s2s secret list</code></summary><pre><code>Usage: s2s secret list
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-secret-get"><summary><code>s2s secret get</code></summary><pre><code>Usage: s2s secret get &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-secret-export"><summary><code>s2s secret export</code></summary><pre><code>Export a decrypted managed secret to a portable JSON file
+
+Usage: s2s secret export --output &lt;OUTPUT&gt; &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --output &lt;OUTPUT&gt;
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-secret-environment"><summary><code>s2s secret environment</code></summary><pre><code>Print environment values as dotenv or shell assignments
+
+Usage: s2s secret environment [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --format &lt;FORMAT&gt;  [default: dotenv] [possible values: dotenv, shell]
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-secret-put"><summary><code>s2s secret put</code></summary><pre><code>Create or update from JSON containing name, type, values, and optional metadata
+
+Usage: s2s secret put --json &lt;JSON&gt;
+
+Options:
+      --json &lt;JSON&gt;
+  -h, --help         Print help</code></pre></details><details class="command" id="s2s-secret-delete"><summary><code>s2s secret delete</code></summary><pre><code>Usage: s2s secret delete [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --force
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-secret-attach"><summary><code>s2s secret attach</code></summary><pre><code>Usage: s2s secret attach [OPTIONS] --target-kind &lt;TARGET_KIND&gt; --target-id &lt;TARGET_ID&gt; &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --target-kind &lt;TARGET_KIND&gt;      [possible values: ssh, docker, kubernetes]
+      --target-id &lt;TARGET_ID&gt;
+      --mount &lt;FILE_NAME=REMOTE_PATH&gt;  File destination as FILE_NAME=REMOTE_PATH. Repeat for multi-file secrets
+  -h, --help                           Print help</code></pre></details><details class="command" id="s2s-secret-detach"><summary><code>s2s secret detach</code></summary><pre><code>Usage: s2s secret detach --target-kind &lt;TARGET_KIND&gt; --target-id &lt;TARGET_ID&gt; &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --target-kind &lt;TARGET_KIND&gt;  [possible values: ssh, docker, kubernetes]
+      --target-id &lt;TARGET_ID&gt;
+  -h, --help                       Print help</code></pre></details><details class="command" id="s2s-secret-attachments"><summary><code>s2s secret attachments</code></summary><pre><code>Usage: s2s secret attachments --target-kind &lt;TARGET_KIND&gt; --target-id &lt;TARGET_ID&gt;
+
+Options:
+      --target-kind &lt;TARGET_KIND&gt;  [possible values: ssh, docker, kubernetes]
+      --target-id &lt;TARGET_ID&gt;
+  -h, --help                       Print help</code></pre></details></section>
+<section class="reference-group" id="rdp"><h2>RDP</h2><p>Manage saved RDP connections and open them. Create and update accept JSON plus an optional password environment variable.</p><details class="command" id="s2s-rdp"><summary><code>s2s rdp</code></summary><pre><code>Usage: s2s rdp [OPTIONS] &lt;COMMAND&gt;
+
+Commands:
+  list
+  get
+  create
+  update
+  delete
+  purge
+  connect
+  status
+  help     Print this message or the help of the given subcommand(s)
+
+Options:
+      --profile &lt;PROFILE&gt;
+      --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-rdp-list"><summary><code>s2s rdp list</code></summary><pre><code>Usage: s2s rdp list
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-rdp-get"><summary><code>s2s rdp get</code></summary><pre><code>Usage: s2s rdp get &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-rdp-create"><summary><code>s2s rdp create</code></summary><pre><code>Usage: s2s rdp create [OPTIONS] --json &lt;JSON&gt;
+
+Options:
+      --json &lt;JSON&gt;
+      --password-env &lt;PASSWORD_ENV&gt;
+  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-rdp-update"><summary><code>s2s rdp update</code></summary><pre><code>Usage: s2s rdp update [OPTIONS] --json &lt;JSON&gt; &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --json &lt;JSON&gt;
+      --password-env &lt;PASSWORD_ENV&gt;
+  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-rdp-delete"><summary><code>s2s rdp delete</code></summary><pre><code>Usage: s2s rdp delete [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --force
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-rdp-purge"><summary><code>s2s rdp purge</code></summary><pre><code>Usage: s2s rdp purge [OPTIONS]
+
+Options:
+      --force
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-rdp-connect"><summary><code>s2s rdp connect</code></summary><pre><code>Usage: s2s rdp connect [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --fullscreen
+      --test
+  -h, --help        Print help</code></pre></details><details class="command" id="s2s-rdp-status"><summary><code>s2s rdp status</code></summary><pre><code>Usage: s2s rdp status &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details></section>
+<section class="reference-group" id="database"><h2>Databases</h2><p>Manage saved database connections and open them. Create and update accept JSON plus an optional password environment variable.</p><details class="command" id="s2s-database"><summary><code>s2s database</code></summary><pre><code>Usage: s2s database [OPTIONS] &lt;COMMAND&gt;
+
+Commands:
+  list
+  get
+  create
+  update
+  delete
+  purge
+  connect
+  status
+  help     Print this message or the help of the given subcommand(s)
+
+Options:
+      --profile &lt;PROFILE&gt;
+      --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-database-list"><summary><code>s2s database list</code></summary><pre><code>Usage: s2s database list
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-database-get"><summary><code>s2s database get</code></summary><pre><code>Usage: s2s database get &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-database-create"><summary><code>s2s database create</code></summary><pre><code>Usage: s2s database create [OPTIONS] --json &lt;JSON&gt;
+
+Options:
+      --json &lt;JSON&gt;
+      --password-env &lt;PASSWORD_ENV&gt;
+  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-database-update"><summary><code>s2s database update</code></summary><pre><code>Usage: s2s database update [OPTIONS] --json &lt;JSON&gt; &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --json &lt;JSON&gt;
+      --password-env &lt;PASSWORD_ENV&gt;
+  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-database-delete"><summary><code>s2s database delete</code></summary><pre><code>Usage: s2s database delete [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --force
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-database-purge"><summary><code>s2s database purge</code></summary><pre><code>Usage: s2s database purge [OPTIONS]
+
+Options:
+      --force
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-database-connect"><summary><code>s2s database connect</code></summary><pre><code>Usage: s2s database connect [OPTIONS] &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+      --fullscreen
+      --test
+  -h, --help        Print help</code></pre></details><details class="command" id="s2s-database-status"><summary><code>s2s database status</code></summary><pre><code>Usage: s2s database status &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details></section>
+<section class="reference-group" id="sync"><h2>S3 sync</h2><p>Configure S3-compatible storage, inspect settings, test bucket access, discover/import profiles, and exchange a profile with its sync space.</p><details class="command" id="s2s-sync"><summary><code>s2s sync</code></summary><pre><code>Configure and check S3-compatible application sync storage
+
+Usage: s2s sync [OPTIONS] &lt;COMMAND&gt;
+
+Commands:
+  discover   Discover encrypted profiles before this device has a local profile
+  import     Import a discovered profile with the same app ID and a new local vault
+  configure  Save an S3-compatible endpoint and credentials for this profile
+  show       Show saved endpoint settings without revealing credentials
+  test       Verify that the configured bucket can be listed
+  now        Exchange the current profile with its configured S3 sync space
+  help       Print this message or the help of the given subcommand(s)
+
+Options:
+      --profile &lt;PROFILE&gt;
+      --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-sync-discover"><summary><code>s2s sync discover</code></summary><pre><code>Discover encrypted profiles before this device has a local profile
+
+Usage: s2s sync discover
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-sync-import"><summary><code>s2s sync import</code></summary><pre><code>Import a discovered profile with the same app ID and a new local vault
+
+Usage: s2s sync import &lt;ID&gt;
+
+Arguments:
+  &lt;ID&gt;
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-sync-configure"><summary><code>s2s sync configure</code></summary><pre><code>Save an S3-compatible endpoint and credentials for this profile
+
+Usage: s2s sync configure [OPTIONS]
+
+Options:
+      --endpoint &lt;ENDPOINT&gt;
+
+      --region &lt;REGION&gt;
+
+      --bucket &lt;BUCKET&gt;
+
+      --prefix &lt;PREFIX&gt;
+
+      --allow-insecure-http
+
+      --access-key-env &lt;ACCESS_KEY_ENV&gt;
+          Environment variable containing the S3 access key
+      --secret-key-env &lt;SECRET_KEY_ENV&gt;
+          Environment variable containing the S3 secret key
+      --session-token-env &lt;SESSION_TOKEN_ENV&gt;
+          Environment variable containing a temporary S3 session token
+      --passphrase-env &lt;PASSPHRASE_ENV&gt;
+          Environment variable containing the shared encryption passphrase
+  -h, --help
+          Print help</code></pre></details><details class="command" id="s2s-sync-show"><summary><code>s2s sync show</code></summary><pre><code>Show saved endpoint settings without revealing credentials
+
+Usage: s2s sync show
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-sync-test"><summary><code>s2s sync test</code></summary><pre><code>Verify that the configured bucket can be listed
+
+Usage: s2s sync test
+
+Options:
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-sync-now"><summary><code>s2s sync now</code></summary><pre><code>Exchange the current profile with its configured S3 sync space
+
+Usage: s2s sync now
+
+Options:
+  -h, --help  Print help</code></pre></details></section>
+</main></div><footer><span>Swavan Studio · s2s 0.2.13</span><a href="index.html">Back to the product tour</a></footer><script>
+const toggle = document.getElementById('theme-toggle');
+function updateThemeLabel() { toggle.textContent = document.documentElement.dataset.theme === 'dark' ? 'Light theme' : 'Dark theme'; }
+toggle.addEventListener('click', () => { const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = next; try { localStorage.setItem('swavan-theme', next); } catch (_) {} updateThemeLabel(); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => { try { if (['light', 'dark'].includes(localStorage.getItem('swavan-theme'))) return; } catch (_) {} document.documentElement.dataset.theme = event.matches ? 'dark' : 'light'; updateThemeLabel(); });
+updateThemeLabel();
+const entries = Array.from(document.querySelectorAll('.command'));
+const groups = Array.from(document.querySelectorAll('.reference-group'));
+document.getElementById('command-search').addEventListener('input', event => {
+ const query = event.target.value.toLowerCase().trim();
+ let count = 0;
+ entries.forEach(entry => { const match = !query || entry.textContent.toLowerCase().includes(query); entry.hidden = !match; entry.open = !!query && match; if (match) count++; });
+ groups.forEach(group => { group.hidden = !Array.from(group.querySelectorAll('.command')).some(entry => !entry.hidden); });
+ document.getElementById('search-status').textContent = query ? `${count} matching command entries.` : '124 command entries. Expand any entry to see its help.';
+});
+</script></body></html>
