@@ -41,6 +41,10 @@ The desktop app supports macOS, Windows, and Linux.
 
 Credentials remain on the device and are encrypted at rest with ChaCha20-Poly1305 using an Argon2-derived key. The vault must be unlocked before protected connection data can be used.
 
+## Health documentation
+
+Read the [Health sources and dashboards guide](https://studio.swavan.io/health.html) to configure logs and metrics collection, query records, and save dashboard panels.
+
 ## CLI documentation
 
 Read the [s2s CLI documentation](https://studio.swavan.io/docs.html) for installation, workflow examples, and the command reference captured from version 0.2.13.

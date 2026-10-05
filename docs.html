@@ -1,42 +1,68 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>s2s CLI Documentation — Swavan Studio</title><meta name="description" content="Install and use the Swavan Studio s2s CLI. Workflow examples and a searchable command reference for profiles, SSH, Docker, Memory, secrets, and more."><link rel="canonical" href="https://studio.swavan.io/docs.html"><link rel="icon" href="public/icon.svg" type="image/svg+xml"><script>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>s2s CLI Documentation — Swavan Studio</title>
+<meta name="description" content="Install and use the Swavan Studio s2s CLI. Workflow examples and a searchable command reference for profiles, SSH, Docker, Memory, secrets, and more.">
+<link rel="canonical" href="https://studio.swavan.io/docs.html">
+<link rel="icon" href="public/icon.svg" type="image/svg+xml"><script>
 let theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 try { const saved = localStorage.getItem('swavan-theme'); if (saved === 'dark' || saved === 'light') theme = saved; } catch (_) {}
 document.documentElement.dataset.theme = theme;
-</script><style>    :root { color-scheme: light; --bg: #f4f4f4; --text: #202020; --muted: #626262; --line: #d9d9d9; --accent: #007f79; --panel: #ffffff; --panel-soft: #e3f2f0; --button-bg: #007f79; --button-text: #ffffff; --button-hover: #006b66; --separator: #a0a0a0; --shadow: #0000000c; }    :root[data-theme="dark"] { color-scheme: dark; --bg: #171717; --text: #eeeeee; --muted: #aaaaaa; --line: #343434; --accent: #00b5aa; --panel: #1e1e1e; --panel-soft: #24312f; --button-bg: #009d92; --button-text: #ffffff; --button-hover: #00877e; --separator: #686868; --shadow: #00000033; }
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--accent);text-underline-offset:3px}button,input{font:inherit}a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}header,footer{max-width:1280px;margin:auto;padding:24px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px}.layout{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:220px minmax(0,1fr);gap:48px;padding:16px 32px 64px}nav{position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);overflow:auto}nav a{display:block;padding:4px 0;text-decoration:none;font-size:13px}nav p,.eyebrow{font:11px/1.6 monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}h1{font-size:clamp(36px,5vw,56px);line-height:1.1;letter-spacing:-.045em;margin:12px 0 20px}h2{font-size:26px;line-height:1.3;letter-spacing:-.025em}h3{font-size:17px;margin-top:28px}p{color:var(--muted)}section{padding:20px 0 28px;border-bottom:1px solid var(--line);scroll-margin-top:24px}code{font:12px/1.7 SFMono-Regular,Menlo,Consolas,monospace}pre{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:18px;overflow:auto;max-width:100%}pre code{color:var(--text)}.command{border:1px solid var(--line);border-radius:4px;margin:10px 0;background:var(--panel)}.command summary{cursor:pointer;padding:12px 16px}.command pre{margin:0;border:0;border-top:1px solid var(--line);border-radius:0}.search-label{display:block;margin-top:28px;color:var(--muted);font-size:13px}input{width:100%;padding:12px 14px;margin:8px 0 0;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:4px}.theme-toggle{background:var(--panel);color:var(--text);border:1px solid var(--line);padding:6px 12px;border-radius:4px;cursor:pointer}footer{border-top:1px solid var(--line);font-size:12px;color:var(--muted)}[hidden]{display:none!important}@media(max-width:800px){.layout{grid-template-columns:1fr;gap:24px;padding:12px 20px 40px}header,footer{padding:20px}nav{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:6px 16px}nav p{width:100%;margin-bottom:0}h2{font-size:24px}pre{padding:12px}footer{flex-wrap:wrap}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-</style></head><body><header><a href="index.html">← Swavan Studio</a><button class="theme-toggle" type="button" id="theme-toggle">Switch theme</button></header><div class="layout"><nav aria-label="CLI documentation sections"><p>Getting started</p><a href="#install">Install</a><a href="#start">Profiles &amp; credentials</a><a href="#workflows">Common workflows</a><a href="#help">Using help</a><a href="#reference">Search commands</a><p>Command groups</p><a href="#completion">Shell completion</a><a href="#experimental">Experimental features</a><a href="#profile">Profiles</a><a href="#ssh">SSH</a><a href="#vnc">VNC</a><a href="#docker">Docker</a><a href="#kubernetes">Kubernetes</a><a href="#script">Scripts</a><a href="#skill">Agent skill</a><a href="#snippet">Snippets</a><a href="#memory">Memory</a><a href="#secret">Secrets</a><a href="#rdp">RDP</a><a href="#database">Databases</a><a href="#sync">S3 sync</a></nav><main><span class="eyebrow">Desktop + CLI / 0.2.13</span><h1>The s2s command line.</h1><p>Manage Studio connections, profiles, scripts, notes, and secrets from your terminal.</p><p>Reference captured from <code>s2s 0.2.13</code> on October 4, 2026.</p><section id="install"><h2>Install the app and CLI</h2><p>The installer installs Studio and <code>s2s</code>. Manual downloads are available from <a href="https://github.com/swavan/studio/releases/latest">GitHub Releases</a>.</p><h3>macOS / Linux</h3><pre><code>curl -fsSL https://studio.swavan.io/install.sh | sh</code></pre><h3>Windows PowerShell</h3><pre><code>irm https://studio.swavan.io/install.ps1 | iex</code></pre><p>Check the installed version and available commands:</p><pre><code>s2s --version
-s2s --help</code></pre></section>
-<section id="start"><h2>Choose a profile</h2><p>List profiles and use a returned profile ID. Replace example IDs and host names with your own values.</p><pre><code>s2s profile list
+</script>
+<link rel="stylesheet" href="documentation.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></head><body>
+<aside class="site-sidebar" aria-label="Site navigation">
+  <a class="sidebar-brand" href="index.html"><img src="public/icon.svg" alt=""><span>Swavan<br>Studio</span></a>
+  <nav class="sidebar-options" aria-label="Main options">
+    <a href="index.html">Overview</a><a href="index.html#product-tour">Features</a>
+    <span class="sidebar-label">Documentation</span>
+    <a href="health.html">Health guide</a>
+    <a href="docs.html" aria-current="page">s2s CLI</a>
+  </nav><a class="sidebar-download" href="index.html#download">Install &amp; download ↓</a>
+</aside>
+<div class="doc-shell">
+<div class="doc-toolbar">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Studio</a></li><li>Documentation</li><li aria-current="page">s2s CLI</li></ol></nav><button class="theme-toggle" type="button" id="theme-toggle">Switch theme</button></div>
+<div class="doc-layout">
+<main class="doc-main" id="doc-content">
+<div class="doc-intro"><span class="eyebrow">Swavan Studio / Documentation</span><h1>The s2s command line.</h1><p>Manage connections, profiles, scripts, notes, and secrets from your terminal.</p>
+<div class="doc-meta"><span>REFERENCE / v0.2.13</span><span>124 commands · Verified October 4, 2026</span></div></div>
+<section id="install"><h2>Install the app and CLI</h2><p>The installer installs Studio and <code>s2s</code>. Manual downloads are available from <a href="https://github.com/swavan/studio/releases/latest">GitHub Releases</a>.</p><h3>macOS / Linux</h3><div class="code-block"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy-code" aria-label="Copy command example">Copy</button></div><pre><code>curl -fsSL https://studio.swavan.io/install.sh | sh</code></pre></div><h3>Windows PowerShell</h3><div class="code-block"><div class="code-toolbar"><span>PowerShell</span><button type="button" class="copy-code" aria-label="Copy command example">Copy</button></div><pre><code>irm https://studio.swavan.io/install.ps1 | iex</code></pre></div><p>Check the installed version and available commands:</p><div class="code-block"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy-code" aria-label="Copy command example">Copy</button></div><pre><code>s2s --version
+s2s --help</code></pre></div></section>
+<section id="start"><h2>Choose a profile</h2><p>List profiles and use a returned profile ID. Replace example IDs and host names with your own values.</p><div class="code-block"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy-code" aria-label="Copy command example">Copy</button></div><pre><code>s2s profile list
 s2s profile default
 s2s profile use PROFILE_ID
-s2s profile default PROFILE_ID</code></pre><p><code>profile use</code> unlocks a profile and shows its identity. <code>profile default PROFILE_ID</code> changes the default used by CLI commands.</p><p>Where a command group supports <code>--profile</code>, put it before the subcommand:</p><pre><code>s2s ssh --profile PROFILE_ID list
-s2s memory --profile PROFILE_ID list</code></pre><p>SSH, VNC, RDP, database, snippet, secret, and sync groups also expose <code>--vault-password-env</code>. It takes the name of an environment variable containing the vault password. Connection options such as <code>--password-env</code> refer to the connection password instead.</p></section>
-<section id="workflows"><h2>Common workflows</h2><h3>Add and open an SSH connection</h3><p>Create a named connection using a private key file, then use the saved connection ID from your list.</p><pre><code>s2s ssh create --name staging --host staging.example.com --username deploy --private-key-path ~/.ssh/id_ed25519
+s2s profile default PROFILE_ID</code></pre></div><p><code>profile use</code> unlocks a profile and shows its identity. <code>profile default PROFILE_ID</code> changes the default used by CLI commands.</p><p>Where a command group supports <code>--profile</code>, put it before the subcommand:</p><div class="code-block"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy-code" aria-label="Copy command example">Copy</button></div><pre><code>s2s ssh --profile PROFILE_ID list
+s2s memory --profile PROFILE_ID list</code></pre></div><p>SSH, VNC, RDP, database, snippet, secret, and sync groups also expose <code>--vault-password-env</code>. It takes the name of an environment variable containing the vault password. Connection options such as <code>--password-env</code> refer to the connection password instead.</p></section>
+<section id="workflows"><h2>Common workflows</h2><h3>Add and open an SSH connection</h3><p>Create a named connection using a private key file, then use the saved connection ID from your list.</p><div class="code-block"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy-code" aria-label="Copy command example">Copy</button></div><pre><code>s2s ssh create --name staging --host staging.example.com --username deploy --private-key-path ~/.ssh/id_ed25519
 s2s ssh list
 s2s ssh test CONNECTION_ID
-s2s ssh connect CONNECTION_ID</code></pre><p>Open a saved connection in the desktop app with <code>--gui</code>. Use <code>--shell</code> for the system OpenSSH client, config, and agent instead of the vault credential. Extra OpenSSH arguments require <code>--shell</code> and follow <code>--</code>.</p><pre><code>s2s ssh connect CONNECTION_ID --gui
+s2s ssh connect CONNECTION_ID</code></pre></div><p>Open a saved connection in the desktop app with <code>--gui</code>. Use <code>--shell</code> for the system OpenSSH client, config, and agent instead of the vault credential. Extra OpenSSH arguments require <code>--shell</code> and follow <code>--</code>.</p><div class="code-block"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy-code" aria-label="Copy command example">Copy</button></div><pre><code>s2s ssh connect CONNECTION_ID --gui
 s2s ssh connect CONNECTION_ID --shell
-s2s ssh connect CONNECTION_ID --shell -- -L 8080:localhost:80</code></pre><h3>Save scripts and run snippets</h3><p>Scripts store reusable bodies; snippets provide a command that can run against saved SSH connection IDs.</p><pre><code>s2s script create --name health-check --content-file ./health-check.sh
+s2s ssh connect CONNECTION_ID --shell -- -L 8080:localhost:80</code></pre></div><h3>Save scripts and run snippets</h3><p>Scripts store reusable bodies; snippets provide a command that can run against saved SSH connection IDs.</p><div class="code-block"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy-code" aria-label="Copy command example">Copy</button></div><pre><code>s2s script create --name health-check --content-file ./health-check.sh
 s2s script list
 s2s snippet create --title uptime --command uptime
 s2s snippet list
-s2s snippet execute SNIPPET_ID --servers SSH_ID_1,SSH_ID_2</code></pre><h3>Create and export a note</h3><pre><code>s2s memory create --title &quot;Deployment notes&quot; --content &quot;Verify the service after deploy.&quot;
+s2s snippet execute SNIPPET_ID --servers SSH_ID_1,SSH_ID_2</code></pre></div><h3>Create and export a note</h3><div class="code-block"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy-code" aria-label="Copy command example">Copy</button></div><pre><code>s2s memory create --title &quot;Deployment notes&quot; --content &quot;Verify the service after deploy.&quot;
 s2s memory list
 s2s memory search deployment
-s2s memory export-note NOTE_ID --output ./deployment.md --format markdown</code></pre><h3>Open a saved desktop or database connection</h3><pre><code>s2s vnc list
+s2s memory export-note NOTE_ID --output ./deployment.md --format markdown</code></pre></div><h3>Open a saved desktop or database connection</h3><div class="code-block"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy-code" aria-label="Copy command example">Copy</button></div><pre><code>s2s vnc list
 s2s vnc connect VNC_ID --fullscreen
 s2s rdp list
 s2s rdp connect RDP_ID
 s2s database list
-s2s database connect DATABASE_ID</code></pre><h3>Connect to Docker or save a Kubernetes context</h3><pre><code>s2s docker connect --mode local
+s2s database connect DATABASE_ID</code></pre></div><h3>Connect to Docker or save a Kubernetes context</h3><div class="code-block"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy-code" aria-label="Copy command example">Copy</button></div><pre><code>s2s docker connect --mode local
 s2s kubernetes create --context my-context --kubeconfig-path ~/.kube/config
-s2s kubernetes list</code></pre><h3>Inspect sync configuration</h3><p><code>sync show</code> displays endpoint settings without revealing credentials. <code>sync test</code> checks whether the configured bucket can be listed. <code>sync now</code> exchanges the selected profile with its configured sync space.</p><pre><code>s2s sync show
-s2s sync test</code></pre><h3>Generate shell completions</h3><p>Write the completion script to a file and load it into the current shell. This example uses zsh.</p><pre><code>s2s completion zsh &gt; ./s2s-completion.zsh
-source ./s2s-completion.zsh</code></pre></section>
-<section id="help"><h2>Read the reference</h2><p>Each entry below contains the installed CLI’s exact help output, including required arguments, defaults, options, and accepted values. Parent entries show options shared by their subcommands. Run help locally if your version differs.</p><pre><code>s2s ssh --help
+s2s kubernetes list</code></pre></div><h3>Inspect sync configuration</h3><p><code>sync show</code> displays endpoint settings without revealing credentials. <code>sync test</code> checks whether the configured bucket can be listed. <code>sync now</code> exchanges the selected profile with its configured sync space.</p><div class="code-block"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy-code" aria-label="Copy command example">Copy</button></div><pre><code>s2s sync show
+s2s sync test</code></pre></div><h3>Generate shell completions</h3><p>Write the completion script to a file and load it into the current shell. This example uses zsh.</p><div class="code-block"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy-code" aria-label="Copy command example">Copy</button></div><pre><code>s2s completion zsh &gt; ./s2s-completion.zsh
+source ./s2s-completion.zsh</code></pre></div></section>
+<section id="help"><h2>Read the reference</h2><p>Each entry below contains the installed CLI’s exact help output, including required arguments, defaults, options, and accepted values. Parent entries show options shared by their subcommands. Run help locally if your version differs.</p><div class="code-block"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy-code" aria-label="Copy command example">Copy</button></div><pre><code>s2s ssh --help
 s2s ssh create --help
-s2s memory folder --help</code></pre><p>The help output does not define the full JSON schema for RDP, database, SSH edit, or secret records. Those commands are documented below without invented payloads. Delete and purge commands remove saved data; check their exact options before using them.</p><p>Examples illustrate command syntax. Remote connections, writes, secret exports, and sync operations were not executed while preparing this page.</p></section><section id="reference"><h2>Command reference</h2><label class="search-label" for="command-search">Find a command or option</label><input type="search" id="command-search" placeholder="Try ssh connect, --profile, or export" autocomplete="off"><p id="search-status" role="status">124 command entries. Expand any entry to see its help.</p></section><section class="reference-group" id="s2s"><h2>Top-level CLI</h2><details class="command" id="command-root"><summary><code>s2s</code></summary><pre><code>Swavan Studio desktop CLI
+s2s memory folder --help</code></pre></div><p>The help output does not define the full JSON schema for RDP, database, SSH edit, or secret records. Those commands are documented below without invented payloads. Delete and purge commands remove saved data; check their exact options before using them.</p><p>Examples illustrate command syntax. Remote connections, writes, secret exports, and sync operations were not executed while preparing this page.</p></section>
+<section id="reference"><h2>Command reference</h2><label class="search-label" for="command-search">Find a command or option</label><input type="search" id="command-search" placeholder="Try ssh connect, --profile, or export" autocomplete="off"><p id="search-status" role="status">124 command entries. Expand any entry to see its help.</p></section>
+<section class="reference-group" id="s2s"><h2>Top-level CLI</h2><details class="command" id="command-root"><summary><code>s2s</code><span class="command-description">Command help</span></summary><pre><code>Swavan Studio desktop CLI
 
 Usage: s2s &lt;COMMAND&gt;
 
@@ -60,7 +86,8 @@ Commands:
 
 Options:
   -h, --help     Print help
-  -V, --version  Print version</code></pre></details></section><section class="reference-group" id="completion"><h2>Shell completion</h2><p>Generate completion scripts for bash, elvish, fish, PowerShell, and zsh.</p><details class="command" id="s2s-completion"><summary><code>s2s completion</code></summary><pre><code>Print a shell completion script to stdout
+  -V, --version  Print version</code></pre></details></section>
+<section class="reference-group" id="completion"><h2>Shell completion</h2><p>Generate completion scripts for bash, elvish, fish, PowerShell, and zsh.</p><details class="command" id="s2s-completion"><summary><code>s2s completion</code><span class="command-description">Command help</span></summary><pre><code>Print a shell completion script to stdout
 
 Usage: s2s completion &lt;SHELL&gt;
 
@@ -69,7 +96,7 @@ Arguments:
 
 Options:
   -h, --help  Print help</code></pre></details></section>
-<section class="reference-group" id="experimental"><h2>Experimental features</h2><p>Inspect or change experimental feature access for a profile.</p><details class="command" id="s2s-experimental"><summary><code>s2s experimental</code></summary><pre><code>Manage access to features that are still under active development
+<section class="reference-group" id="experimental"><h2>Experimental features</h2><p>Inspect or change experimental feature access for a profile.</p><details class="command" id="s2s-experimental"><summary><code>s2s experimental</code><span class="command-description">Command help</span></summary><pre><code>Manage access to features that are still under active development
 
 Usage: s2s experimental [OPTIONS] &lt;COMMAND&gt;
 
@@ -81,23 +108,23 @@ Commands:
 
 Options:
       --profile &lt;PROFILE&gt;
-  -h, --help               Print help</code></pre></details><details class="command" id="s2s-experimental-status"><summary><code>s2s experimental status</code></summary><pre><code>Show whether experimental features are enabled for the profile
+  -h, --help               Print help</code></pre></details><details class="command" id="s2s-experimental-status"><summary><code>s2s experimental status</code><span class="command-description">Check status</span></summary><pre><code>Show whether experimental features are enabled for the profile
 
 Usage: s2s experimental status
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-experimental-enable"><summary><code>s2s experimental enable</code></summary><pre><code>Opt in to experimental features for the profile
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-experimental-enable"><summary><code>s2s experimental enable</code><span class="command-description">Command help</span></summary><pre><code>Opt in to experimental features for the profile
 
 Usage: s2s experimental enable
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-experimental-disable"><summary><code>s2s experimental disable</code></summary><pre><code>Opt out of experimental features for the profile
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-experimental-disable"><summary><code>s2s experimental disable</code><span class="command-description">Command help</span></summary><pre><code>Opt out of experimental features for the profile
 
 Usage: s2s experimental disable
 
 Options:
   -h, --help  Print help</code></pre></details></section>
-<section class="reference-group" id="profile"><h2>Profiles</h2><p>List, create, update, unlock, and select CLI profiles. The use command unlocks a profile and shows its identity; default selects the profile used by CLI commands.</p><details class="command" id="s2s-profile"><summary><code>s2s profile</code></summary><pre><code>Usage: s2s profile &lt;COMMAND&gt;
+<section class="reference-group" id="profile"><h2>Profiles</h2><p>List, create, update, unlock, and select CLI profiles. The use command unlocks a profile and shows its identity; default selects the profile used by CLI commands.</p><details class="command" id="s2s-profile"><summary><code>s2s profile</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s profile &lt;COMMAND&gt;
 
 Commands:
   list
@@ -110,16 +137,16 @@ Commands:
   help     Print this message or the help of the given subcommand(s)
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-profile-list"><summary><code>s2s profile list</code></summary><pre><code>Usage: s2s profile list
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-profile-list"><summary><code>s2s profile list</code><span class="command-description">List saved records</span></summary><pre><code>Usage: s2s profile list
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-profile-get"><summary><code>s2s profile get</code></summary><pre><code>Usage: s2s profile get &lt;ID&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-profile-get"><summary><code>s2s profile get</code><span class="command-description">Inspect a record</span></summary><pre><code>Usage: s2s profile get &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-profile-create"><summary><code>s2s profile create</code></summary><pre><code>Usage: s2s profile create [OPTIONS] --display-name &lt;DISPLAY_NAME&gt; --username &lt;USERNAME&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-profile-create"><summary><code>s2s profile create</code><span class="command-description">Create a record</span></summary><pre><code>Usage: s2s profile create [OPTIONS] --display-name &lt;DISPLAY_NAME&gt; --username &lt;USERNAME&gt;
 
 Options:
       --display-name &lt;DISPLAY_NAME&gt;
@@ -127,7 +154,7 @@ Options:
       --email &lt;EMAIL&gt;                            [default: &quot;&quot;]
       --avatar-base64 &lt;AVATAR_BASE64&gt;            [default: &quot;&quot;]
       --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
-  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-profile-update"><summary><code>s2s profile update</code></summary><pre><code>Usage: s2s profile update [OPTIONS] --display-name &lt;DISPLAY_NAME&gt; --username &lt;USERNAME&gt; &lt;ID&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-profile-update"><summary><code>s2s profile update</code><span class="command-description">Update a record</span></summary><pre><code>Usage: s2s profile update [OPTIONS] --display-name &lt;DISPLAY_NAME&gt; --username &lt;USERNAME&gt; &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -138,14 +165,14 @@ Options:
       --email &lt;EMAIL&gt;                            [default: &quot;&quot;]
       --avatar-base64 &lt;AVATAR_BASE64&gt;            [default: &quot;&quot;]
       --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
-  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-profile-delete"><summary><code>s2s profile delete</code></summary><pre><code>Usage: s2s profile delete [OPTIONS] &lt;ID&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-profile-delete"><summary><code>s2s profile delete</code><span class="command-description">Delete a record</span></summary><pre><code>Usage: s2s profile delete [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
       --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
-  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-profile-default"><summary><code>s2s profile default</code></summary><pre><code>Show or change the default profile for CLI commands
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-profile-default"><summary><code>s2s profile default</code><span class="command-description">Command help</span></summary><pre><code>Show or change the default profile for CLI commands
 
 Usage: s2s profile default [ID]
 
@@ -153,7 +180,7 @@ Arguments:
   [ID]
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-profile-use"><summary><code>s2s profile use</code></summary><pre><code>Unlock a profile and show its identity
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-profile-use"><summary><code>s2s profile use</code><span class="command-description">Command help</span></summary><pre><code>Unlock a profile and show its identity
 
 Usage: s2s profile use &lt;ID&gt;
 
@@ -162,7 +189,7 @@ Arguments:
 
 Options:
   -h, --help  Print help</code></pre></details></section>
-<section class="reference-group" id="ssh"><h2>SSH</h2><p>Manage saved SSH connections, test connections, start an agent, or connect through Studio or the system OpenSSH client.</p><details class="command" id="s2s-ssh"><summary><code>s2s ssh</code></summary><pre><code>Usage: s2s ssh [OPTIONS] &lt;COMMAND&gt;
+<section class="reference-group" id="ssh"><h2>SSH</h2><p>Manage saved SSH connections, test connections, start an agent, or connect through Studio or the system OpenSSH client.</p><details class="command" id="s2s-ssh"><summary><code>s2s ssh</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s ssh [OPTIONS] &lt;COMMAND&gt;
 
 Commands:
   list
@@ -182,19 +209,19 @@ Commands:
 Options:
       --profile &lt;PROFILE&gt;
       --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
-  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-ssh-list"><summary><code>s2s ssh list</code></summary><pre><code>Usage: s2s ssh list [OPTIONS]
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-ssh-list"><summary><code>s2s ssh list</code><span class="command-description">List saved records</span></summary><pre><code>Usage: s2s ssh list [OPTIONS]
 
 Options:
       --page &lt;PAGE&gt;      [default: 1]
       --size &lt;SIZE&gt;      [default: 50]
       --search &lt;SEARCH&gt;
-  -h, --help             Print help</code></pre></details><details class="command" id="s2s-ssh-get"><summary><code>s2s ssh get</code></summary><pre><code>Usage: s2s ssh get &lt;ID&gt;
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-ssh-get"><summary><code>s2s ssh get</code><span class="command-description">Inspect a record</span></summary><pre><code>Usage: s2s ssh get &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-ssh-create"><summary><code>s2s ssh create</code></summary><pre><code>Usage: s2s ssh create [OPTIONS] --name &lt;NAME&gt; --host &lt;HOST&gt; --username &lt;USERNAME&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-ssh-create"><summary><code>s2s ssh create</code><span class="command-description">Create a record</span></summary><pre><code>Usage: s2s ssh create [OPTIONS] --name &lt;NAME&gt; --host &lt;HOST&gt; --username &lt;USERNAME&gt;
 
 Options:
       --name &lt;NAME&gt;
@@ -213,7 +240,7 @@ Options:
       --agent-forwarding
       --use-mosh
       --connection-timeout &lt;CONNECTION_TIMEOUT&gt;  [default: 30]
-  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-ssh-update"><summary><code>s2s ssh update</code></summary><pre><code>Usage: s2s ssh update [OPTIONS] --name &lt;NAME&gt; --host &lt;HOST&gt; --username &lt;USERNAME&gt; &lt;ID&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-ssh-update"><summary><code>s2s ssh update</code><span class="command-description">Update a record</span></summary><pre><code>Usage: s2s ssh update [OPTIONS] --name &lt;NAME&gt; --host &lt;HOST&gt; --username &lt;USERNAME&gt; &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -235,41 +262,41 @@ Options:
       --agent-forwarding
       --use-mosh
       --connection-timeout &lt;CONNECTION_TIMEOUT&gt;  [default: 30]
-  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-ssh-edit"><summary><code>s2s ssh edit</code></summary><pre><code>Usage: s2s ssh edit --json &lt;JSON&gt; &lt;ID&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-ssh-edit"><summary><code>s2s ssh edit</code><span class="command-description">Edit a record</span></summary><pre><code>Usage: s2s ssh edit --json &lt;JSON&gt; &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
       --json &lt;JSON&gt;
-  -h, --help         Print help</code></pre></details><details class="command" id="s2s-ssh-delete"><summary><code>s2s ssh delete</code></summary><pre><code>Usage: s2s ssh delete [OPTIONS] &lt;ID&gt;
+  -h, --help         Print help</code></pre></details><details class="command" id="s2s-ssh-delete"><summary><code>s2s ssh delete</code><span class="command-description">Delete a record</span></summary><pre><code>Usage: s2s ssh delete [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
       --force
-  -h, --help   Print help</code></pre></details><details class="command" id="s2s-ssh-purge"><summary><code>s2s ssh purge</code></summary><pre><code>Usage: s2s ssh purge [OPTIONS]
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-ssh-purge"><summary><code>s2s ssh purge</code><span class="command-description">Remove all records</span></summary><pre><code>Usage: s2s ssh purge [OPTIONS]
 
 Options:
       --force
-  -h, --help   Print help</code></pre></details><details class="command" id="s2s-ssh-load"><summary><code>s2s ssh load</code></summary><pre><code>Usage: s2s ssh load --from &lt;FROM&gt;
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-ssh-load"><summary><code>s2s ssh load</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s ssh load --from &lt;FROM&gt;
 
 Options:
       --from &lt;FROM&gt;
-  -h, --help         Print help</code></pre></details><details class="command" id="s2s-ssh-test"><summary><code>s2s ssh test</code></summary><pre><code>Usage: s2s ssh test &lt;ID&gt;
+  -h, --help         Print help</code></pre></details><details class="command" id="s2s-ssh-test"><summary><code>s2s ssh test</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s ssh test &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-ssh-agent"><summary><code>s2s ssh agent</code></summary><pre><code>Usage: s2s ssh agent &lt;ID&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-ssh-agent"><summary><code>s2s ssh agent</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s ssh agent &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-ssh-agent-auto-check"><summary><code>s2s ssh agent-auto-check</code></summary><pre><code>Configure automatic `ssh-add -l` checks after the agent starts
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-ssh-agent-auto-check"><summary><code>s2s ssh agent-auto-check</code><span class="command-description">Command help</span></summary><pre><code>Configure automatic `ssh-add -l` checks after the agent starts
 
 Usage: s2s ssh agent-auto-check &lt;MODE&gt;
 
@@ -277,7 +304,7 @@ Arguments:
   &lt;MODE&gt;  [possible values: on, off, status]
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-ssh-connect"><summary><code>s2s ssh connect</code></summary><pre><code>Usage: s2s ssh connect [OPTIONS] &lt;ID&gt; [-- &lt;ARGS&gt;...]
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-ssh-connect"><summary><code>s2s ssh connect</code><span class="command-description">Open a connection</span></summary><pre><code>Usage: s2s ssh connect [OPTIONS] &lt;ID&gt; [-- &lt;ARGS&gt;...]
 
 Arguments:
   &lt;ID&gt;
@@ -287,7 +314,7 @@ Options:
       --shell  Use the system OpenSSH client, config, and agent instead of the vault credential
       --gui    Open the connection in the desktop app
   -h, --help   Print help</code></pre></details></section>
-<section class="reference-group" id="vnc"><h2>VNC</h2><p>Manage saved VNC connections and open them with fullscreen or test options.</p><details class="command" id="s2s-vnc"><summary><code>s2s vnc</code></summary><pre><code>Usage: s2s vnc [OPTIONS] &lt;COMMAND&gt;
+<section class="reference-group" id="vnc"><h2>VNC</h2><p>Manage saved VNC connections and open them with fullscreen or test options.</p><details class="command" id="s2s-vnc"><summary><code>s2s vnc</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s vnc [OPTIONS] &lt;COMMAND&gt;
 
 Commands:
   list
@@ -302,19 +329,19 @@ Commands:
 
 Options:
       --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
-  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-vnc-list"><summary><code>s2s vnc list</code></summary><pre><code>Usage: s2s vnc list [OPTIONS]
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-vnc-list"><summary><code>s2s vnc list</code><span class="command-description">List saved records</span></summary><pre><code>Usage: s2s vnc list [OPTIONS]
 
 Options:
       --page &lt;PAGE&gt;      [default: 1]
       --size &lt;SIZE&gt;      [default: 50]
       --search &lt;SEARCH&gt;
-  -h, --help             Print help</code></pre></details><details class="command" id="s2s-vnc-get"><summary><code>s2s vnc get</code></summary><pre><code>Usage: s2s vnc get &lt;ID&gt;
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-vnc-get"><summary><code>s2s vnc get</code><span class="command-description">Inspect a record</span></summary><pre><code>Usage: s2s vnc get &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-vnc-create"><summary><code>s2s vnc create</code></summary><pre><code>Usage: s2s vnc create [OPTIONS] --name &lt;NAME&gt; --host &lt;HOST&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-vnc-create"><summary><code>s2s vnc create</code><span class="command-description">Create a record</span></summary><pre><code>Usage: s2s vnc create [OPTIONS] --name &lt;NAME&gt; --host &lt;HOST&gt;
 
 Options:
       --name &lt;NAME&gt;
@@ -342,7 +369,7 @@ Options:
       --connect-timeout-ms &lt;CONNECT_TIMEOUT_MS&gt;
           [default: 30000]
   -h, --help
-          Print help</code></pre></details><details class="command" id="s2s-vnc-update"><summary><code>s2s vnc update</code></summary><pre><code>Usage: s2s vnc update [OPTIONS] --name &lt;NAME&gt; --host &lt;HOST&gt; &lt;ID&gt;
+          Print help</code></pre></details><details class="command" id="s2s-vnc-update"><summary><code>s2s vnc update</code><span class="command-description">Update a record</span></summary><pre><code>Usage: s2s vnc update [OPTIONS] --name &lt;NAME&gt; --host &lt;HOST&gt; &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -373,18 +400,18 @@ Options:
       --connect-timeout-ms &lt;CONNECT_TIMEOUT_MS&gt;
           [default: 30000]
   -h, --help
-          Print help</code></pre></details><details class="command" id="s2s-vnc-delete"><summary><code>s2s vnc delete</code></summary><pre><code>Usage: s2s vnc delete [OPTIONS] &lt;ID&gt;
+          Print help</code></pre></details><details class="command" id="s2s-vnc-delete"><summary><code>s2s vnc delete</code><span class="command-description">Delete a record</span></summary><pre><code>Usage: s2s vnc delete [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
       --force
-  -h, --help   Print help</code></pre></details><details class="command" id="s2s-vnc-purge"><summary><code>s2s vnc purge</code></summary><pre><code>Usage: s2s vnc purge [OPTIONS]
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-vnc-purge"><summary><code>s2s vnc purge</code><span class="command-description">Remove all records</span></summary><pre><code>Usage: s2s vnc purge [OPTIONS]
 
 Options:
       --force
-  -h, --help   Print help</code></pre></details><details class="command" id="s2s-vnc-connect"><summary><code>s2s vnc connect</code></summary><pre><code>Usage: s2s vnc connect [OPTIONS] &lt;ID&gt;
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-vnc-connect"><summary><code>s2s vnc connect</code><span class="command-description">Open a connection</span></summary><pre><code>Usage: s2s vnc connect [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -392,14 +419,14 @@ Arguments:
 Options:
       --fullscreen
       --test
-  -h, --help        Print help</code></pre></details><details class="command" id="s2s-vnc-status"><summary><code>s2s vnc status</code></summary><pre><code>Usage: s2s vnc status &lt;ID&gt;
+  -h, --help        Print help</code></pre></details><details class="command" id="s2s-vnc-status"><summary><code>s2s vnc status</code><span class="command-description">Check status</span></summary><pre><code>Usage: s2s vnc status &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
   -h, --help  Print help</code></pre></details></section>
-<section class="reference-group" id="docker"><h2>Docker</h2><p>Manage Docker hosts or connect using local, SSH, or TCP modes.</p><details class="command" id="s2s-docker"><summary><code>s2s docker</code></summary><pre><code>Usage: s2s docker &lt;COMMAND&gt;
+<section class="reference-group" id="docker"><h2>Docker</h2><p>Manage Docker hosts or connect using local, SSH, or TCP modes.</p><details class="command" id="s2s-docker"><summary><code>s2s docker</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s docker &lt;COMMAND&gt;
 
 Commands:
   list
@@ -411,16 +438,16 @@ Commands:
   help     Print this message or the help of the given subcommand(s)
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-docker-list"><summary><code>s2s docker list</code></summary><pre><code>Usage: s2s docker list
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-docker-list"><summary><code>s2s docker list</code><span class="command-description">List saved records</span></summary><pre><code>Usage: s2s docker list
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-docker-get"><summary><code>s2s docker get</code></summary><pre><code>Usage: s2s docker get &lt;ID&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-docker-get"><summary><code>s2s docker get</code><span class="command-description">Inspect a record</span></summary><pre><code>Usage: s2s docker get &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-docker-create"><summary><code>s2s docker create</code></summary><pre><code>Usage: s2s docker create [OPTIONS]
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-docker-create"><summary><code>s2s docker create</code><span class="command-description">Create a record</span></summary><pre><code>Usage: s2s docker create [OPTIONS]
 
 Options:
       --label &lt;LABEL&gt;
@@ -433,7 +460,7 @@ Options:
       --remote-socket-path &lt;REMOTE_SOCKET_PATH&gt;
       --profile-id &lt;PROFILE_ID&gt;
       --connect-timeout-ms &lt;CONNECT_TIMEOUT_MS&gt;
-  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-docker-update"><summary><code>s2s docker update</code></summary><pre><code>Usage: s2s docker update [OPTIONS] &lt;ID&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-docker-update"><summary><code>s2s docker update</code><span class="command-description">Update a record</span></summary><pre><code>Usage: s2s docker update [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -449,13 +476,13 @@ Options:
       --remote-socket-path &lt;REMOTE_SOCKET_PATH&gt;
       --profile-id &lt;PROFILE_ID&gt;
       --connect-timeout-ms &lt;CONNECT_TIMEOUT_MS&gt;
-  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-docker-delete"><summary><code>s2s docker delete</code></summary><pre><code>Usage: s2s docker delete &lt;ID&gt;
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-docker-delete"><summary><code>s2s docker delete</code><span class="command-description">Delete a record</span></summary><pre><code>Usage: s2s docker delete &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-docker-connect"><summary><code>s2s docker connect</code></summary><pre><code>Usage: s2s docker connect [OPTIONS]
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-docker-connect"><summary><code>s2s docker connect</code><span class="command-description">Open a connection</span></summary><pre><code>Usage: s2s docker connect [OPTIONS]
 
 Options:
       --label &lt;LABEL&gt;
@@ -469,7 +496,7 @@ Options:
       --profile-id &lt;PROFILE_ID&gt;
       --connect-timeout-ms &lt;CONNECT_TIMEOUT_MS&gt;
   -h, --help                                     Print help</code></pre></details></section>
-<section class="reference-group" id="kubernetes"><h2>Kubernetes</h2><p>Manage saved Kubernetes hosts, contexts, kubeconfig inputs, and optional bastion SSH connection IDs.</p><details class="command" id="s2s-kubernetes"><summary><code>s2s kubernetes</code></summary><pre><code>Manage saved Kubernetes hosts in the selected CLI profile
+<section class="reference-group" id="kubernetes"><h2>Kubernetes</h2><p>Manage saved Kubernetes hosts, contexts, kubeconfig inputs, and optional bastion SSH connection IDs.</p><details class="command" id="s2s-kubernetes"><summary><code>s2s kubernetes</code><span class="command-description">Command help</span></summary><pre><code>Manage saved Kubernetes hosts in the selected CLI profile
 
 Usage: s2s kubernetes &lt;COMMAND&gt;
 
@@ -482,16 +509,16 @@ Commands:
   help    Print this message or the help of the given subcommand(s)
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-kubernetes-list"><summary><code>s2s kubernetes list</code></summary><pre><code>Usage: s2s kubernetes list
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-kubernetes-list"><summary><code>s2s kubernetes list</code><span class="command-description">List saved records</span></summary><pre><code>Usage: s2s kubernetes list
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-kubernetes-get"><summary><code>s2s kubernetes get</code></summary><pre><code>Usage: s2s kubernetes get &lt;ID&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-kubernetes-get"><summary><code>s2s kubernetes get</code><span class="command-description">Inspect a record</span></summary><pre><code>Usage: s2s kubernetes get &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-kubernetes-create"><summary><code>s2s kubernetes create</code></summary><pre><code>Usage: s2s kubernetes create [OPTIONS] --context &lt;CONTEXT&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-kubernetes-create"><summary><code>s2s kubernetes create</code><span class="command-description">Create a record</span></summary><pre><code>Usage: s2s kubernetes create [OPTIONS] --context &lt;CONTEXT&gt;
 
 Options:
       --context &lt;CONTEXT&gt;
@@ -501,7 +528,7 @@ Options:
       --connect-timeout-ms &lt;CONNECT_TIMEOUT_MS&gt;
       --bastion-ssh-connection-id &lt;BASTION_SSH_CONNECTION_ID&gt;
       --kubeconfig-yaml-file &lt;KUBECONFIG_YAML_FILE&gt;
-  -h, --help                                                   Print help</code></pre></details><details class="command" id="s2s-kubernetes-update"><summary><code>s2s kubernetes update</code></summary><pre><code>Usage: s2s kubernetes update [OPTIONS] --context &lt;CONTEXT&gt; &lt;ID&gt;
+  -h, --help                                                   Print help</code></pre></details><details class="command" id="s2s-kubernetes-update"><summary><code>s2s kubernetes update</code><span class="command-description">Update a record</span></summary><pre><code>Usage: s2s kubernetes update [OPTIONS] --context &lt;CONTEXT&gt; &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -514,7 +541,7 @@ Options:
       --connect-timeout-ms &lt;CONNECT_TIMEOUT_MS&gt;
       --bastion-ssh-connection-id &lt;BASTION_SSH_CONNECTION_ID&gt;
       --kubeconfig-yaml-file &lt;KUBECONFIG_YAML_FILE&gt;
-  -h, --help                                                   Print help</code></pre></details><details class="command" id="s2s-kubernetes-delete"><summary><code>s2s kubernetes delete</code></summary><pre><code>Usage: s2s kubernetes delete [OPTIONS] &lt;ID&gt;
+  -h, --help                                                   Print help</code></pre></details><details class="command" id="s2s-kubernetes-delete"><summary><code>s2s kubernetes delete</code><span class="command-description">Delete a record</span></summary><pre><code>Usage: s2s kubernetes delete [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -522,7 +549,7 @@ Arguments:
 Options:
       --force
   -h, --help   Print help</code></pre></details></section>
-<section class="reference-group" id="script"><h2>Scripts</h2><p>Store script bodies, edit them, and organize them into folders. This command group has no execute subcommand.</p><details class="command" id="s2s-script"><summary><code>s2s script</code></summary><pre><code>Manage saved shell scripts for a profile
+<section class="reference-group" id="script"><h2>Scripts</h2><p>Store script bodies, edit them, and organize them into folders. This command group has no execute subcommand.</p><details class="command" id="s2s-script"><summary><code>s2s script</code><span class="command-description">Command help</span></summary><pre><code>Manage saved shell scripts for a profile
 
 Usage: s2s script [OPTIONS] &lt;COMMAND&gt;
 
@@ -537,16 +564,16 @@ Commands:
 
 Options:
       --profile &lt;PROFILE&gt;
-  -h, --help               Print help</code></pre></details><details class="command" id="s2s-script-list"><summary><code>s2s script list</code></summary><pre><code>Usage: s2s script list
+  -h, --help               Print help</code></pre></details><details class="command" id="s2s-script-list"><summary><code>s2s script list</code><span class="command-description">List saved records</span></summary><pre><code>Usage: s2s script list
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-script-get"><summary><code>s2s script get</code></summary><pre><code>Usage: s2s script get &lt;ID&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-script-get"><summary><code>s2s script get</code><span class="command-description">Inspect a record</span></summary><pre><code>Usage: s2s script get &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-script-create"><summary><code>s2s script create</code></summary><pre><code>Usage: s2s script create [OPTIONS] --name &lt;NAME&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-script-create"><summary><code>s2s script create</code><span class="command-description">Create a record</span></summary><pre><code>Usage: s2s script create [OPTIONS] --name &lt;NAME&gt;
 
 Options:
       --name &lt;NAME&gt;
@@ -555,7 +582,7 @@ Options:
       --favorite
       --folder-id &lt;FOLDER_ID&gt;
       --dangerous
-  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-script-edit"><summary><code>s2s script edit</code></summary><pre><code>Usage: s2s script edit [OPTIONS] &lt;ID&gt;
+  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-script-edit"><summary><code>s2s script edit</code><span class="command-description">Edit a record</span></summary><pre><code>Usage: s2s script edit [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -567,14 +594,14 @@ Options:
       --favorite &lt;FAVORITE&gt;          [possible values: true, false]
       --folder-id &lt;FOLDER_ID&gt;
       --dangerous &lt;DANGEROUS&gt;        [possible values: true, false]
-  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-script-delete"><summary><code>s2s script delete</code></summary><pre><code>Usage: s2s script delete [OPTIONS] &lt;ID&gt;
+  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-script-delete"><summary><code>s2s script delete</code><span class="command-description">Delete a record</span></summary><pre><code>Usage: s2s script delete [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
       --force
-  -h, --help   Print help</code></pre></details><details class="command" id="s2s-script-folder"><summary><code>s2s script folder</code></summary><pre><code>Manage script folders
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-script-folder"><summary><code>s2s script folder</code><span class="command-description">Command help</span></summary><pre><code>Manage script folders
 
 Usage: s2s script folder &lt;COMMAND&gt;
 
@@ -588,34 +615,34 @@ Commands:
   help          Print this message or the help of the given subcommand(s)
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-script-folder-list"><summary><code>s2s script folder list</code></summary><pre><code>Usage: s2s script folder list
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-script-folder-list"><summary><code>s2s script folder list</code><span class="command-description">List saved records</span></summary><pre><code>Usage: s2s script folder list
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-script-folder-get"><summary><code>s2s script folder get</code></summary><pre><code>Usage: s2s script folder get &lt;ID&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-script-folder-get"><summary><code>s2s script folder get</code><span class="command-description">Inspect a record</span></summary><pre><code>Usage: s2s script folder get &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-script-folder-create"><summary><code>s2s script folder create</code></summary><pre><code>Usage: s2s script folder create --name &lt;NAME&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-script-folder-create"><summary><code>s2s script folder create</code><span class="command-description">Create a record</span></summary><pre><code>Usage: s2s script folder create --name &lt;NAME&gt;
 
 Options:
       --name &lt;NAME&gt;
-  -h, --help         Print help</code></pre></details><details class="command" id="s2s-script-folder-edit"><summary><code>s2s script folder edit</code></summary><pre><code>Usage: s2s script folder edit --name &lt;NAME&gt; &lt;ID&gt;
+  -h, --help         Print help</code></pre></details><details class="command" id="s2s-script-folder-edit"><summary><code>s2s script folder edit</code><span class="command-description">Edit a record</span></summary><pre><code>Usage: s2s script folder edit --name &lt;NAME&gt; &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
       --name &lt;NAME&gt;
-  -h, --help         Print help</code></pre></details><details class="command" id="s2s-script-folder-delete"><summary><code>s2s script folder delete</code></summary><pre><code>Usage: s2s script folder delete [OPTIONS] &lt;ID&gt;
+  -h, --help         Print help</code></pre></details><details class="command" id="s2s-script-folder-delete"><summary><code>s2s script folder delete</code><span class="command-description">Delete a record</span></summary><pre><code>Usage: s2s script folder delete [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
       --force
-  -h, --help   Print help</code></pre></details><details class="command" id="s2s-script-folder-move-scripts"><summary><code>s2s script folder move-scripts</code></summary><pre><code>Move every script from one folder to another
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-script-folder-move-scripts"><summary><code>s2s script folder move-scripts</code><span class="command-description">Command help</span></summary><pre><code>Move every script from one folder to another
 
 Usage: s2s script folder move-scripts &lt;SOURCE_ID&gt; &lt;DESTINATION_ID&gt;
 
@@ -625,7 +652,7 @@ Arguments:
 
 Options:
   -h, --help  Print help</code></pre></details></section>
-<section class="reference-group" id="skill"><h2>Agent skill</h2><p>Find the installed agent skill or sync it to registered agent locations. Use s2s skill --path, list, or sync; calling s2s skill alone returns an error in this version.</p><details class="command" id="s2s-skill"><summary><code>s2s skill</code></summary><pre><code>Print or sync the Swavan Studio agent skill
+<section class="reference-group" id="skill"><h2>Agent skill</h2><p>Find the installed agent skill or sync it to registered agent locations. Use s2s skill --path, list, or sync; calling s2s skill alone returns an error in this version.</p><details class="command" id="s2s-skill"><summary><code>s2s skill</code><span class="command-description">Command help</span></summary><pre><code>Print or sync the Swavan Studio agent skill
 
 Usage: s2s skill [OPTIONS] [COMMAND]
 
@@ -636,12 +663,12 @@ Commands:
 
 Options:
       --path  Print the installed path to the skill&#x27;s SKILL.md file
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-skill-list"><summary><code>s2s skill list</code></summary><pre><code>List registered agent skill locations
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-skill-list"><summary><code>s2s skill list</code><span class="command-description">List saved records</span></summary><pre><code>List registered agent skill locations
 
 Usage: s2s skill list
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-skill-sync"><summary><code>s2s skill sync</code></summary><pre><code>Sync the current skill to registered agent locations
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-skill-sync"><summary><code>s2s skill sync</code><span class="command-description">Command help</span></summary><pre><code>Sync the current skill to registered agent locations
 
 Usage: s2s skill sync [OPTIONS]
 
@@ -650,7 +677,7 @@ Options:
       --remove &lt;REMOVE&gt;  Stop syncing the registered location with this ID
       --remove-all       Stop syncing every registered location
   -h, --help             Print help</code></pre></details></section>
-<section class="reference-group" id="snippet"><h2>Snippets</h2><p>Save command snippets and execute a snippet on selected saved SSH connections.</p><details class="command" id="s2s-snippet"><summary><code>s2s snippet</code></summary><pre><code>Usage: s2s snippet [OPTIONS] &lt;COMMAND&gt;
+<section class="reference-group" id="snippet"><h2>Snippets</h2><p>Save command snippets and execute a snippet on selected saved SSH connections.</p><details class="command" id="s2s-snippet"><summary><code>s2s snippet</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s snippet [OPTIONS] &lt;COMMAND&gt;
 
 Commands:
   list
@@ -663,17 +690,17 @@ Commands:
 Options:
       --profile &lt;PROFILE&gt;
       --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
-  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-snippet-list"><summary><code>s2s snippet list</code></summary><pre><code>Usage: s2s snippet list
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-snippet-list"><summary><code>s2s snippet list</code><span class="command-description">List saved records</span></summary><pre><code>Usage: s2s snippet list
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-snippet-create"><summary><code>s2s snippet create</code></summary><pre><code>Usage: s2s snippet create [OPTIONS] --title &lt;TITLE&gt; --command &lt;COMMAND&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-snippet-create"><summary><code>s2s snippet create</code><span class="command-description">Create a record</span></summary><pre><code>Usage: s2s snippet create [OPTIONS] --title &lt;TITLE&gt; --command &lt;COMMAND&gt;
 
 Options:
       --title &lt;TITLE&gt;
       --command &lt;COMMAND&gt;
       --tags &lt;TAGS&gt;
       --category &lt;CATEGORY&gt;
-  -h, --help                 Print help</code></pre></details><details class="command" id="s2s-snippet-edit"><summary><code>s2s snippet edit</code></summary><pre><code>Usage: s2s snippet edit [OPTIONS] &lt;ID&gt;
+  -h, --help                 Print help</code></pre></details><details class="command" id="s2s-snippet-edit"><summary><code>s2s snippet edit</code><span class="command-description">Edit a record</span></summary><pre><code>Usage: s2s snippet edit [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -683,14 +710,14 @@ Options:
       --command &lt;COMMAND&gt;
       --tags &lt;TAGS&gt;
       --category &lt;CATEGORY&gt;
-  -h, --help                 Print help</code></pre></details><details class="command" id="s2s-snippet-delete"><summary><code>s2s snippet delete</code></summary><pre><code>Usage: s2s snippet delete [OPTIONS] &lt;ID&gt;
+  -h, --help                 Print help</code></pre></details><details class="command" id="s2s-snippet-delete"><summary><code>s2s snippet delete</code><span class="command-description">Delete a record</span></summary><pre><code>Usage: s2s snippet delete [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
       --force
-  -h, --help   Print help</code></pre></details><details class="command" id="s2s-snippet-execute"><summary><code>s2s snippet execute</code></summary><pre><code>Usage: s2s snippet execute [OPTIONS] &lt;ID&gt;
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-snippet-execute"><summary><code>s2s snippet execute</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s snippet execute [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -698,7 +725,7 @@ Arguments:
 Options:
       --servers &lt;SERVERS&gt;...  Comma-separated saved SSH connection IDs
   -h, --help                  Print help</code></pre></details></section>
-<section class="reference-group" id="memory"><h2>Memory</h2><p>Manage notes, folders, links, search, and imports/exports. Single notes export as Markdown, HTML, or PDF; workspace exports include Swavan metadata.</p><details class="command" id="s2s-memory"><summary><code>s2s memory</code></summary><pre><code>Manage Memory notes, folders, and links
+<section class="reference-group" id="memory"><h2>Memory</h2><p>Manage notes, folders, links, search, and imports/exports. Single notes export as Markdown, HTML, or PDF; workspace exports include Swavan metadata.</p><details class="command" id="s2s-memory"><summary><code>s2s memory</code><span class="command-description">Command help</span></summary><pre><code>Manage Memory notes, folders, and links
 
 Usage: s2s memory [OPTIONS] &lt;COMMAND&gt;
 
@@ -720,24 +747,24 @@ Commands:
 
 Options:
       --profile &lt;PROFILE&gt;
-  -h, --help               Print help</code></pre></details><details class="command" id="s2s-memory-list"><summary><code>s2s memory list</code></summary><pre><code>Usage: s2s memory list [OPTIONS]
+  -h, --help               Print help</code></pre></details><details class="command" id="s2s-memory-list"><summary><code>s2s memory list</code><span class="command-description">List saved records</span></summary><pre><code>Usage: s2s memory list [OPTIONS]
 
 Options:
       --folder &lt;FOLDER&gt;
-  -h, --help             Print help</code></pre></details><details class="command" id="s2s-memory-show"><summary><code>s2s memory show</code></summary><pre><code>Usage: s2s memory show &lt;ID&gt;
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-memory-show"><summary><code>s2s memory show</code><span class="command-description">Inspect saved data</span></summary><pre><code>Usage: s2s memory show &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-create"><summary><code>s2s memory create</code></summary><pre><code>Usage: s2s memory create [OPTIONS] --title &lt;TITLE&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-create"><summary><code>s2s memory create</code><span class="command-description">Create a record</span></summary><pre><code>Usage: s2s memory create [OPTIONS] --title &lt;TITLE&gt;
 
 Options:
       --title &lt;TITLE&gt;
       --content &lt;CONTENT&gt;
       --from &lt;FROM&gt;
       --folder &lt;FOLDER&gt;
-  -h, --help               Print help</code></pre></details><details class="command" id="s2s-memory-edit"><summary><code>s2s memory edit</code></summary><pre><code>Usage: s2s memory edit [OPTIONS] &lt;ID&gt;
+  -h, --help               Print help</code></pre></details><details class="command" id="s2s-memory-edit"><summary><code>s2s memory edit</code><span class="command-description">Edit a record</span></summary><pre><code>Usage: s2s memory edit [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -748,41 +775,41 @@ Options:
       --from &lt;FROM&gt;
       --folder &lt;FOLDER&gt;
       --root
-  -h, --help               Print help</code></pre></details><details class="command" id="s2s-memory-delete"><summary><code>s2s memory delete</code></summary><pre><code>Usage: s2s memory delete [OPTIONS] &lt;ID&gt;
+  -h, --help               Print help</code></pre></details><details class="command" id="s2s-memory-delete"><summary><code>s2s memory delete</code><span class="command-description">Delete a record</span></summary><pre><code>Usage: s2s memory delete [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
       --force
-  -h, --help   Print help</code></pre></details><details class="command" id="s2s-memory-link"><summary><code>s2s memory link</code></summary><pre><code>Usage: s2s memory link &lt;ID&gt; &lt;LINKED_ID&gt;
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-memory-link"><summary><code>s2s memory link</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s memory link &lt;ID&gt; &lt;LINKED_ID&gt;
 
 Arguments:
   &lt;ID&gt;
   &lt;LINKED_ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-unlink"><summary><code>s2s memory unlink</code></summary><pre><code>Usage: s2s memory unlink &lt;ID&gt; &lt;LINKED_ID&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-unlink"><summary><code>s2s memory unlink</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s memory unlink &lt;ID&gt; &lt;LINKED_ID&gt;
 
 Arguments:
   &lt;ID&gt;
   &lt;LINKED_ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-search"><summary><code>s2s memory search</code></summary><pre><code>Usage: s2s memory search &lt;QUERY&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-search"><summary><code>s2s memory search</code><span class="command-description">Search notes</span></summary><pre><code>Usage: s2s memory search &lt;QUERY&gt;
 
 Arguments:
   &lt;QUERY&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-find"><summary><code>s2s memory find</code></summary><pre><code>Usage: s2s memory find &lt;ID&gt; &lt;QUERY&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-find"><summary><code>s2s memory find</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s memory find &lt;ID&gt; &lt;QUERY&gt;
 
 Arguments:
   &lt;ID&gt;
   &lt;QUERY&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-export-note"><summary><code>s2s memory export-note</code></summary><pre><code>Export one note as Markdown, HTML, or PDF
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-export-note"><summary><code>s2s memory export-note</code><span class="command-description">Command help</span></summary><pre><code>Export one note as Markdown, HTML, or PDF
 
 Usage: s2s memory export-note [OPTIONS] --output &lt;OUTPUT&gt; &lt;ID&gt;
 
@@ -792,7 +819,7 @@ Arguments:
 Options:
       --output &lt;OUTPUT&gt;
       --format &lt;FORMAT&gt;  [default: markdown] [possible values: markdown, html, pdf]
-  -h, --help             Print help</code></pre></details><details class="command" id="s2s-memory-export"><summary><code>s2s memory export</code></summary><pre><code>Export a workspace or folder subtree with Swavan metadata
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-memory-export"><summary><code>s2s memory export</code><span class="command-description">Export data</span></summary><pre><code>Export a workspace or folder subtree with Swavan metadata
 
 Usage: s2s memory export [OPTIONS] --output &lt;OUTPUT&gt;
 
@@ -800,7 +827,7 @@ Options:
       --output &lt;OUTPUT&gt;
       --folder &lt;FOLDER&gt;
       --compressed
-  -h, --help             Print help</code></pre></details><details class="command" id="s2s-memory-import"><summary><code>s2s memory import</code></summary><pre><code>Import a Swavan Memory metadata file or compressed archive
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-memory-import"><summary><code>s2s memory import</code><span class="command-description">Import data</span></summary><pre><code>Import a Swavan Memory metadata file or compressed archive
 
 Usage: s2s memory import [OPTIONS] --input &lt;INPUT&gt;
 
@@ -808,7 +835,7 @@ Options:
       --input &lt;INPUT&gt;
       --folder &lt;FOLDER&gt;
       --replace
-  -h, --help             Print help</code></pre></details><details class="command" id="s2s-memory-folder"><summary><code>s2s memory folder</code></summary><pre><code>Usage: s2s memory folder &lt;COMMAND&gt;
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-memory-folder"><summary><code>s2s memory folder</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s memory folder &lt;COMMAND&gt;
 
 Commands:
   list
@@ -818,22 +845,22 @@ Commands:
   help    Print this message or the help of the given subcommand(s)
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-folder-list"><summary><code>s2s memory folder list</code></summary><pre><code>Usage: s2s memory folder list
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-folder-list"><summary><code>s2s memory folder list</code><span class="command-description">List saved records</span></summary><pre><code>Usage: s2s memory folder list
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-folder-create"><summary><code>s2s memory folder create</code></summary><pre><code>Usage: s2s memory folder create [OPTIONS] --name &lt;NAME&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-memory-folder-create"><summary><code>s2s memory folder create</code><span class="command-description">Create a record</span></summary><pre><code>Usage: s2s memory folder create [OPTIONS] --name &lt;NAME&gt;
 
 Options:
       --name &lt;NAME&gt;
       --parent &lt;PARENT&gt;
-  -h, --help             Print help</code></pre></details><details class="command" id="s2s-memory-folder-rename"><summary><code>s2s memory folder rename</code></summary><pre><code>Usage: s2s memory folder rename --name &lt;NAME&gt; &lt;ID&gt;
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-memory-folder-rename"><summary><code>s2s memory folder rename</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s memory folder rename --name &lt;NAME&gt; &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
       --name &lt;NAME&gt;
-  -h, --help         Print help</code></pre></details><details class="command" id="s2s-memory-folder-delete"><summary><code>s2s memory folder delete</code></summary><pre><code>Usage: s2s memory folder delete [OPTIONS] &lt;ID&gt;
+  -h, --help         Print help</code></pre></details><details class="command" id="s2s-memory-folder-delete"><summary><code>s2s memory folder delete</code><span class="command-description">Delete a record</span></summary><pre><code>Usage: s2s memory folder delete [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -841,7 +868,7 @@ Arguments:
 Options:
       --force
   -h, --help   Print help</code></pre></details></section>
-<section class="reference-group" id="secret"><h2>Secrets</h2><p>Manage encrypted profile secrets and attach them to SSH, Docker, or Kubernetes targets. Secret export writes decrypted JSON; environment prints secret values.</p><details class="command" id="s2s-secret"><summary><code>s2s secret</code></summary><pre><code>Manage encrypted profile secrets and connection attachments
+<section class="reference-group" id="secret"><h2>Secrets</h2><p>Manage encrypted profile secrets and attach them to SSH, Docker, or Kubernetes targets. Secret export writes decrypted JSON; environment prints secret values.</p><details class="command" id="s2s-secret"><summary><code>s2s secret</code><span class="command-description">Command help</span></summary><pre><code>Manage encrypted profile secrets and connection attachments
 
 Usage: s2s secret [OPTIONS] &lt;COMMAND&gt;
 
@@ -860,16 +887,16 @@ Commands:
 Options:
       --profile &lt;PROFILE&gt;
       --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
-  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-secret-list"><summary><code>s2s secret list</code></summary><pre><code>Usage: s2s secret list
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-secret-list"><summary><code>s2s secret list</code><span class="command-description">List saved records</span></summary><pre><code>Usage: s2s secret list
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-secret-get"><summary><code>s2s secret get</code></summary><pre><code>Usage: s2s secret get &lt;ID&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-secret-get"><summary><code>s2s secret get</code><span class="command-description">Inspect a record</span></summary><pre><code>Usage: s2s secret get &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-secret-export"><summary><code>s2s secret export</code></summary><pre><code>Export a decrypted managed secret to a portable JSON file
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-secret-export"><summary><code>s2s secret export</code><span class="command-description">Export data</span></summary><pre><code>Export a decrypted managed secret to a portable JSON file
 
 Usage: s2s secret export --output &lt;OUTPUT&gt; &lt;ID&gt;
 
@@ -878,7 +905,7 @@ Arguments:
 
 Options:
       --output &lt;OUTPUT&gt;
-  -h, --help             Print help</code></pre></details><details class="command" id="s2s-secret-environment"><summary><code>s2s secret environment</code></summary><pre><code>Print environment values as dotenv or shell assignments
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-secret-environment"><summary><code>s2s secret environment</code><span class="command-description">Command help</span></summary><pre><code>Print environment values as dotenv or shell assignments
 
 Usage: s2s secret environment [OPTIONS] &lt;ID&gt;
 
@@ -887,20 +914,20 @@ Arguments:
 
 Options:
       --format &lt;FORMAT&gt;  [default: dotenv] [possible values: dotenv, shell]
-  -h, --help             Print help</code></pre></details><details class="command" id="s2s-secret-put"><summary><code>s2s secret put</code></summary><pre><code>Create or update from JSON containing name, type, values, and optional metadata
+  -h, --help             Print help</code></pre></details><details class="command" id="s2s-secret-put"><summary><code>s2s secret put</code><span class="command-description">Command help</span></summary><pre><code>Create or update from JSON containing name, type, values, and optional metadata
 
 Usage: s2s secret put --json &lt;JSON&gt;
 
 Options:
       --json &lt;JSON&gt;
-  -h, --help         Print help</code></pre></details><details class="command" id="s2s-secret-delete"><summary><code>s2s secret delete</code></summary><pre><code>Usage: s2s secret delete [OPTIONS] &lt;ID&gt;
+  -h, --help         Print help</code></pre></details><details class="command" id="s2s-secret-delete"><summary><code>s2s secret delete</code><span class="command-description">Delete a record</span></summary><pre><code>Usage: s2s secret delete [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
       --force
-  -h, --help   Print help</code></pre></details><details class="command" id="s2s-secret-attach"><summary><code>s2s secret attach</code></summary><pre><code>Usage: s2s secret attach [OPTIONS] --target-kind &lt;TARGET_KIND&gt; --target-id &lt;TARGET_ID&gt; &lt;ID&gt;
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-secret-attach"><summary><code>s2s secret attach</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s secret attach [OPTIONS] --target-kind &lt;TARGET_KIND&gt; --target-id &lt;TARGET_ID&gt; &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -909,7 +936,7 @@ Options:
       --target-kind &lt;TARGET_KIND&gt;      [possible values: ssh, docker, kubernetes]
       --target-id &lt;TARGET_ID&gt;
       --mount &lt;FILE_NAME=REMOTE_PATH&gt;  File destination as FILE_NAME=REMOTE_PATH. Repeat for multi-file secrets
-  -h, --help                           Print help</code></pre></details><details class="command" id="s2s-secret-detach"><summary><code>s2s secret detach</code></summary><pre><code>Usage: s2s secret detach --target-kind &lt;TARGET_KIND&gt; --target-id &lt;TARGET_ID&gt; &lt;ID&gt;
+  -h, --help                           Print help</code></pre></details><details class="command" id="s2s-secret-detach"><summary><code>s2s secret detach</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s secret detach --target-kind &lt;TARGET_KIND&gt; --target-id &lt;TARGET_ID&gt; &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -917,13 +944,13 @@ Arguments:
 Options:
       --target-kind &lt;TARGET_KIND&gt;  [possible values: ssh, docker, kubernetes]
       --target-id &lt;TARGET_ID&gt;
-  -h, --help                       Print help</code></pre></details><details class="command" id="s2s-secret-attachments"><summary><code>s2s secret attachments</code></summary><pre><code>Usage: s2s secret attachments --target-kind &lt;TARGET_KIND&gt; --target-id &lt;TARGET_ID&gt;
+  -h, --help                       Print help</code></pre></details><details class="command" id="s2s-secret-attachments"><summary><code>s2s secret attachments</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s secret attachments --target-kind &lt;TARGET_KIND&gt; --target-id &lt;TARGET_ID&gt;
 
 Options:
       --target-kind &lt;TARGET_KIND&gt;  [possible values: ssh, docker, kubernetes]
       --target-id &lt;TARGET_ID&gt;
   -h, --help                       Print help</code></pre></details></section>
-<section class="reference-group" id="rdp"><h2>RDP</h2><p>Manage saved RDP connections and open them. Create and update accept JSON plus an optional password environment variable.</p><details class="command" id="s2s-rdp"><summary><code>s2s rdp</code></summary><pre><code>Usage: s2s rdp [OPTIONS] &lt;COMMAND&gt;
+<section class="reference-group" id="rdp"><h2>RDP</h2><p>Manage saved RDP connections and open them. Create and update accept JSON plus an optional password environment variable.</p><details class="command" id="s2s-rdp"><summary><code>s2s rdp</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s rdp [OPTIONS] &lt;COMMAND&gt;
 
 Commands:
   list
@@ -939,21 +966,21 @@ Commands:
 Options:
       --profile &lt;PROFILE&gt;
       --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
-  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-rdp-list"><summary><code>s2s rdp list</code></summary><pre><code>Usage: s2s rdp list
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-rdp-list"><summary><code>s2s rdp list</code><span class="command-description">List saved records</span></summary><pre><code>Usage: s2s rdp list
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-rdp-get"><summary><code>s2s rdp get</code></summary><pre><code>Usage: s2s rdp get &lt;ID&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-rdp-get"><summary><code>s2s rdp get</code><span class="command-description">Inspect a record</span></summary><pre><code>Usage: s2s rdp get &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-rdp-create"><summary><code>s2s rdp create</code></summary><pre><code>Usage: s2s rdp create [OPTIONS] --json &lt;JSON&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-rdp-create"><summary><code>s2s rdp create</code><span class="command-description">Create a record</span></summary><pre><code>Usage: s2s rdp create [OPTIONS] --json &lt;JSON&gt;
 
 Options:
       --json &lt;JSON&gt;
       --password-env &lt;PASSWORD_ENV&gt;
-  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-rdp-update"><summary><code>s2s rdp update</code></summary><pre><code>Usage: s2s rdp update [OPTIONS] --json &lt;JSON&gt; &lt;ID&gt;
+  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-rdp-update"><summary><code>s2s rdp update</code><span class="command-description">Update a record</span></summary><pre><code>Usage: s2s rdp update [OPTIONS] --json &lt;JSON&gt; &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -961,18 +988,18 @@ Arguments:
 Options:
       --json &lt;JSON&gt;
       --password-env &lt;PASSWORD_ENV&gt;
-  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-rdp-delete"><summary><code>s2s rdp delete</code></summary><pre><code>Usage: s2s rdp delete [OPTIONS] &lt;ID&gt;
+  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-rdp-delete"><summary><code>s2s rdp delete</code><span class="command-description">Delete a record</span></summary><pre><code>Usage: s2s rdp delete [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
       --force
-  -h, --help   Print help</code></pre></details><details class="command" id="s2s-rdp-purge"><summary><code>s2s rdp purge</code></summary><pre><code>Usage: s2s rdp purge [OPTIONS]
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-rdp-purge"><summary><code>s2s rdp purge</code><span class="command-description">Remove all records</span></summary><pre><code>Usage: s2s rdp purge [OPTIONS]
 
 Options:
       --force
-  -h, --help   Print help</code></pre></details><details class="command" id="s2s-rdp-connect"><summary><code>s2s rdp connect</code></summary><pre><code>Usage: s2s rdp connect [OPTIONS] &lt;ID&gt;
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-rdp-connect"><summary><code>s2s rdp connect</code><span class="command-description">Open a connection</span></summary><pre><code>Usage: s2s rdp connect [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -980,14 +1007,14 @@ Arguments:
 Options:
       --fullscreen
       --test
-  -h, --help        Print help</code></pre></details><details class="command" id="s2s-rdp-status"><summary><code>s2s rdp status</code></summary><pre><code>Usage: s2s rdp status &lt;ID&gt;
+  -h, --help        Print help</code></pre></details><details class="command" id="s2s-rdp-status"><summary><code>s2s rdp status</code><span class="command-description">Check status</span></summary><pre><code>Usage: s2s rdp status &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
   -h, --help  Print help</code></pre></details></section>
-<section class="reference-group" id="database"><h2>Databases</h2><p>Manage saved database connections and open them. Create and update accept JSON plus an optional password environment variable.</p><details class="command" id="s2s-database"><summary><code>s2s database</code></summary><pre><code>Usage: s2s database [OPTIONS] &lt;COMMAND&gt;
+<section class="reference-group" id="database"><h2>Databases</h2><p>Manage saved database connections and open them. Create and update accept JSON plus an optional password environment variable.</p><details class="command" id="s2s-database"><summary><code>s2s database</code><span class="command-description">Command help</span></summary><pre><code>Usage: s2s database [OPTIONS] &lt;COMMAND&gt;
 
 Commands:
   list
@@ -1003,21 +1030,21 @@ Commands:
 Options:
       --profile &lt;PROFILE&gt;
       --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
-  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-database-list"><summary><code>s2s database list</code></summary><pre><code>Usage: s2s database list
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-database-list"><summary><code>s2s database list</code><span class="command-description">List saved records</span></summary><pre><code>Usage: s2s database list
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-database-get"><summary><code>s2s database get</code></summary><pre><code>Usage: s2s database get &lt;ID&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-database-get"><summary><code>s2s database get</code><span class="command-description">Inspect a record</span></summary><pre><code>Usage: s2s database get &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-database-create"><summary><code>s2s database create</code></summary><pre><code>Usage: s2s database create [OPTIONS] --json &lt;JSON&gt;
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-database-create"><summary><code>s2s database create</code><span class="command-description">Create a record</span></summary><pre><code>Usage: s2s database create [OPTIONS] --json &lt;JSON&gt;
 
 Options:
       --json &lt;JSON&gt;
       --password-env &lt;PASSWORD_ENV&gt;
-  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-database-update"><summary><code>s2s database update</code></summary><pre><code>Usage: s2s database update [OPTIONS] --json &lt;JSON&gt; &lt;ID&gt;
+  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-database-update"><summary><code>s2s database update</code><span class="command-description">Update a record</span></summary><pre><code>Usage: s2s database update [OPTIONS] --json &lt;JSON&gt; &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -1025,18 +1052,18 @@ Arguments:
 Options:
       --json &lt;JSON&gt;
       --password-env &lt;PASSWORD_ENV&gt;
-  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-database-delete"><summary><code>s2s database delete</code></summary><pre><code>Usage: s2s database delete [OPTIONS] &lt;ID&gt;
+  -h, --help                         Print help</code></pre></details><details class="command" id="s2s-database-delete"><summary><code>s2s database delete</code><span class="command-description">Delete a record</span></summary><pre><code>Usage: s2s database delete [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
       --force
-  -h, --help   Print help</code></pre></details><details class="command" id="s2s-database-purge"><summary><code>s2s database purge</code></summary><pre><code>Usage: s2s database purge [OPTIONS]
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-database-purge"><summary><code>s2s database purge</code><span class="command-description">Remove all records</span></summary><pre><code>Usage: s2s database purge [OPTIONS]
 
 Options:
       --force
-  -h, --help   Print help</code></pre></details><details class="command" id="s2s-database-connect"><summary><code>s2s database connect</code></summary><pre><code>Usage: s2s database connect [OPTIONS] &lt;ID&gt;
+  -h, --help   Print help</code></pre></details><details class="command" id="s2s-database-connect"><summary><code>s2s database connect</code><span class="command-description">Open a connection</span></summary><pre><code>Usage: s2s database connect [OPTIONS] &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
@@ -1044,14 +1071,14 @@ Arguments:
 Options:
       --fullscreen
       --test
-  -h, --help        Print help</code></pre></details><details class="command" id="s2s-database-status"><summary><code>s2s database status</code></summary><pre><code>Usage: s2s database status &lt;ID&gt;
+  -h, --help        Print help</code></pre></details><details class="command" id="s2s-database-status"><summary><code>s2s database status</code><span class="command-description">Check status</span></summary><pre><code>Usage: s2s database status &lt;ID&gt;
 
 Arguments:
   &lt;ID&gt;
 
 Options:
   -h, --help  Print help</code></pre></details></section>
-<section class="reference-group" id="sync"><h2>S3 sync</h2><p>Configure S3-compatible storage, inspect settings, test bucket access, discover/import profiles, and exchange a profile with its sync space.</p><details class="command" id="s2s-sync"><summary><code>s2s sync</code></summary><pre><code>Configure and check S3-compatible application sync storage
+<section class="reference-group" id="sync"><h2>S3 sync</h2><p>Configure S3-compatible storage, inspect settings, test bucket access, discover/import profiles, and exchange a profile with its sync space.</p><details class="command" id="s2s-sync"><summary><code>s2s sync</code><span class="command-description">Command help</span></summary><pre><code>Configure and check S3-compatible application sync storage
 
 Usage: s2s sync [OPTIONS] &lt;COMMAND&gt;
 
@@ -1067,12 +1094,12 @@ Commands:
 Options:
       --profile &lt;PROFILE&gt;
       --vault-password-env &lt;VAULT_PASSWORD_ENV&gt;
-  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-sync-discover"><summary><code>s2s sync discover</code></summary><pre><code>Discover encrypted profiles before this device has a local profile
+  -h, --help                                     Print help</code></pre></details><details class="command" id="s2s-sync-discover"><summary><code>s2s sync discover</code><span class="command-description">Command help</span></summary><pre><code>Discover encrypted profiles before this device has a local profile
 
 Usage: s2s sync discover
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-sync-import"><summary><code>s2s sync import</code></summary><pre><code>Import a discovered profile with the same app ID and a new local vault
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-sync-import"><summary><code>s2s sync import</code><span class="command-description">Import data</span></summary><pre><code>Import a discovered profile with the same app ID and a new local vault
 
 Usage: s2s sync import &lt;ID&gt;
 
@@ -1080,7 +1107,7 @@ Arguments:
   &lt;ID&gt;
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-sync-configure"><summary><code>s2s sync configure</code></summary><pre><code>Save an S3-compatible endpoint and credentials for this profile
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-sync-configure"><summary><code>s2s sync configure</code><span class="command-description">Command help</span></summary><pre><code>Save an S3-compatible endpoint and credentials for this profile
 
 Usage: s2s sync configure [OPTIONS]
 
@@ -1104,23 +1131,25 @@ Options:
       --passphrase-env &lt;PASSPHRASE_ENV&gt;
           Environment variable containing the shared encryption passphrase
   -h, --help
-          Print help</code></pre></details><details class="command" id="s2s-sync-show"><summary><code>s2s sync show</code></summary><pre><code>Show saved endpoint settings without revealing credentials
+          Print help</code></pre></details><details class="command" id="s2s-sync-show"><summary><code>s2s sync show</code><span class="command-description">Inspect saved data</span></summary><pre><code>Show saved endpoint settings without revealing credentials
 
 Usage: s2s sync show
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-sync-test"><summary><code>s2s sync test</code></summary><pre><code>Verify that the configured bucket can be listed
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-sync-test"><summary><code>s2s sync test</code><span class="command-description">Command help</span></summary><pre><code>Verify that the configured bucket can be listed
 
 Usage: s2s sync test
 
 Options:
-  -h, --help  Print help</code></pre></details><details class="command" id="s2s-sync-now"><summary><code>s2s sync now</code></summary><pre><code>Exchange the current profile with its configured S3 sync space
+  -h, --help  Print help</code></pre></details><details class="command" id="s2s-sync-now"><summary><code>s2s sync now</code><span class="command-description">Command help</span></summary><pre><code>Exchange the current profile with its configured S3 sync space
 
 Usage: s2s sync now
 
 Options:
   -h, --help  Print help</code></pre></details></section>
-</main></div><footer><span>Swavan Studio · s2s 0.2.13</span><a href="index.html">Back to the product tour</a></footer><script>
+<a class="doc-next" href="health.html"><span><small>Continue exploring</small>Build a Health dashboard</span><span aria-hidden="true">↗</span></a></main><details class="toc"><summary>On this page</summary>
+<nav aria-label="s2s CLI table of contents"><p>Getting started</p><a href="#install">Install</a><a href="#start">Profiles &amp; credentials</a><a href="#workflows">Common workflows</a><a href="#help">Using help</a><a href="#reference">Search commands</a><p>Command groups</p><a href="#completion">Shell completion</a><a href="#experimental">Experimental features</a><a href="#profile">Profiles</a><a href="#ssh">SSH</a><a href="#vnc">VNC</a><a href="#docker">Docker</a><a href="#kubernetes">Kubernetes</a><a href="#script">Scripts</a><a href="#skill">Agent skill</a><a href="#snippet">Snippets</a><a href="#memory">Memory</a><a href="#secret">Secrets</a><a href="#rdp">RDP</a><a href="#database">Databases</a><a href="#sync">S3 sync</a></nav></details></div>
+<footer class="doc-footer"><span>Swavan Studio / Documentation</span><a href="index.html">Back to the product tour ↗</a></footer></div><script>
 const toggle = document.getElementById('theme-toggle');
 function updateThemeLabel() { toggle.textContent = document.documentElement.dataset.theme === 'dark' ? 'Light theme' : 'Dark theme'; }
 toggle.addEventListener('click', () => { const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = next; try { localStorage.setItem('swavan-theme', next); } catch (_) {} updateThemeLabel(); });
@@ -1135,4 +1164,24 @@ document.getElementById('command-search').addEventListener('input', event => {
  groups.forEach(group => { group.hidden = !Array.from(group.querySelectorAll('.command')).some(entry => !entry.hidden); });
  document.getElementById('search-status').textContent = query ? `${count} matching command entries.` : '124 command entries. Expand any entry to see its help.';
 });
+</script><script>
+const contents = document.querySelector('.toc');
+const wideDocs = matchMedia('(min-width: 1241px)');
+const syncContents = () => { contents.open = wideDocs.matches; };
+syncContents();
+wideDocs.addEventListener('change', syncContents);
+document.querySelectorAll('.copy-code').forEach(button => {
+ button.addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(button.closest('.code-block').querySelector('code').textContent); button.textContent = 'Copied'; setTimeout(() => { button.textContent = 'Copy'; }, 2000); }
+  catch (_) { button.textContent = 'Select to copy'; }
+ });
+});
+const sectionLinks = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
+const observedSections = Array.from(document.querySelectorAll('main section[id]'));
+const sectionObserver = new IntersectionObserver(entries => {
+ const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+ if (!visible.length) return;
+ sectionLinks.forEach(link => { if (link.hash === '#' + visible[0].target.id) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current'); });
+}, { rootMargin: '-5% 0px -65% 0px', threshold: 0 });
+observedSections.forEach(section => sectionObserver.observe(section));
 </script></body></html>

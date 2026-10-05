@@ -242,17 +242,45 @@
     .viewer-toolbar h2 { font-size: 13px; font-weight: 500; }
     .viewer-close { cursor: pointer; border: 1px solid #555; border-radius: 4px; background: #292929; color: #eee; padding: 6px 12px; font-size: 12px; }
     .screenshot-viewer img { display: block; width: 100%; height: auto; max-height: calc(100dvh - 104px); object-fit: contain; background: #1e1e1e; }
+    .site-sidebar { position: fixed; inset: 0 auto 0 0; width: 180px; padding: 32px 24px; border-right: 1px solid var(--line); background: var(--panel); display: flex; flex-direction: column; gap: 48px; z-index: 10; }
+    .sidebar-brand { display: flex; align-items: center; gap: 10px; font-size: 14px; line-height: 1.25; font-weight: 600; }
+    .sidebar-brand img { width: 30px; height: 30px; }
+    .sidebar-options { display: flex; flex-direction: column; gap: 8px; }
+    .sidebar-options a, .sidebar-download { padding: 12px 0; font: 10px/1.5 SFMono-Regular, Menlo, Monaco, Consolas, monospace; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+    .sidebar-options a:hover, .sidebar-options a[aria-current], .sidebar-download:hover { color: var(--accent); }
+    .sidebar-download { margin-top: auto; border-top: 1px solid var(--line); padding-top: 24px; color: var(--text); }
+    body { padding-left: 180px; }
+    #overview, #download { scroll-margin-top: 24px; }
+    @media (min-width: 951px) and (max-width: 1200px) { .hero { column-gap: 24px; padding: 40px 28px 0; } .hero-foot { margin: 0 -28px; } h1 { font-size: 52px; } }
+    @media (max-width: 800px) {
+      body { padding-left: 0; }
+      .site-sidebar { position: static; width: 100%; padding: 16px; border-right: 0; border-bottom: 1px solid var(--line); gap: 14px; }
+      .sidebar-options { flex-direction: row; flex-wrap: wrap; gap: 8px 20px; }
+      .sidebar-options a { padding: 4px 0; }
+      .sidebar-download { margin-top: 0; border: 0; padding: 4px 0; }
+    }
+    .health-guide-link { color: var(--accent); font-size: 11px; }
   </style>
 </head>
 <body>
+  <aside class="site-sidebar" aria-label="Site navigation">
+    <a class="sidebar-brand" href="#overview" aria-label="Swavan Studio home"><img src="public/icon.svg" alt=""><span>Swavan<br>Studio</span></a>
+    <nav class="sidebar-options" aria-label="Main options">
+      <a href="#overview">Overview</a>
+      <a href="#product-tour">Features</a>
+      <a href="health.html">Health guide</a>
+      <a href="docs.html">CLI docs</a>
+    </nav>
+    <a class="sidebar-download" href="#download">Install &amp; download ↓</a>
+  </aside>
   <div class="container">
     <main>
-      <section class="hero" aria-labelledby="intro-heading">
+      <section class="hero" id="overview" aria-labelledby="intro-heading">
         <div class="hero-copy">
         <span class="eyebrow">Swavan Studio / Desktop + CLI</span>
         <h1 id="intro-heading">Your servers,<br>in one place.</h1>
         <p>Manage SSH connections, remote desktops, databases, and server health from one desktop workspace.</p>
-        <div class="hero-actions">
+        <div class="hero-actions" id="download">
           <div class="install-command hero-install-command" data-installer="unix">
             <span class="install-label">Install with curl · macOS / Linux</span>
             <code>curl -fsSL https://studio.swavan.io/install.sh | sh</code>
@@ -281,8 +309,9 @@
           <div class="screenshot-views" role="group" aria-label="databases screenshot views"><button type="button" class="view-button" aria-pressed="true" data-image="img/product/db-db-query.png" data-width="3550" data-height="2392">SQL queries</button><button type="button" class="view-button" aria-pressed="false" data-image="img/product/db-db-data.png" data-width="3550" data-height="2392">Table data</button><button type="button" class="view-button" aria-pressed="false" data-image="img/product/db-db-structure.png" data-width="3550" data-height="2392">Table structure</button><button type="button" class="view-button" aria-pressed="false" data-image="img/product/db-db-fullmode.png" data-width="3550" data-height="2392">Full workspace</button><button type="button" class="view-button" aria-pressed="false" data-image="img/product/db-database-er.png" data-width="3550" data-height="2392">ER diagram</button></div>
         </article>
         <article class="tour-stop">
-          <div class="tour-copy"><span class="tour-label">02 / SERVER HEALTH</span><h2>Your servers, in focus.</h2><p>Follow resource usage over time and configure alerts from one workspace.</p></div>
+          <div class="tour-copy"><span class="tour-label">02 / SERVER HEALTH</span><h2>Your servers, in focus.</h2><p>Collect logs and metrics, explore your data, and build dashboards from saved views.</p></div>
           <figure><a class="tour-screen" href="img/product/health-timeseries.png" target="_blank" rel="noopener" aria-label="View full-size Usage history screenshot"><img src="img/product/health-timeseries.png" alt="Swavan Studio — Usage history" width="3550" height="2392" loading="lazy"></a><figcaption><span>Usage history</span><a href="img/product/health-timeseries.png" target="_blank" rel="noopener">Enlarge ↗</a></figcaption></figure>
+          <a class="health-guide-link" href="health.html">Learn how to set up sources and dashboards ↗</a>
           <div class="screenshot-views" role="group" aria-label="server health screenshot views"><button type="button" class="view-button" aria-pressed="true" data-image="img/product/health-timeseries.png" data-width="3550" data-height="2392">Usage history</button><button type="button" class="view-button" aria-pressed="false" data-image="img/product/health-dashboard.png" data-width="3550" data-height="2392">Dashboard</button><button type="button" class="view-button" aria-pressed="false" data-image="img/product/health-alert.png" data-width="3550" data-height="2392">Alerts</button></div>
         </article>
         <article class="tour-stop">
