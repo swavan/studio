@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Health sources and dashboards — Swavan Studio</title>
+<meta name="description" content="Add logs and metrics sources in Swavan Studio Health, query records, and save views to dashboards.">
+<link rel="canonical" href="https://studio.swavan.io/health.html">
+<link rel="icon" href="public/icon.svg" type="image/svg+xml"><script>
+let theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+try { const saved = localStorage.getItem('swavan-theme'); if (saved === 'dark' || saved === 'light') theme = saved; } catch (_) {}
+document.documentElement.dataset.theme = theme;
+</script>
+<link rel="stylesheet" href="documentation.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></head><body>
+<aside class="site-sidebar" aria-label="Site navigation">
+  <a class="sidebar-brand" href="index.html"><img src="public/icon.svg" alt=""><span>Swavan<br>Studio</span></a>
+  <nav class="sidebar-options" aria-label="Main options">
+    <a href="index.html">Overview</a><a href="index.html#product-tour">Features</a>
+    <span class="sidebar-label">Documentation</span>
+    <a href="health.html" aria-current="page">Health guide</a>
+    <a href="docs.html">s2s CLI</a>
+  </nav><a class="sidebar-download" href="index.html#download">Install &amp; download ↓</a>
+</aside>
+<div class="doc-shell">
+<div class="doc-toolbar">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Studio</a></li><li>Documentation</li><li aria-current="page">Health</li></ol></nav><button class="theme-toggle" type="button" id="theme-toggle">Switch theme</button></div>
+<div class="doc-layout">
+<main class="doc-main" id="doc-content">
+<div class="doc-intro"><span class="eyebrow">Swavan Studio / Documentation</span><h1>From sources to dashboards.</h1><p>Collect logs and metrics, find the records you need, and turn useful views into a dashboard.</p>
+<div class="doc-meta"><span>GUIDE / HEALTH</span><span>Sources → Query → Dashboard</span></div></div>
+<nav class="workflow-overview" aria-label="Health workflow"><a class="workflow-step" href="#sources"><small>01 / COLLECT</small><span>Add data sources</span></a><a class="workflow-step" href="#query"><small>02 / EXPLORE</small><span>Query logs &amp; metrics</span></a><a class="workflow-step" href="#dashboard"><small>03 / BUILD</small><span>Save your dashboard</span></a></nav>
+<section id="before"><h2>Before you start</h2><p>Select your Studio profile and save the connections you want to monitor. Health data sources are selected from those connections; the source picker supports SSH, Docker, Kubernetes, databases, VNC, and RDP. The records available depend on the source and its activity.</p>
+<aside class="callout"><p><strong>How queries work.</strong> Choose search text and a time range in Health. Studio builds the SQL query internally.</p></aside></section>
+<section id="sources"><h2>1. Add logs and metrics sources</h2><ol><li>Open <strong>Health</strong> and choose <strong>Data sources</strong> from the toolbar or overflow menu.</li><li>Turn on <strong>Telemetry collection</strong>. When it is off, saved sources remain configured but new logs and metrics are not gathered.</li><li>Under <strong>Connections</strong>, select each connection you want to collect from.</li><li>Choose <strong>Logs</strong>, <strong>Metrics</strong>, or both for each selected connection.</li><li>For Docker and Kubernetes sources, choose the relevant scopes: <strong>containers</strong>, <strong>pods</strong>, <strong>events</strong>, and <strong>others</strong>.</li><li>Click <strong>Save data sources</strong>. In <strong>Saved data sources</strong>, check that the source is enabled.</li></ol><p>Use the saved source’s edit control to change its collection choices. Its enable switch lets you pause that source without removing its configuration.</p><h3>Control retention</h3><p>In the same dialog, set <strong>Max database size (MB)</strong> and <strong>Max record age (hours)</strong>, then choose <strong>Save retention</strong>. Retention has a separate save button from the source configuration.</p></section>
+<section id="query"><h2>2. Query logs or metrics</h2><ol><li>Open <strong>Logs</strong> or <strong>Metrics</strong> from Health.</li><li>Choose a time range: <strong>Last 15 minutes</strong>, <strong>Last hour</strong>, <strong>Last 24 hours</strong>, <strong>Last 7 days</strong>, or <strong>All time</strong>.</li><li>Enter text in <strong>Search logs</strong> or <strong>Search metrics</strong>. Leave it empty to see all records within that range.</li><li>Press <strong>Enter</strong> or click <strong>Run query</strong>.</li><li>Open <strong>View options</strong> to choose <strong>Table view</strong> or <strong>Time series view</strong>. Use <strong>Group by Data Source</strong> to separate sources in the table view.</li></ol><div class="table-scroll"><table><thead><tr><th>View</th><th>Search matches</th><th>Example</th></tr></thead><tbody><tr><td>Logs</td><td>Message text or connection ID, without case sensitivity</td><td>Search <code>timeout</code> over the last hour to find matching log messages.</td></tr><tr><td>Metrics</td><td>Metric name, without case sensitivity</td><td>Search <code>cpu</code> over the last 24 hours to find metric names containing CPU.</td></tr></tbody></table></div><p>The search is a literal text match, so typing SQL into the search field does not execute SQL. Each query returns up to 500 recent records for the active profile.</p><h3>Keep a view live</h3><p>In <strong>View options</strong>, choose <strong>Start live tail</strong> to keep updating the results, or <strong>Pause live tail</strong> to stop those updates while inspecting a result.</p></section>
+<section id="dashboard"><h2>3. Create a dashboard from a query</h2><ol><li>Run a logs or metrics query and choose its table or time series view.</li><li>Open <strong>View options → Add to dashboard</strong>.</li><li>Enter a <strong>Panel name</strong>, such as <code>CPU history</code> or <code>Recent timeouts</code>.</li><li>Select <strong>New dashboard</strong> and enter a <strong>Dashboard name</strong>, or select an existing dashboard.</li><li>Choose <strong>Save panel</strong>.</li><li>Open the dashboard’s tab in Health. Repeat the workflow to add more logs or metrics panels to the same dashboard.</li></ol><p>A saved telemetry panel keeps the search text, relative time range, view type, and grouping choice. Its data is queried again when the panel loads, so it is a reusable view rather than a frozen copy of the result.</p><h3>Example: a service dashboard</h3><p>Enable logs and metrics for the connections you need. In Metrics, search <code>cpu</code>, choose Last 24 hours and Time series view, then save a panel named <code>CPU history</code> to a new dashboard named <code>Service health</code>. In Logs, search <code>timeout</code>, choose Last hour and Table view, then save <code>Recent timeouts</code> to the same dashboard. The results include any enabled sources with matching records; use source grouping to distinguish them.</p></section>
+<section id="troubleshooting"><h2>If data is missing</h2><ul><li>Check the active profile, the global <strong>Telemetry collection</strong> switch, and the source’s enable switch.</li><li>Confirm that the source has Logs or Metrics selected for the view you are querying, then save changes.</li><li>Clear the search text, widen the time range, and run the query again.</li><li>Check source connectivity and allow time for new activity to produce records. Retention may have removed older records.</li><li>If the source picker is empty, save a connection in Studio first.</li></ul></section><a class="doc-next" href="docs.html"><span><small>Continue exploring</small>Explore the s2s CLI</span><span aria-hidden="true">↗</span></a></main><details class="toc"><summary>On this page</summary>
+<nav aria-label="Health table of contents"><p>Health guide</p><a href="#before">Before you start</a><a href="#sources">Add data sources</a><a href="#query">Query logs &amp; metrics</a><a href="#dashboard">Create a dashboard</a><a href="#troubleshooting">Missing data</a></nav></details></div>
+<footer class="doc-footer"><span>Swavan Studio / Documentation</span><a href="index.html">Back to the product tour ↗</a></footer></div><script>
+const toggle = document.getElementById('theme-toggle');
+function updateThemeLabel() { toggle.textContent = document.documentElement.dataset.theme === 'dark' ? 'Light theme' : 'Dark theme'; }
+toggle.addEventListener('click', () => { const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = next; try { localStorage.setItem('swavan-theme', next); } catch (_) {} updateThemeLabel(); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => { try { if (['light', 'dark'].includes(localStorage.getItem('swavan-theme'))) return; } catch (_) {} document.documentElement.dataset.theme = event.matches ? 'dark' : 'light'; updateThemeLabel(); });
+updateThemeLabel();
+</script><script>
+const contents = document.querySelector('.toc');
+const wideDocs = matchMedia('(min-width: 1241px)');
+const syncContents = () => { contents.open = wideDocs.matches; };
+syncContents();
+wideDocs.addEventListener('change', syncContents);
+document.querySelectorAll('.copy-code').forEach(button => {
+ button.addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(button.closest('.code-block').querySelector('code').textContent); button.textContent = 'Copied'; setTimeout(() => { button.textContent = 'Copy'; }, 2000); }
+  catch (_) { button.textContent = 'Select to copy'; }
+ });
+});
+const sectionLinks = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
+const observedSections = Array.from(document.querySelectorAll('main section[id]'));
+const sectionObserver = new IntersectionObserver(entries => {
+ const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+ if (!visible.length) return;
+ sectionLinks.forEach(link => { if (link.hash === '#' + visible[0].target.id) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current'); });
+}, { rootMargin: '-5% 0px -65% 0px', threshold: 0 });
+observedSections.forEach(section => sectionObserver.observe(section));
+</script></body></html>
