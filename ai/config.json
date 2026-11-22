@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updated": "2026-11-22",
-  "note": "Download locations for Swavan SSH Studio's on-device speech models. Studio verifies every file against the SHA-256 compiled into the app, so entries here can move where bytes come from but never which bytes are accepted. Each file may list several URLs; they are tried in order.",
+  "note": "Download locations for Swavan Studio's on-device speech models. Studio verifies every file against the SHA-256 compiled into the app, so entries here can move where bytes come from but never which bytes are accepted. Each file may list several URLs; they are tried in order.",
   "models": [
     {
       "id": "kokoro-v1.0",
